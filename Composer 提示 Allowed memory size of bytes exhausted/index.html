@@ -221,7 +221,7 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/Redis/PHPzhongRedischangyongcaozuo(hash)/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（hash 类型）">&larr; 上一页</a>
+                            <a href="/Redis/PHP 中 Redis 常用操作（zset 类型）/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（zset 类型）">&larr; 上一页</a>
                         </li>
                     
                     
@@ -231,10 +231,28 @@
                     
                 </ul>
 
-                
+                <!--评论框-->
+                <!--gitalk 插件评论功能  https://github.com/gitalk/gitalk -->
 
-                
-                <div id="gitalk-container"></div>
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: `f1946918188d5d6f545d`,
+        clientSecret: `5e6cbedbfde0eb399cf5627e65f7f3d5111cf8a4`,
+        repo: `suzhif.github.io`,
+        owner: `suzhiF`,
+        admin: `suzhiF`,
+        id: location.pathname,
+        distractionFreeMode: `false`,
+        perPage: `10`
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+
             </div>
     <!-- Side Catalog Container -->
         
@@ -279,23 +297,6 @@
         </div>
     </div>
 </article>
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: 'f1946918188d5d6f545d',
-        clientSecret: '5e6cbedbfde0eb399cf5627e65f7f3d5111cf8a4',
-        repo: 'suzhif.github.io',
-        owner: 'suzhiF',
-        admin: 'suzhiF',
-        id: location.pathname,      // Ensure uniqueness and length less than 50
-        distractionFreeMode: false, // Facebook-like distraction free mode
-        perPage: 10
-    })
-
-    gitalk.render('gitalk-container')
-</script>
-
 <style>
     .catalog-body {
         list-style: none
