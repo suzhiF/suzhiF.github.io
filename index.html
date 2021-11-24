@@ -243,31 +243,6 @@ docker  [command]  [options]
 
 <div class="post-preview">
 
-    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（list 类型）/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（list 类型）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）
-一个列表最多可以包含232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。
-将元素压入链表(lPush)
-lPush() 方法将数据从左侧压入列表
-rPush() 方法将数据从右侧压入列表
-123456789101112131415161718192021$re......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2021/07/Redis/PHP 中 Redis 常用操作（hash 类型）/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（hash 类型）
@@ -290,16 +265,20 @@ Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
 
 <div class="post-preview">
 
-    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（set 类型）/">
+    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（list 类型）/">
         <h2 class="post-title">
-            PHP 中 Redis 常用操作（set 类型）
+            PHP 中 Redis 常用操作（list 类型）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
-Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
+            Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）
+一个列表最多可以包含232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。
+将元素压入链表(lPush)
+lPush() 方法将数据从左侧压入列表
+rPush() 方法将数据从右侧压入列表
+123456789101112131415161718192021$re......
         </div>
     </a>
     <p class="post-meta">
@@ -326,6 +305,27 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 
 设置(set)
 仅支持字符串操作，不支持内置数据编码功能。如果需要存储PHP的非字符......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（set 类型）/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（set 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
+Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
         </div>
     </a>
     <p class="post-meta">
@@ -706,7 +706,7 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
     <div id="back_top"></div>
 
 <!-- Image to hack wechat -->
-<img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0" />
+<!--<img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0" />-->
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
