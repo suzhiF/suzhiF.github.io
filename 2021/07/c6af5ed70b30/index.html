@@ -13,11 +13,11 @@
 
     <title>
         
-          Composer 提示 Allowed memory size of bytes exhausted - Suf 的博客
+          PHP 中 Redis 常用操作（zset 类型） - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/c8824c4f5063/">
+    <link rel="canonical" href="http://localhost:4000/2021/07/c6af5ed70b30/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -181,13 +181,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
-                    <h1>Composer 提示 Allowed memory size of bytes exhausted</h1>
+                    <h1>PHP 中 Redis 常用操作（zset 类型）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-04-10
+                        2021-07-06
                     </span>
                 </div>
             </div>
@@ -206,12 +208,46 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>运行 composer 命令时提示：</p>
-<blockquote>
-<p><code>PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 67108864 bytes)</code></p>
-</blockquote>
-<p>修改 php.ini 中 memory_limit 的值为 -1，重启</p>
-<p>执行 <code>php -r &quot;echo ini_get(&#39;memory_limit&#39;).PHP_EOL;&quot;</code> 查看是否修改成功</p>
+                <p>Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。</p>
+<p>不同的是每个元素都会关联一个 double 类型的分数。redis 正是通过分数来为集合中的成员进行从小到大的排序。</p>
+<p>有序集合的成员是唯一的,但分数(score)却可以重复。<strong>处理元素时，也要加上score的处理</strong></p>
+<p>集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。 集合中最大的成员数为 232 - 1 (4294967295, 每个集合可存储40多亿个成员)。</p>
+<p><strong>添加元素(zAdd)</strong></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">10</span>, <span class="string">&#x27;A&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">106</span>, <span class="string">&#x27;B&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">20</span>, <span class="string">&#x27;C&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">15</span>, <span class="string">&#x27;D&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">11</span>, <span class="string">&#x27;E&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>元素分值增减(zIncrBy)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zIncrBy(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">20.5</span>, <span class="string">&#x27;A&#x27;</span>);      <span class="regexp">//</span> <span class="number">30.5</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;zIncrBy(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">12</span>, <span class="string">&#x27;B&#x27;</span>);       <span class="regexp">//</span> <span class="number">128</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取根据 score 排序后的数据段(zRange,zRevRange)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span> 升序</span><br><span class="line"><span class="variable">$redis</span>-&gt;zRange(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>)</span><br><span class="line"><span class="regexp">//</span>array (size=<span class="number">5</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="number">0</span> =&gt; string <span class="string">&#x27;E&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="number">1</span> =&gt; string <span class="string">&#x27;D&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="number">2</span> =&gt; string <span class="string">&#x27;C&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="number">3</span> =&gt; string <span class="string">&#x27;A&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="number">4</span> =&gt; string <span class="string">&#x27;B&#x27;</span> (length=<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> 降序</span><br><span class="line"><span class="regexp">//</span> 分值前三</span><br><span class="line"><span class="variable">$redis</span>-&gt;zRevRange(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">0</span>, <span class="number">2</span>, true);</span><br><span class="line"><span class="regexp">//</span>array (size=<span class="number">3</span>)</span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;B&#x27;</span> =&gt; float <span class="number">118</span></span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;A&#x27;</span> =&gt; float <span class="number">30.5</span></span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;C&#x27;</span> =&gt; float <span class="number">20</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取 score 过滤后排序的数据段(zRangeByScore,zRevRangeByScore)</strong></p>
+<p>根据分值过滤之后的列表</p>
+<p>需要提供分值区间</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="string">&#x27;val0&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, <span class="number">2</span>, <span class="string">&#x27;val2&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, <span class="number">10</span>, <span class="string">&#x27;val10&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="number">3</span>);                                          <span class="comment">// array(&#x27;val0&#x27;, &#x27;val2&#x27;)</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="keyword">array</span>(<span class="string">&#x27;withscores&#x27;</span> =&gt; <span class="literal">TRUE</span>);              <span class="comment">// array(&#x27;val0&#x27; =&gt; 0, &#x27;val2&#x27; =&gt; 2)</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="keyword">array</span>(<span class="string">&#x27;limit&#x27;</span> =&gt; <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">1</span>));                        <span class="comment">// array(&#x27;val2&#x27; =&gt; 2)</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="keyword">array</span>(<span class="string">&#x27;limit&#x27;</span> =&gt; <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">1</span>));                        <span class="comment">// array(&#x27;val2&#x27;)</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;zRangeByScore(<span class="string">&#x27;key&#x27;</span>, <span class="number">0</span>, <span class="number">3</span>, <span class="keyword">array</span>(<span class="string">&#x27;withscores&#x27;</span> =&gt; <span class="literal">TRUE</span>, <span class="string">&#x27;limit&#x27;</span> =&gt; <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">1</span>));  <span class="comment">// array(&#x27;val2&#x27; =&gt; 2)</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取元素个数(zCard)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zCard(<span class="string">&#x27;zSet&#x27;</span>);      <span class="regexp">//</span> </span><br></pre></td></tr></table></figure>
+
+<p><strong>获取区间内的元素个数(zCount)</strong></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, 0, <span class="string">&#x27;val0&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, <span class="number">2</span>, <span class="string">&#x27;val2&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;key&#x27;</span>, <span class="number">10</span>, <span class="string">&#x27;val10&#x27;</span>);</span><br><span class="line"><span class="regexp">//</span> 0 ~ <span class="number">3</span> 之间</span><br><span class="line"><span class="variable">$redis</span>-&gt;zCount(<span class="string">&#x27;key&#x27;</span>, 0, <span class="number">3</span>); <span class="regexp">//</span> array(<span class="string">&#x27;val0&#x27;</span>, <span class="string">&#x27;val2&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取元素的 score (zScore)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zScore(<span class="string">&#x27;zSet&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)     <span class="regexp">//</span> <span class="number">30.5</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取某个元素在集合中的排名(zRank)</strong></p>
+<p>从0开始</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zRank(<span class="string">&#x27;zSet&#x27;</span>, <span class="string">&#x27;A&#x27;</span>);    <span class="regexp">//</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>删除元素(zRem)</strong></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;zRem(<span class="string">&#x27;zSet&#x27;</span>, <span class="string">&#x27;A&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>根据排名来删除(zRemRangeByRank)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span>按照升序排序删除第一个和第二个元素</span><br><span class="line"><span class="variable">$redis</span>-&gt;zRemRangeByRank(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>根据区间来删除(zRemRangeByScore)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="regexp">//</span>删除 score 在[<span class="number">15</span>, <span class="number">30</span>]之间的元素</span><br><span class="line"><span class="variable">$redis</span>-&gt;zRemRangeByScore(<span class="string">&#x27;zSet&#x27;</span>, <span class="number">15</span>, <span class="number">30</span>);</span><br></pre></td></tr></table></figure>
+
 
 
                 <hr>
@@ -221,12 +257,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/124fc284dddc/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（hash 类型）">&larr; 上一页</a>
+                            <a href="/2021/07/634c5e00d421/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（string 类型）">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/ee27d20440a9/" data-toggle="tooltip" data-placement="top" title="Sql 语句编写规范">下一页 &rarr;</a>
+                            <a href="/2021/07/6042abf4cf50/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（基础操作）">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -273,7 +309,9 @@
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
                 </section>
