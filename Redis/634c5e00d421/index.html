@@ -13,11 +13,11 @@
 
     <title>
         
-          Composer 提示 Allowed memory size of bytes exhausted - Suf 的博客
+          PHP 中 Redis 常用操作（string 类型） - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/Composer 提示 Allowed memory size of bytes exhausted/">
+    <link rel="canonical" href="http://localhost:4000/Redis/634c5e00d421/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -181,13 +181,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
-                    <h1>Composer 提示 Allowed memory size of bytes exhausted</h1>
+                    <h1>PHP 中 Redis 常用操作（string 类型）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-04-10
+                        2021-07-06
                     </span>
                 </div>
             </div>
@@ -206,12 +208,51 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>运行 composer 命令时提示：</p>
-<blockquote>
-<p><code>PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 67108864 bytes)</code></p>
-</blockquote>
-<p>修改 php.ini 中 memory_limit 的值为 -1，重启</p>
-<p>执行 <code>php -r &quot;echo ini_get(&#39;memory_limit&#39;).PHP_EOL;&quot;</code> 查看是否修改成功</p>
+                <ul>
+<li>string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一个key对应一个value。</li>
+<li> string 类型是二进制安全的。这意味着 Redis 的 string 可以包含任何数据。比如JPG图片或者序列化的对象。</li>
+<li> 一个 Redis 中字符串 value 最多可以是512M</li>
+</ul>
+<p><strong>设置(set)</strong></p>
+<p>仅支持字符串操作，不支持内置数据编码功能。如果需要存储PHP的非字符串类型，需要提前手动序列化，获取时再反序列化。</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$user</span> = [</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span> =&gt; <span class="string">&#x27;zhaosi&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>  =&gt; <span class="number">49</span>,</span><br><span class="line">];</span><br><span class="line"><span class="regexp">//</span>将<span class="variable">$user</span>数组序列化成json字符串</span><br><span class="line"><span class="variable">$user</span> = json_encode(<span class="variable">$user</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;user&#x27;</span>, <span class="variable">$user</span>);</span><br><span class="line"><span class="variable">$data</span> = <span class="variable">$redis</span>-&gt;get(<span class="string">&#x27;user&#x27;</span>);</span><br><span class="line"><span class="regexp">//</span>拿到序列化后的字符串，再反序列化成PHP数组</span><br><span class="line"><span class="variable">$data</span> = json_decode(<span class="variable">$data</span>, <span class="keyword">true</span>);</span><br><span class="line">var_dump(<span class="variable">$data</span>);</span><br></pre></td></tr></table></figure>
+<p><code>setnx()</code> 方法是只有在 key 不存在时设置 key 的值，</p>
+<p><strong>设置并指定过期时间(setex)</strong></p>
+<p>设置键的同时，设置过期时间(秒)</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;setex(<span class="string">&#x27;user&#x27;</span>, <span class="number">60</span>, <span class="string">&#x27;user_1256465&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取值(get)</strong></p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;liuneng&#x27;</span>); <span class="regexp">//</span>设置</span><br><span class="line"><span class="variable">$name</span> = <span class="variable">$redis</span>-&gt;get(<span class="string">&#x27;name&#x27;</span>);    <span class="regexp">//</span>获取</span><br><span class="line">var_dump(<span class="variable">$name</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>增加(incr, incrBy)</strong></p>
+<p><code>incr()</code>、<code>incrBy()</code> 都是操作数字，对数字进行增加的操作，incr是执行原子加1操作，incrBy是增加指定的数</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;age&#x27;</span>, <span class="number">49</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;incr(<span class="string">&#x27;age&#x27;</span>); <span class="regexp">//</span>等于<span class="variable">$age</span>++</span><br><span class="line"><span class="variable">$redis</span>-&gt;incrBy(<span class="string">&#x27;age&#x27;</span>, <span class="number">10</span>); <span class="regexp">//</span> 等于<span class="variable">$age</span> = <span class="variable">$age</span> + <span class="number">10</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>减少(decr, decrBy)</strong></p>
+<p><code>decr()</code> 和 <code>decrBy()</code> 方法是对数字进行减的操作，和 <code>incr</code> 正好相反</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;age&#x27;</span>, <span class="number">20</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;decr(<span class="string">&#x27;age&#x27;</span>); <span class="regexp">//</span>等于<span class="variable">$age</span>--</span><br><span class="line"><span class="variable">$redis</span>-&gt;decrBy(<span class="string">&#x27;age&#x27;</span>, <span class="number">10</span>); <span class="regexp">//</span> 等于<span class="variable">$age</span> = <span class="variable">$age</span> - <span class="number">5</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>追加(append)</strong></p>
+<p><code>append()</code> 表示往字符串后面追加元素，返回值是字符串的总长度</p>
+<p>示例：在’hello’后面追加’ world’</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;welcome&#x27;</span>, <span class="string">&#x27;hello&#x27;</span>);</span><br><span class="line"><span class="variable">$length</span> = <span class="variable">$redis</span>-&gt;append(<span class="string">&#x27;welcome&#x27;</span>, <span class="string">&#x27; world&#x27;</span>);</span><br><span class="line">var_dump(<span class="variable">$length</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取长度(strLen)</strong></p>
+<p><code>strLen()</code> 方法可以获取字符串的长度</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;zhaosi&#x27;</span>);</span><br><span class="line"><span class="variable">$length</span> = <span class="variable">$redis</span>-&gt;strlen(<span class="string">&#x27;name&#x27;</span>);</span><br><span class="line">var_dump(<span class="variable">$length</span>);  <span class="regexp">//</span> <span class="number">6</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>字符串截取(getRange)</strong></p>
+<p><code>getRange()</code> 方法可以用来截取字符串的部分内容,第二个参数是下标索引的开始位置，第三个参数是下标索引的结束位置(不是要截取的长度)，</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;ID&#x27;</span>, <span class="string">&#x27;411521199809151234&#x27;</span>);</span><br><span class="line"><span class="variable">$subStr</span> = <span class="variable">$redis</span>-&gt;getRange(<span class="string">&#x27;ID&#x27;</span>, 0, <span class="number">5</span>);</span><br><span class="line">var_dump(<span class="variable">$subStr</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>返回所有指定键的值mget()</strong></p>
+<figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;<span class="builtin-name">set</span>(<span class="string">&#x27;user_1&#x27;</span>,<span class="string">&#x27;zhaosan&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;<span class="builtin-name">set</span>(<span class="string">&#x27;user_2&#x27;</span>,<span class="string">&#x27;zhaosi&#x27;</span>);</span><br><span class="line"><span class="variable">$data</span> = <span class="variable">$redis</span>-&gt;mget([<span class="string">&#x27;user_1&#x27;</span>,<span class="string">&#x27;user_2&#x27;</span>]);</span><br><span class="line">var_dump(<span class="variable">$data</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>设置多个 key-value mset()</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;mset(<span class="keyword">array</span>(<span class="string">&#x27;key0&#x27;</span> =&gt; <span class="string">&#x27;value0&#x27;</span>, <span class="string">&#x27;key1&#x27;</span> =&gt; <span class="string">&#x27;value1&#x27;</span>));</span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;get(<span class="string">&#x27;key0&#x27;</span>));</span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;get(<span class="string">&#x27;key1&#x27;</span>));</span><br></pre></td></tr></table></figure>
+<p><strong>设置一个值并返回该键处的前一个条目</strong></p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;42&#x27;</span>);</span><br><span class="line"><span class="variable">$exValue</span> = <span class="variable">$redis</span>-&gt;getSet(<span class="string">&#x27;x&#x27;</span>, <span class="string">&#x27;lol&#x27;</span>);   <span class="regexp">//</span> <span class="keyword">return</span> <span class="string">&#x27;42&#x27;</span>, replaces x by <span class="string">&#x27;lol&#x27;</span></span><br><span class="line"><span class="variable">$newValue</span> = <span class="variable">$redis</span>-&gt;get(<span class="string">&#x27;x&#x27;</span>)<span class="string">&#x27;            // return &#x27;</span>lol<span class="string">&#x27;</span></span><br></pre></td></tr></table></figure>
+<p>…..</p>
 
 
                 <hr>
@@ -221,12 +262,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/Redis/PHPzhongRedischangyongcaozuo(hash)/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（hash 类型）">&larr; 上一页</a>
+                            <a href="/Redis/c6af5ed70b30/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（zset 类型）">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/mysql/Sql 语句编写规范/" data-toggle="tooltip" data-placement="top" title="Sql 语句编写规范">下一页 &rarr;</a>
+                            <a href="/Redis/6042abf4cf50/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（基础操作）">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -273,7 +314,9 @@
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
                         
                     </div>
                 </section>

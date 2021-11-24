@@ -13,11 +13,11 @@
 
     <title>
         
-          Sql 语句编写规范 - Suf 的博客
+          PHP 中 Redis 常用操作（list 类型） - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/mysql/Sql 语句编写规范/">
+    <link rel="canonical" href="http://localhost:4000/Redis/bd70d53460ec/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -181,11 +181,15 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                        
                     </div>
-                    <h1>Sql 语句编写规范</h1>
+                    <h1>PHP 中 Redis 常用操作（list 类型）</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-01-24
+                        2021-07-06
                     </span>
                 </div>
             </div>
@@ -204,7 +208,41 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>1.使用 limit 对查询结果的记录进行限定<br>2. 避免 select * ，将需要查找的字段列出来<br>3. 使用连接（join）来代替子查询<br>4. 拆分大的 delete 或 insert 语句<br>5. 可通过开启慢查询日志来找出较慢的 SQL<br>6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边<br>7.sql 语句尽可能简单：一条 sql 只能在一个 cpu 运算；大语句拆小语句，减少锁时间；一条大 sql 可以堵死整个库<br>9. 不用函数和触发器，在应用程序实现<br>10. 避免 % xxx 式查询<br>12. 使用同类型进行比较，比如用’123’和’123’比，123 和 123 比<br>15. 列表数据不要拿全表，要使用 LIMIT 来分页，. 每页数量也不要太大</p>
+                <p>Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
+<p>一个列表最多可以包含232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
+<p><strong>将元素压入链表(lPush)</strong></p>
+<p><code>lPush()</code> 方法将数据从左侧压入列表</p>
+<p><code>rPush()</code> 方法将数据从右侧压入列表</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list2&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"></span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list1&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list2&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list1:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list2:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>在某个位置插入新元素(lInsert)</strong></p>
+<p><code>Redis::BEFORE</code> 在之前插入</p>
+<p><code>Redis::AFTER</code> 在之后插入</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::BEFORE, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::AFTER, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, 0, <span class="number">-1</span>);</span><br><span class="line"><span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;C&#x27;</span>，<span class="string">&#x27;Y&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>设置、获取某个元素的值(lSet、lGet)</strong></p>
+<p><code>lSet()</code> 方法可以通过下标修改链表元素的值，下标是从0开始<br><code>lGet()</code> 方法可以通过下标获取链表元素的值，下标是从0开始</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;lSet(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;X&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>获取列表元素个数(lLen)</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$length</span> = <span class="variable">$redis</span>-&gt;lLen(<span class="string">&#x27;list&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$length</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取下标对应的元素(lIndex)</strong></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lIndex(<span class="string">&#x27;list&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$val</span>;</span><br></pre></td></tr></table></figure>
+
+<p><strong>获取某个选定范围元素集(lRange)</strong></p>
+<p>通过起止下标来获取列表某个范围内的元素集</p>
+<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="regexp">//</span>前两个元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>); <span class="regexp">//</span>全部元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, -<span class="number">2</span>, -<span class="number">1</span>); <span class="regexp">//</span>后两个元素</span><br><span class="line">var_dump(<span class="variable">$arr</span>);</span><br></pre></td></tr></table></figure>
+
+<p><strong>从列表左侧弹出数据(lPop)</strong></p>
+<p><code>lPop()</code> 方法将数据从列表左侧弹出，返回弹出的元素，数据元素在list中消失。</p>
+<p><code>rPop()</code> 右侧弹出</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span> ]</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;rPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span> ]</span><br></pre></td></tr></table></figure>
+
+<p><strong>根据值移除元素(lRem)</strong></p>
+<p>根据值来移除元素，并且可以指定要移除的元素个数，因为 list 中可能出现重复的元素</p>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 
 
                 <hr>
@@ -214,9 +252,13 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/Composer 提示 Allowed memory size of bytes exhausted/" data-toggle="tooltip" data-placement="top" title="Composer 提示 Allowed memory size of bytes exhausted">&larr; 上一页</a>
+                            <a href="/uncategorized/b934f7bfb536/" data-toggle="tooltip" data-placement="top" title="Docker 常用命令">&larr; 上一页</a>
                         </li>
                     
+                    
+                        <li class="next">
+                            <a href="/Redis/ac3227b76e78/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（set 类型）">下一页 &rarr;</a>
+                        </li>
                     
                 </ul>
 
@@ -262,6 +304,10 @@
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
                        
+                          <a class="tag" href="/tags/#php" title="php">php</a>
+                        
+                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                        
                     </div>
                 </section>
                 
