@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/16gl-F.svg">
+
+    <title>
+        
+          什么是 CSRF - Suf 的博客
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost:4000/2021/07/什么是 CSRF/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/other.min.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Think aloud</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" id="search" ><span class="fa fa-search fa-1x"></span></a>
+                    </li>
+                    
+                        <li>
+                            <a href="/">首页</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/archives">归档</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/categories">分类</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags">标签</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/about">关于</a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Search Modal -->
+<div class="modal search-modal">
+    <div class="search-container">
+        <div class="search-container-top">
+            <img src="/img/close.svg" alt="">
+        </div>
+        <input class="search-container-input" placeholder="请输入关键字搜索 " type="text">
+        <div class="search-container-content"></div>
+    </div>
+</div>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    
+<!-- Image to hack wechat -->
+<!-- <img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0"> -->
+<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
+
+<!-- Post Header -->
+<style type="text/css">
+    header.intro-header{
+        background-image: url('/img/home-bg.jpg')
+    }
+</style>
+<header class="intro-header" >
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                    </div>
+                    <h1>什么是 CSRF</h1>
+                    <h2 class="subheading"></h2>
+                    <span class="meta">
+                        2021-07-27
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+    <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="一-CSRF是什么？是什么？是什么？是什么？是什么？是什么？"><a href="#一-CSRF是什么？是什么？是什么？是什么？是什么？是什么？" class="headerlink" title="一.CSRF是什么？是什么？是什么？是什么？是什么？是什么？"></a>一.CSRF是什么？是什么？是什么？是什么？是什么？是什么？</h3><p>CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。</p>
+<h3 id="二-CSRF可以做什么？"><a href="#二-CSRF可以做什么？" class="headerlink" title="二.CSRF可以做什么？"></a>二.CSRF可以做什么？</h3><p>你这可以这么理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。CSRF能够做的事情包括：以你名义发送邮件，发消息，盗取你的账号，甚至于购买商品，虚拟货币转账……造成的问题包括：个人隐私泄露以及财产安全。</p>
+<h3 id="三-CSRF漏洞现状"><a href="#三-CSRF漏洞现状" class="headerlink" title="三.CSRF漏洞现状"></a>三.CSRF漏洞现状</h3><p>CSRF这种攻击方式在2000年已经被国外的安全人员提出，但在国内，直到06年才开始被关注，08年，国内外的多个大型社区和交互网站分别爆出CSRF漏洞，如：NYTimes.com（纽约时报）、Metafilter（一个大型的BLOG网站），YouTube和百度HI……而现在，互联网上的许多站点仍对此毫无防备，以至于安全业界称CSRF为“沉睡的巨人”。</p>
+<h3 id="四-CSRF的原理"><a href="#四-CSRF的原理" class="headerlink" title="四.CSRF的原理"></a>四.CSRF的原理</h3><p>下图简单阐述了CSRF攻击的思想：</p>
+<p><img src="/images/csrf_01.jpg" alt="img"></p>
+<p>从上图可以看出，要完成一次CSRF攻击，受害者必须依次完成两个步骤：</p>
+<p>1.登录受信任网站A，并在本地生成Cookie。</p>
+<p>2.在不登出A的情况下，访问危险网站B。</p>
+<p>看到这里，你也许会说：“如果我不满足以上两个条件中的一个，我就不会受到CSRF的攻击”。是的，确实如此，但你不能保证以下情况不会发生：</p>
+<p>1.你不能保证你登录了一个网站后，不再打开一个tab页面并访问另外的网站。</p>
+<p>2.你不能保证你关闭浏览器了后，你本地的Cookie立刻过期，你上次的会话已经结束。（事实上，关闭浏览器不能结束一个会话，但大多数人都会错误的认为关闭浏览器就等于退出登录/结束会话了……）</p>
+<p>3.上图中所谓的攻击网站，可能是一个存在其他漏洞的可信任的经常被人访问的网站。</p>
+<p>上面大概地讲了一下CSRF攻击的思想，下面我将用几个例子详细说说具体的CSRF攻击，这里我以一个银行转账的操作作为例子（仅仅是例子，真实的银行网站没这么傻:&gt;）</p>
+<p><strong>示例1：</strong></p>
+<p>银行网站A，它以GET请求来完成银行转账的操作，如：<code>http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</code></p>
+<p>危险网站B，它里面有一段HTML的代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</span><br></pre></td></tr></table></figure>
+
+<p>首先，你登录了银行网站A，然后访问危险网站B，噢，这时你会发现你的银行账户少了1000块……</p>
+<p>为什么会这样呢？原因是银行网站A违反了HTTP规范，使用GET请求更新资源。在访问危险网站B的之前，你已经登录了银行网站A，而B中的<img>以GET的方式请求第三方资源（这里的第三方就是指银行网站了，原本这是一个合法的请求，但这里被不法分子利用了），所以你的浏览器会带上你的银行网站A的Cookie发出Get请求，去获取资源“    <code>http://www.mybank.com/Transfer.php?toBankId=11&amp;money=1000</code>”，结果银行网站服务器收到请求后，认为这是一个更新资源操作（转账操作），所以就立刻进行转账操作……</p>
+<p><strong>示例2：</strong></p>
+<p>为了杜绝上面的问题，银行决定改用POST请求完成转账操作。</p>
+<p>银行网站A的WEB表单如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">　<span class="tag">&lt;<span class="name">form</span> <span class="attr">action</span>=<span class="string">&quot;Transfer.php&quot;</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;<span class="name">p</span>&gt;</span>ToBankId: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;toBankId&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;<span class="name">p</span>&gt;</span>Money: <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">name</span>=<span class="string">&quot;money&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;<span class="name">p</span>&gt;</span><span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> <span class="attr">value</span>=<span class="string">&quot;Transfer&quot;</span> /&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">　　<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>后台处理页面Transfer.php如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　　　session_start();</span><br><span class="line">　　　　<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;toBankId&#x27;</span>] &amp;&amp;　<span class="keyword">isset</span>(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;money&#x27;</span>]))</span><br><span class="line">　　　　&#123;</span><br><span class="line">　　　　  buy_stocks(<span class="variable">$_REQUEST</span>[<span class="string">&#x27;toBankId&#x27;</span>],　<span class="variable">$_REQUEST</span>[<span class="string">&#x27;money&#x27;</span>]);</span><br><span class="line">　　　　&#125;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>危险网站B，仍然只是包含那句HTML代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">img</span> <span class="attr">src</span>=<span class="string">http://www.mybank.com/Transfer.php?toBankId</span>=<span class="string">11&amp;money</span>=<span class="string">1000</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>和示例1中的操作一样，你首先登录了银行网站A，然后访问危险网站B，结果…..和示例1一样，你再次没了1000块～T_T，这次事故的原因是：银行后台使用了$_REQUEST去获取请求的数据，而$_REQUEST既可以获取GET请求的数据，也可以获取POST请求的数据，这就造成了在后台处理程序无法区分这到底是GET请求的数据还是POST请求的数据。在PHP中，可以使用$_GET和$_POST分别获取GET请求和POST请求的数据。在JAVA中，用于获取请求数据request一样存在不能区分GET请求数据和POST数据的问题。</p>
+<p><strong>示例3：</strong></p>
+<p>经过前面2个惨痛的教训，银行决定把获取请求数据的方法也改了，改用$_POST，只获取POST请求的数据，后台处理页面Transfer.php代码如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　　　session_start();</span><br><span class="line">　　　　<span class="keyword">if</span> (<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;toBankId&#x27;</span>] &amp;&amp;　<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;money&#x27;</span>]))</span><br><span class="line">　　　　&#123;</span><br><span class="line">　　　　  buy_stocks(<span class="variable">$_POST</span>[<span class="string">&#x27;toBankId&#x27;</span>],　<span class="variable">$_POST</span>[<span class="string">&#x27;money&#x27;</span>]);</span><br><span class="line">　　　　&#125;</span><br><span class="line">　　<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>然而，危险网站B与时俱进，它改了一下代码：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">html</span>&gt;</span></span><br><span class="line">　　<span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;text/javascript&quot;</span>&gt;</span><span class="javascript"></span></span><br><span class="line"><span class="javascript">　　　　　　<span class="function"><span class="keyword">function</span> <span class="title">steal</span>(<span class="params"></span>)</span></span></span><br><span class="line"><span class="function"><span class="javascript">　　　　　　</span>&#123;</span></span><br><span class="line"><span class="javascript">          　　　　 iframe = <span class="built_in">document</span>.frames[<span class="string">&quot;steal&quot;</span>];</span></span><br><span class="line"><span class="javascript">　　     　　      iframe.document.Submit(<span class="string">&quot;transfer&quot;</span>);</span></span><br><span class="line"><span class="javascript">　　　　　　&#125;</span></span><br><span class="line"><span class="javascript">　　　　</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">　　<span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"></span><br><span class="line">　　<span class="tag">&lt;<span class="name">body</span> <span class="attr">onload</span>=<span class="string">&quot;steal()&quot;</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;<span class="name">iframe</span> <span class="attr">name</span>=<span class="string">&quot;steal&quot;</span> <span class="attr">display</span>=<span class="string">&quot;none&quot;</span>&gt;</span></span><br><span class="line">　　　　　　<span class="tag">&lt;<span class="name">form</span> <span class="attr">method</span>=<span class="string">&quot;POST&quot;</span> <span class="attr">name</span>=<span class="string">&quot;transfer&quot;</span>　<span class="attr">action</span>=<span class="string">&quot;http://www.myBank.com/Transfer.php&quot;</span>&gt;</span></span><br><span class="line">　　　　　　　　<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;toBankId&quot;</span> <span class="attr">value</span>=<span class="string">&quot;11&quot;</span>&gt;</span></span><br><span class="line">　　　　　　　　<span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;hidden&quot;</span> <span class="attr">name</span>=<span class="string">&quot;money&quot;</span> <span class="attr">value</span>=<span class="string">&quot;1000&quot;</span>&gt;</span></span><br><span class="line">　　　　　　<span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">　　　　<span class="tag">&lt;/<span class="name">iframe</span>&gt;</span></span><br><span class="line">　　<span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>如果用户仍是继续上面的操作，很不幸，结果将会是再次不见1000块……因为这里危险网站B暗地里发送了POST请求到银行!</p>
+<p>总结一下上面3个例子，CSRF主要的攻击模式基本上是以上的3种，其中以第1,2种最为严重，因为触发条件很简单，一个<img>就可以了，而第3种比较麻烦，需要使用JavaScript，所以使用的机会会比前面的少很多，但无论是哪种情况，只要触发了CSRF攻击，后果都有可能很严重。</p>
+<p>理解上面的3种攻击模式，其实可以看出，CSRF攻击是源于WEB的隐式身份验证机制！WEB的身份验证机制虽然可以保证一个请求是来自于某个用户的浏览器，但却无法保证该请求是用户批准发送的！</p>
+<h3 id="五-CSRF的防御"><a href="#五-CSRF的防御" class="headerlink" title="五.CSRF的防御"></a>五.CSRF的防御</h3><p>我总结了一下看到的资料，CSRF的防御可以从服务端和客户端两方面着手，防御效果是从服务端着手效果比较好，现在一般的CSRF防御也都在服务端进行。</p>
+<p><strong>1.服务端进行CSRF防御</strong></p>
+<p>服务端的CSRF方式方法很多样，但总的思想都是一致的，就是在客户端页面增加伪随机数。</p>
+<p>(1).Cookie Hashing(所有表单都包含同一个伪随机值)：</p>
+<p>这可能是最简单的解决方案了，因为攻击者不能获得第三方的Cookie(理论上)，所以表单中的数据也就构造失败了:</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　　　<span class="comment">//构造加密的Cookie信息</span></span><br><span class="line">　　　　<span class="variable">$value</span> = “DefenseSCRF”;</span><br><span class="line">　　　　setcookie(”cookie”, <span class="variable">$value</span>, time()+<span class="number">3600</span>);</span><br><span class="line">　　<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>在表单里增加Hash值，以认证这确实是用户发送的请求。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">　&lt;?php</span><br><span class="line">　　　　$hash = md5($_COOKIE[&#x27;cookie&#x27;]);</span><br><span class="line">　　?&gt;</span><br><span class="line">　　&lt;form method=”POST” action=”transfer.php”&gt;</span><br><span class="line">　　　　&lt;input type=”text” name=”toBankId”&gt;</span><br><span class="line">　　　　&lt;input type=”text” name=”money”&gt;</span><br><span class="line">　　　　&lt;input type=”hidden” name=”hash” value=”&lt;?=$hash;?&gt;”&gt;</span><br><span class="line">　　　　&lt;input type=”submit” name=”submit” value=”Submit”&gt;</span><br><span class="line">　　&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后在服务器端进行Hash值验证</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　      <span class="keyword">if</span>(<span class="keyword">isset</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;check&#x27;</span>])) &#123;</span><br><span class="line">    　　      <span class="variable">$hash</span> = md5(<span class="variable">$_COOKIE</span>[<span class="string">&#x27;cookie&#x27;</span>]);</span><br><span class="line">         　　 <span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;check&#x27;</span>] == <span class="variable">$hash</span>) &#123;</span><br><span class="line">              　　 doJob();</span><br><span class="line">　　           &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">　　　　　　　　<span class="comment">//...</span></span><br><span class="line">         　　 &#125;</span><br><span class="line">　　      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">　　　　　　<span class="comment">//...</span></span><br><span class="line">　　      &#125;</span><br><span class="line">     <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>这个方法个人觉得已经可以杜绝99%的CSRF攻击了，那还有1%呢….由于用户的Cookie很容易由于网站的XSS漏洞而被盗取，这就另外的1%。一般的攻击者看到有需要算Hash值，基本都会放弃了，某些除外，所以如果需要100%的杜绝，这个不是最好的方法。<br>(2).验证码</p>
+<p>这个方案的思路是：每次的用户提交都需要用户在表单中填写一个图片上的随机字符串，厄….这个方案可以完全解决CSRF，但个人觉得在易用性方面似乎不是太好，还有听闻是验证码图片的使用涉及了一个被称为MHTML的Bug，可能在某些版本的微软IE中受影响。</p>
+<p>(3).One-Time Tokens(不同的表单包含一个不同的伪随机值)</p>
+<p>在实现One-Time Tokens时，需要注意一点：就是“并行会话的兼容”。如果用户在一个站点上同时打开了两个不同的表单，CSRF保护措施不应该影响到他对任何表单的提交。考虑一下如果每次表单被装入时站点生成一个伪随机值来覆盖以前的伪随机值将会发生什么情况：用户只能成功地提交他最后打开的表单，因为所有其他的表单都含有非法的伪随机值。必须小心操作以确保CSRF保护措施不会影响选项卡式的浏览或者利用多个浏览器窗口浏览一个站点。</p>
+<p>以下我的实现:</p>
+<p>1).先是令牌生成函数(gen_token())：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">     <span class="function"><span class="keyword">function</span> <span class="title">gen_token</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">　　　　<span class="comment">//这里我是贪方便，实际上单使用Rand()得出的随机数作为令牌，也是不安全的。</span></span><br><span class="line">　　　　<span class="comment">//这个可以参考我写的Findbugs笔记中的《Random object created and used only once》</span></span><br><span class="line">          <span class="variable">$token</span> = md5(uniqid(rand(), <span class="literal">true</span>));</span><br><span class="line">          <span class="keyword">return</span> <span class="variable">$token</span>;</span><br><span class="line">     &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>2).然后是Session令牌生成函数(gen_stoken())：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">     　　<span class="function"><span class="keyword">function</span> <span class="title">gen_stoken</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">　　　　　　<span class="variable">$pToken</span> = <span class="string">&quot;&quot;</span>;</span><br><span class="line">　　　　　　<span class="keyword">if</span>(<span class="variable">$_SESSION</span>[STOKEN_NAME]  == <span class="variable">$pToken</span>)&#123;</span><br><span class="line">　　　　　　　　<span class="comment">//没有值，赋新值</span></span><br><span class="line">　　　　　　　　<span class="variable">$_SESSION</span>[STOKEN_NAME] = gen_token();</span><br><span class="line">　　　　　　&#125;   </span><br><span class="line">　　　　　　<span class="keyword">else</span>&#123;</span><br><span class="line">　　　　　　　　<span class="comment">//继续使用旧的值</span></span><br><span class="line">　　　　　　&#125;</span><br><span class="line">     　　&#125;</span><br><span class="line">     <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>3).WEB表单生成隐藏输入域的函数：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">　　     <span class="function"><span class="keyword">function</span> <span class="title">gen_input</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">    　　     gen_stoken();</span><br><span class="line">　　          <span class="keyword">echo</span> “&lt;input type=\”hidden\” name=\”<span class="string">&quot; . FTOKEN_NAME . “\”</span></span><br><span class="line"><span class="string">         　　     value=\”&quot;</span> . <span class="variable">$_SESSION</span>[STOKEN_NAME] . “\”&gt; “;</span><br><span class="line">    　　&#125;</span><br><span class="line">    <span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+
+
+<p>4).WEB表单结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">         session_start();</span><br><span class="line">         include(”functions.php”);</span><br><span class="line">    ?&gt;</span><br><span class="line">    &lt;form method=”POST” action=”transfer.php”&gt;</span><br><span class="line">         &lt;input type=”text” name=”toBankId”&gt;</span><br><span class="line">         &lt;input type=”text” name=”money”&gt;</span><br><span class="line">         &lt;? gen_input(); ?&gt;</span><br><span class="line">         &lt;input type=”submit” name=”submit” value=”Submit”&gt;</span><br><span class="line">    &lt;/FORM&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>5).服务端核对令牌</p>
+
+
+                <hr>
+
+                
+
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/07/Docker/Docker 常用命令/" data-toggle="tooltip" data-placement="top" title="Docker 常用命令">下一页 &rarr;</a>
+                        </li>
+                    
+                </ul>
+
+                
+
+                
+
+            </div>
+    <!-- Side Catalog Container -->
+        
+            <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container" id="catalog">
+                <div class="side-catalog">
+                    <hr class="hidden-sm hidden-xs">
+                    <h5>
+                        <a class="catalog-toggle" href="#">目录</a>
+                    </h5>
+                    <ul class="catalog-body"></ul>
+                </div>
+            </div>
+        
+
+    <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                <section>
+                    <!-- no hr -->
+                    <hr>
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                       
+                    </div>
+                </section>
+                
+
+                <!-- Friends Blog -->
+<!--                -->
+<!--                <hr>-->
+<!--                <h5>FRIENDS</h5>-->
+<!--                <ul class="list-inline">-->
+
+<!--                    -->
+<!--                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>-->
+<!--                    -->
+<!--                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>-->
+<!--                    -->
+<!--                </ul>-->
+<!--                -->
+            </div>
+
+        </div>
+        <div id="gitalk-container"></div>
+    </div>
+</article>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: '0a63a0c0b4cc97614b7b',
+        clientSecret: 'def344a9cb8a4a834fd191b1919c3bed803d04df',
+        repo: 'comment_database',
+        owner: 'suzhiF',
+        admin: ['suzhiF'],
+        id: location.pathname,      // Ensure uniqueness and length less than 50
+        distractionFreeMode: false  // Facebook-like distraction free mode
+    })
+
+    gitalk.render('gitalk-container')
+</script>
+
+<style>
+    .catalog-body {
+        list-style: none
+    }
+    .catalog-body {
+        list-style: none;
+        padding: 0;
+        line-height: inherit;
+    }
+    .catalog-body li {
+        padding: 5px;
+        line-height: 20px;
+    }
+    #catalog {
+        position: absolute;
+        left: 20px;
+    }
+    #catalog .active a{
+        /*border: 1px #9d9d9d;*/
+        /*background-color: #9d9d9d;*/
+        /*border: 1px solid #0085a1;*/
+        /*border-radius: 5px;*/
+        font-size: 24px;
+    }
+</style>
+
+
+
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+<script>
+    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+        anchors.options = {
+          visible: 'always',
+          placement: 'right',
+          icon: '#'
+        };
+        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+    })
+</script>
+<style>
+    /* place left on bigger screen */
+    @media all and (min-width: 800px) {
+        .anchorjs-link{
+            position: absolute;
+            left: -0.75em;
+            font-size: 1.1em;
+            margin-top : -0.1em;
+        }
+    }
+</style>
+
+
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Think aloud 2021 
+                    <br>
+                    Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a target="_blank" rel="noopener" href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script src="/js/other.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost:4000/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+<script>
+    $('.search-container').css({ "height": window.innerHeight, "overflow": 'hidden' })
+    $('.search-container-content').css({ "height": window.innerHeight - 70, "overflow": 'scroll' })
+    var allArticles = [];
+    var xReq = new XMLHttpRequest();
+    xReq.open('GET', '/search.json');
+    xReq.send();
+    xReq.onreadystatechange = function(){
+        if(xReq.readyState === 4 && xReq.status === 200){
+            allArticles = JSON.parse(xReq.responseText);
+        }
+    }
+
+    $('#search').on('click', function() {
+        document.body.style['overflow-y'] = 'hidden'
+        $('.search-modal').addClass('modal-show');
+    });
+
+    $('.search-modal,.search-container-top img').on('click', function() {
+        document.body.style['overflow-y'] = 'scroll';
+        $('.search-modal').removeClass('modal-show');
+    });
+
+    $('.search-container').on('click', function(e) {
+        e.stopPropagation();
+    });
+
+    $('.search-container-input').bind('input propertychange', function(e) {
+        var searchValue = e.currentTarget.value;
+        var correctArticles = allArticles.filter(article => article.content.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 || article.title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1)
+        var articleListHtml = '';
+        for (let index = 0; index < correctArticles.length; index++) {
+            var article = correctArticles[index];
+            article.description = article.content.replace(/<[^>]+>/g,"");
+            var title = article.title, description = '';
+            var searchReg = RegExp(searchValue, 'i');
+            var searchRegGlobal = RegExp(searchValue, 'ig');
+            if (article.title.match(searchReg)) {
+                title = article.title.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            }
+            var contentMatch = article.description.match(searchReg);
+            if (contentMatch) {
+                description = `...${article.description.substr(contentMatch['index'], 210)}...`.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            } else {
+                description = article.description.substr(0, 200);
+            }
+
+            articleListHtml += `<div class="search-container-content_item">
+        <a href="${article.url}" class="search-container-content_item-title">${title}</a>
+        <div class="search-container-content_item-description">${description}</div>
+      </div>`
+        }
+
+        $('.search-container-content').html(articleListHtml);
+    });
+</script>
+
+
+    <!--置顶-->
+    <div id="back_top"></div>
+
+<!-- Image to hack wechat -->
+<img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0" />
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
