@@ -315,6 +315,27 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 
 <div class="post-preview">
 
+    <a href="/2021/07/6042abf4cf50/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（基础操作）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            连接 redis 服务器，实例化 redis 对象
+123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/07/c6af5ed70b30/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（zset 类型）
@@ -327,27 +348,6 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 不同的是每个元素都会关联一个 double 类型的分数。redis 正是通过分数来为集合中的成员进行从小到大的排序。
 有序集合的成员是唯一的,但分数(score)却可以重复。处理元素时，也要加上score的处理
 集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。 集合中最大的成员数为 232 ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2021/07/6042abf4cf50/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（基础操作）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            连接 redis 服务器，实例化 redis 对象
-123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
         </div>
     </a>
     <p class="post-meta">
@@ -644,6 +644,7 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
 
 <!-- Side Catalog -->
 
+<!--搜索框-->
 <script>
     $('.search-container').css({ "height": window.innerHeight, "overflow": 'hidden' })
     $('.search-container-content').css({ "height": window.innerHeight - 70, "overflow": 'scroll' })
