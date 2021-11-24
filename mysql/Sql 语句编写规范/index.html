@@ -13,11 +13,11 @@
 
     <title>
         
-          PHP 中 Redis 常用操作（set 类型） - Suf 的博客
+          Sql 语句编写规范 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/2021/07/Redis/PHP 中 Redis 常用操作（set 类型）/">
+    <link rel="canonical" href="http://localhost:4000/mysql/Sql 语句编写规范/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -181,15 +181,11 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#php" title="php">php</a>
-                        
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
-                        
                     </div>
-                    <h1>PHP 中 Redis 常用操作（set 类型）</h1>
+                    <h1>Sql 语句编写规范</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-07-06
+                        2021-01-24
                     </span>
                 </div>
             </div>
@@ -208,35 +204,7 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。</p>
-<p>Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O(1)。</p>
-<p>集合数据的特征：</p>
-<ul>
-<li>元素不能重复，保持唯一性</li>
-<li>元素无序，不能使用索引(下标)操作</li>
-</ul>
-<p><strong>添加元素到集合(sAdd)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>);                <span class="regexp">//</span> int(<span class="number">1</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);    <span class="regexp">//</span> int(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>随机获取一个元素(sPop)</strong></p>
-<p>无序性，是随机的</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v1&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v3&#x27;</span>,</span><br></pre></td></tr></table></figure>
-
-<p><strong>删除集合里指定的值(sRem)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sRem(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);      <span class="regexp">//</span> k =&gt; array(<span class="string">&#x27;v1&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>遍历集合(sScan)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不使用迭代器，匹配所有的元素，进行遍历</span></span><br><span class="line"><span class="variable">$iterator</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="variable">$elements</span> = <span class="variable">$redis</span>-&gt;sScan(<span class="string">&#x27;team&#x27;</span>, <span class="variable">$iterator</span>, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$elements</span> <span class="keyword">as</span> <span class="variable">$element</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$element</span>, <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取所有成员(sMembers)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$members</span> = <span class="variable">$redis</span>-&gt;sMembers(<span class="string">&#x27;k&#x27;</span>);</span><br><span class="line">var_dump(<span class="variable">$members</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取集合元素个数(sCard)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sCard(<span class="string">&#x27;k&#x27;</span>);    <span class="regexp">//</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>并集(sUnion)，差集(sDiff),交集(sInter)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;1&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>);</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sUnion(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">1</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">2</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">3</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="regexp">//</span>&#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">2</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">1</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+                <p>1.使用 limit 对查询结果的记录进行限定<br>2. 避免 select * ，将需要查找的字段列出来<br>3. 使用连接（join）来代替子查询<br>4. 拆分大的 delete 或 insert 语句<br>5. 可通过开启慢查询日志来找出较慢的 SQL<br>6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边<br>7.sql 语句尽可能简单：一条 sql 只能在一个 cpu 运算；大语句拆小语句，减少锁时间；一条大 sql 可以堵死整个库<br>9. 不用函数和触发器，在应用程序实现<br>10. 避免 % xxx 式查询<br>12. 使用同类型进行比较，比如用’123’和’123’比，123 和 123 比<br>15. 列表数据不要拿全表，要使用 LIMIT 来分页，. 每页数量也不要太大</p>
 
 
                 <hr>
@@ -246,13 +214,9 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/Redis/PHP 中 Redis 常用操作（list 类型）/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（list 类型）">&larr; 上一页</a>
+                            <a href="/Composer 提示 Allowed memory size of bytes exhausted/" data-toggle="tooltip" data-placement="top" title="Composer 提示 Allowed memory size of bytes exhausted">&larr; 上一页</a>
                         </li>
                     
-                    
-                        <li class="next">
-                            <a href="/2021/07/Redis/PHP 中 Redis 常用操作（string 类型）/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（string 类型）">下一页 &rarr;</a>
-                        </li>
                     
                 </ul>
 
@@ -280,10 +244,6 @@
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#php" title="php">php</a>
-                        
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
-                        
                     </div>
                 </section>
                 
@@ -316,7 +276,7 @@
         repo: 'suzhif.github.io',
         owner: 'suzhiF',
         admin: 'suzhiF',
-        id: encodeURI(location.pathname),      // Ensure uniqueness and length less than 50
+        id: location.pathname,      // Ensure uniqueness and length less than 50
         distractionFreeMode: false  // Facebook-like distraction free mode
     })
 

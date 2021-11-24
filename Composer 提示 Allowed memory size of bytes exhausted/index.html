@@ -13,11 +13,11 @@
 
     <title>
         
-          PHP 中 Redis 常用操作（hash 类型） - Suf 的博客
+          Composer 提示 Allowed memory size of bytes exhausted - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/2021/07/Redis/PHP 中 Redis 常用操作（hash 类型）/">
+    <link rel="canonical" href="http://localhost:4000/Composer 提示 Allowed memory size of bytes exhausted/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -181,15 +181,13 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#php" title="php">php</a>
-                        
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
                         
                     </div>
-                    <h1>PHP 中 Redis 常用操作（hash 类型）</h1>
+                    <h1>Composer 提示 Allowed memory size of bytes exhausted</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-07-06
+                        2021-04-10
                     </span>
                 </div>
             </div>
@@ -208,32 +206,12 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。</p>
-<p>Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。</p>
-<p>当前服务器一般都是将用户登录信息保存到Redis中，这里存储用户登录信息就比较适合用hash表。hash表比string更合适，如果我们选择使用string类型来存储用户的信息的时候，我们每次存储的时候就得先序列化(json_encode()、serialize())成字符串才能存储redis,</p>
-<p>从redis拿到用户信息后又得反序列化(json_decode()、unserialize())成数组或对象，这样开销比较大。如果使用hash的话我们通过key(用户ID)+field(属性标签)就可以操作对应属性数据了，既不需要重复存储数据，也不会带来序列化和并发修改控制的问题。</p>
-<p><strong>设置(hSet)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;zhaosi&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;age&#x27;</span>, <span class="number">50</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;address&#x27;</span>, <span class="string">&#x27;象牙山&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>批量设置(hMset)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$u1</span> = [</span><br><span class="line">    <span class="string">&#x27;id&#x27;</span>=&gt; <span class="number">1</span>,</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span> =&gt; <span class="string">&#x27;liuneng&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>  =&gt; <span class="number">51</span>,</span><br><span class="line">    <span class="string">&#x27;address&#x27;</span> =&gt; <span class="string">&#x27;象牙山&#x27;</span></span><br><span class="line">];</span><br><span class="line"><span class="variable">$redis</span>-&gt;hMSet(<span class="string">&#x27;user:&#x27;</span>.<span class="variable">$u1</span>[<span class="string">&#x27;id&#x27;</span>], <span class="variable">$u1</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$u2</span> = [</span><br><span class="line">    <span class="string">&#x27;id&#x27;</span> =&gt; <span class="number">2</span>,</span><br><span class="line">    <span class="string">&#x27;name&#x27;</span> =&gt; <span class="string">&#x27;zhaosi&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;age&#x27;</span>  =&gt; <span class="number">50</span>,</span><br><span class="line">    <span class="string">&#x27;address&#x27;</span> =&gt; <span class="string">&#x27;象牙山&#x27;</span></span><br><span class="line">];</span><br><span class="line"><span class="variable">$redis</span>-&gt;hMSet(<span class="string">&#x27;user:&#x27;</span>.<span class="variable">$u2</span>[<span class="string">&#x27;id&#x27;</span>], <span class="variable">$u2</span>);</span><br></pre></td></tr></table></figure>
-<p>为什么要给存储的数据加一个前缀呢，比如说上面示例的user前缀？</p>
-<p>因为我们在 redis 一般需要存储很多业务类型的数据，比如用户登录信息、验证码信息，我们都是以用户唯一标识信息(如id,手机号)作为 key，如果不加前缀就会导致多个业务类型的数据就存到一起了，这是不合理也不应该的。所以我们可以以业务名称作为前缀然后配合上用户唯一标识即前缀:唯一标识作为 key，中间是用冒号 <code>:</code> 分隔,这样就可以把数据按照业务类型分开，这也是业界通用的做法， php 中 session 存储默认也是一 PHPREDIS_SESSION 作为前缀，官方都是这么做了，我们还有什么理由不这样做呢。</p>
-<p><strong>获取(hGet)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hGet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;name&#x27;</span>);      <span class="regexp">//</span> zhaosi</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取全部元素(hGetAll)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hGetAll(<span class="string">&#x27;user&#x27;</span>);</span><br><span class="line"><span class="regexp">//</span>[</span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;name&#x27;</span> =&gt; <span class="string">&#x27;zhaosi&#x27;</span>,</span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;age&#x27;</span>  =&gt; <span class="number">50</span>,</span><br><span class="line"><span class="regexp">//</span>  <span class="string">&#x27;address&#x27;</span> =&gt; <span class="string">&#x27;象牙山&#x27;</span></span><br><span class="line"><span class="regexp">//</span>]</span><br></pre></td></tr></table></figure>
-
-<p><strong>删除某个元素(hDle)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hDel(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;address&#x27;</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>判断元素是否存在(hExists)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hExists(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;address&#x27;</span>);     <span class="regexp">//</span> <span class="keyword">false</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>获取长度(hLen)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;zhaosi&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;age&#x27;</span>, <span class="number">50</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;address&#x27;</span>, <span class="string">&#x27;象牙山&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hLen(<span class="string">&#x27;user&#x27;</span>);       <span class="regexp">//</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
+                <p>运行 composer 命令时提示：</p>
+<blockquote>
+<p><code>PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 67108864 bytes)</code></p>
+</blockquote>
+<p>修改 php.ini 中 memory_limit 的值为 -1，重启</p>
+<p>执行 <code>php -r &quot;echo ini_get(&#39;memory_limit&#39;).PHP_EOL;&quot;</code> 查看是否修改成功</p>
 
 
                 <hr>
@@ -243,12 +221,12 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/Docker/Docker 常用命令/" data-toggle="tooltip" data-placement="top" title="Docker 常用命令">&larr; 上一页</a>
+                            <a href="/Redis/PHPzhongRedischangyongcaozuo(hash)/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（hash 类型）">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2021/07/Redis/PHP 中 Redis 常用操作（list 类型）/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（list 类型）">下一页 &rarr;</a>
+                            <a href="/mysql/Sql 语句编写规范/" data-toggle="tooltip" data-placement="top" title="Sql 语句编写规范">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -277,9 +255,7 @@
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
                        
-                          <a class="tag" href="/tags/#php" title="php">php</a>
-                        
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                          <a class="tag" href="/tags/#Composer" title="Composer">Composer</a>
                         
                     </div>
                 </section>
@@ -313,7 +289,7 @@
         repo: 'suzhif.github.io',
         owner: 'suzhiF',
         admin: 'suzhiF',
-        id: encodeURI(location.pathname),      // Ensure uniqueness and length less than 50
+        id: location.pathname,      // Ensure uniqueness and length less than 50
         distractionFreeMode: false  // Facebook-like distraction free mode
     })
 
