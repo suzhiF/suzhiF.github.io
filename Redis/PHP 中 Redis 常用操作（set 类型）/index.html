@@ -259,7 +259,7 @@
                 
 
                 
-
+                <div id="gitalk-container"></div>
             </div>
     <!-- Side Catalog Container -->
         
@@ -304,7 +304,6 @@
             </div>
 
         </div>
-        <div id="gitalk-container"></div>
     </div>
 </article>
 <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
@@ -317,7 +316,8 @@
         owner: 'suzhiF',
         admin: 'suzhiF',
         id: location.pathname,      // Ensure uniqueness and length less than 50
-        distractionFreeMode: false  // Facebook-like distraction free mode
+        distractionFreeMode: false, // Facebook-like distraction free mode
+        perPage: 10
     })
 
     gitalk.render('gitalk-container')
