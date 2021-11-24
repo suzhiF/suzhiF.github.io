@@ -243,28 +243,6 @@ docker  [command]  [options]
 
 <div class="post-preview">
 
-    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（hash 类型）/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（hash 类型）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。
-Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
-当前服务器一般都是将用户登录信息保存到Redis中，这里存储用户登录信息就比较适合用hash表。hash表比string更合适，如果我们选择使用string类型来存储用户的信息的......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2021/07/Redis/PHP 中 Redis 常用操作（list 类型）/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（list 类型）
@@ -279,6 +257,28 @@ Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
 lPush() 方法将数据从左侧压入列表
 rPush() 方法将数据从右侧压入列表
 123456789101112131415161718192021$re......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（hash 类型）/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（hash 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。
+Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
+当前服务器一般都是将用户登录信息保存到Redis中，这里存储用户登录信息就比较适合用hash表。hash表比string更合适，如果我们选择使用string类型来存储用户的信息的......
         </div>
     </a>
     <p class="post-meta">
@@ -337,6 +337,27 @@ Redis的Set是string类型的无需集合。它底层其实是一个value为null
 
 <div class="post-preview">
 
+    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（基本）/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（基础操作）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            连接 redis 服务器，实例化 redis 对象
+123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/07/Redis/PHP 中 Redis 常用操作（zset 类型）/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（zset 类型）
@@ -349,27 +370,6 @@ Redis的Set是string类型的无需集合。它底层其实是一个value为null
 不同的是每个元素都会关联一个 double 类型的分数。redis 正是通过分数来为集合中的成员进行从小到大的排序。
 有序集合的成员是唯一的,但分数(score)却可以重复。处理元素时，也要加上score的处理
 集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。 集合中最大的成员数为 232 ......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2021/07/Redis/PHP 中 Redis 常用操作（基本）/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（基础操作）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            连接 redis 服务器，实例化 redis 对象
-123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
         </div>
     </a>
     <p class="post-meta">
@@ -706,7 +706,6 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
     <div id="back_top"></div>
 
 <!-- Image to hack wechat -->
-<!--<img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0" />-->
 <!-- Migrate from head to bottom, no longer block render and still work -->
 
 </body>
