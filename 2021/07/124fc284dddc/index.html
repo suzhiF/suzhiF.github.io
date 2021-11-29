@@ -163,27 +163,40 @@
 
 
     <!-- Main Content -->
-    
-<!-- Image to hack wechat -->
-<!-- <img src="http://localhost:4000/img/icon_wechat.png" width="0" height="0"> -->
-<!-- <img src="{{ site.baseurl }}/{% if page.header-img %}{{ page.header-img }}{% else %}{{ site.header-img }}{% endif %}" width="0" height="0"> -->
-
-<!-- Post Header -->
+    <!-- Post Header -->
 <style type="text/css">
-    header.intro-header{
-        background-image: url('/img/home-bg.jpg')
+    
+    .intro-header {
+        background-color: rgba(0,0,0,0);
     }
+    @media only screen and (min-width: 768px){
+        .post-heading {
+            color: #404040 !important;
+            padding: 100px 0 50px !important;
+        }
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav li a {
+        color: #404040;
+    }
+    #huxblog_navbar a:hover,
+    .navbar>.container-fluid .navbar-brand:hover {
+        color: black;
+    }
+    
 </style>
-<header class="intro-header" >
+<header class="intro-header">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
                 <div class="post-heading">
                     <div class="tags">
                         
-                          <a class="tag" href="/tags/#php" title="php">php</a>
+                            <a class="tag" href="/tags/#php"
+                               title="php">php</a>
                         
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
+                            <a class="tag" href="/tags/#redis"
+                               title="redis">redis</a>
                         
                     </div>
                     <h1>PHP 中 Redis 常用操作（hash 类型）</h1>
@@ -202,7 +215,7 @@
     <div class="container">
         <div class="row">
 
-    <!-- Post Container -->
+            <!-- Post Container -->
             <div class="
                 col-lg-8 col-lg-offset-2
                 col-md-10 col-md-offset-1
@@ -235,24 +248,21 @@
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;name&#x27;</span>, <span class="string">&#x27;zhaosi&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;age&#x27;</span>, <span class="number">50</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hSet(<span class="string">&#x27;user&#x27;</span>, <span class="string">&#x27;address&#x27;</span>, <span class="string">&#x27;象牙山&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;hLen(<span class="string">&#x27;user&#x27;</span>);       <span class="regexp">//</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
 
 
-
                 <hr>
-
-                
-
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/6042abf4cf50/" data-toggle="tooltip" data-placement="top" title="PHP 中 Redis 常用操作（基础操作）">&larr; 上一页</a>
+                            <a href="/2021/07/6042abf4cf50/" data-toggle="tooltip" data-placement="top"
+                               title="PHP 中 Redis 常用操作（基础操作）">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top" title="Composer 提示 Allowed memory size of bytes exhausted">下一页 &rarr;</a>
+                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top"
+                               title="Composer 提示 Allowed memory size of bytes exhausted">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
-
                 <!--评论框-->
                 <!--gitalk 插件评论功能  https://github.com/gitalk/gitalk -->
 
@@ -276,52 +286,45 @@
 
 <!---->
             </div>
-    <!-- Side Catalog Container -->
-        
+            <!--目录-->
+            
 
-    <!-- Sidebar Container -->
+    <!-- async load function -->
+    <script>
+        function async(u, c) {
+            var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            o.src = u;
+            if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+            s.parentNode.insertBefore(o, s);
+        }
+    // <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+        async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+            anchors.options = {
+                visible: 'always',
+                placement: 'right',
+                icon: '#'
+            };
+            anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+        })
+    </script>
+    <style>
+        /* place left on bigger screen */
+        @media all and (min-width: 800px) {
+            .anchorjs-link{
+                position: absolute;
+                left: -0.75em;
+                font-size: 1.1em;
+                margin-top : -0.1em;
+            }
+        }
+    </style>
 
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
-                
-                <section>
-                    <!-- no hr -->
-                    <hr>
-                    <h5><a href="/tags/">标签</a></h5>
-                    <div class="tags">
-                       
-                          <a class="tag" href="/tags/#php" title="php">php</a>
-                        
-                          <a class="tag" href="/tags/#redis" title="redis">redis</a>
-                        
-                    </div>
-                </section>
-                
-
-                <!-- Friends Blog -->
-<!--                -->
-<!--                <hr>-->
-<!--                <h5>FRIENDS</h5>-->
-<!--                <ul class="list-inline">-->
-
-<!--                    -->
-<!--                        <li><a href="http://blog.kaijun.rocks" target="_blank">Kaijun&#39;s Blog</a></li>-->
-<!--                    -->
-<!--                        <li><a href="http://huangxuan.me" target="_blank">Hux Blog</a></li>-->
-<!--                    -->
-<!--                </ul>-->
-<!--                -->
-            </div>
-
-        </div>
-    </div>
-</article>
 <style>
+    .side-catalog > h5 {
+        margin-bottom: 0;
+    }
     .catalog-body {
         list-style: none
     }
@@ -336,7 +339,10 @@
     }
     #catalog {
         position: absolute;
-        left: 20px;
+        right: 65px;
+    }
+    .side-catalog > hr {
+        border-top: 1px solid #bfbfbf;
     }
     #catalog .active a{
         /*border: 1px #9d9d9d;*/
@@ -347,46 +353,36 @@
     }
 </style>
 
+            <!-- Sidebar Container -->
 
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
 
+                <!-- Featured Tags -->
+                
+                    <section>
+                        <!-- no hr -->
+                        <hr>
+                        <h5><a href="/tags/">标签</a></h5>
+                        <div class="tags">
+                            
+                                <a class="tag" href="/tags/#php"
+                                   title="php">php</a>
+                            
+                                <a class="tag" href="/tags/#redis"
+                                   title="redis">redis</a>
+                            
+                        </div>
+                    </section>
+                
+            </div>
 
-
-
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-<!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-<script>
-    async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-        anchors.options = {
-          visible: 'always',
-          placement: 'right',
-          icon: '#'
-        };
-        anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-    })
-</script>
-<style>
-    /* place left on bigger screen */
-    @media all and (min-width: 800px) {
-        .anchorjs-link{
-            position: absolute;
-            left: -0.75em;
-            font-size: 1.1em;
-            margin-top : -0.1em;
-        }
-    }
-</style>
-
-
+        </div>
+    </div>
+</article>
 
     <!-- Footer -->
     <!-- Footer -->

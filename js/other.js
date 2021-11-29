@@ -6,14 +6,6 @@ $(function(){
         }else{
             $("#back_top").stop().fadeOut(400); //如果返回或者没有超过,就淡出.必须加上stop()停止之前动画,否则会出现闪动
         }
-        /*文章目录页面固定*/
-        if (scrollt > 400) {
-            $('#catalog').css('position', 'fixed');
-            $('#catalog').css('top', '40px');
-        } else {
-            $('#catalog').css('position', 'absolute');
-            $('#catalog').css('top', '');
-        }
     });
     $("#back_top").click(function(){ //当点击标签的时候,使用animate在200毫秒的时间内,滚到顶部
         $("html,body").animate({scrollTop:"0px"},200);
