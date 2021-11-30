@@ -13,11 +13,11 @@
 
     <title>
         
-          PHP 中 Redis 常用操作（list 类型） - Suf 的博客
+          Laravel 中优化 app.js 的大小 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/2021/07/bd70d53460ec/">
+    <link rel="canonical" href="http://localhost:4000/2021/10/30fc9eddc78b/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -166,30 +166,8 @@
     <!-- Post Header -->
 <style type="text/css">
     
-    .intro-header {
-        background-color: rgba(0,0,0,0);
-    }
-    @media only screen and (min-width: 768px){
-        .post-heading {
-            color: #404040 !important;
-            padding: 100px 0 50px !important;
-        }
-    }
-    .navbar-custom .navbar-brand,
-    .navbar-custom .nav li a {
-        color: #404040;
-    }
-    #huxblog_navbar a:hover,
-    .navbar>.container-fluid .navbar-brand:hover {
-        color: black;
-    }
-    .post-heading .tags a {
-        border: 1px solid #bfbfbf;
-        color: #bfbfbf;
-    }
-    .post-heading .tags a:hover {
-        border: 1px solid #337ab7;
-        color: #337ab7;
+    header.intro-header {
+        background-image: url('/images/ppp.jpg')
     }
     
 </style>
@@ -200,17 +178,20 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#php"
-                               title="php">php</a>
+                            <a class="tag" href="/tags/#Laravel"
+                               title="Laravel">Laravel</a>
                         
-                            <a class="tag" href="/tags/#redis"
-                               title="redis">redis</a>
+                            <a class="tag" href="/tags/#Laravel-Mix"
+                               title="Laravel-Mix">Laravel-Mix</a>
+                        
+                            <a class="tag" href="/tags/#webpack"
+                               title="webpack">webpack</a>
                         
                     </div>
-                    <h1>PHP 中 Redis 常用操作（list 类型）</h1>
+                    <h1>Laravel 中优化 app.js 的大小</h1>
                     <h2 class="subheading"></h2>
                     <span class="meta">
-                        2021-07-06
+                        2021-10-29
                     </span>
                 </div>
             </div>
@@ -229,54 +210,58 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
-<p>一个列表最多可以包含232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
-<p><strong>将元素压入链表(lPush)</strong></p>
-<p><code>lPush()</code> 方法将数据从左侧压入列表</p>
-<p><code>rPush()</code> 方法将数据从右侧压入列表</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list2&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"></span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list1&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list2&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list1:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list2:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br></pre></td></tr></table></figure>
+                <blockquote>
+<p>近期做了一个小项目，前端是通过 Laravel Mix 编译的，产生的 app.js ，大小有 3M 还多，不得不优化一下……</p>
+</blockquote>
+<p>没做任何优化之前：</p>
+<p><img src="/img.png" alt="img.png"></p>
+<h3 id="查看应用的前端库结构"><a href="#查看应用的前端库结构" class="headerlink" title="查看应用的前端库结构"></a>查看应用的前端库结构</h3><ol>
+<li><p>安装 <code>npm install --save-dev webpack-bundle-analyzer</code> 。</p>
+</li>
+<li><p>修改 <em>webpack.mix.js</em> 配置 。</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> BundleAnalyzerPlugin = <span class="built_in">require</span>(<span class="string">&#x27;webpack-bundle-analyzer&#x27;</span>).BundleAnalyzerPlugin;</span><br><span class="line"></span><br><span class="line">mix.webpackConfig(&#123;</span><br><span class="line"> <span class="attr">plugins</span>: [</span><br><span class="line">     <span class="keyword">new</span> BundleAnalyzerPlugin(),</span><br><span class="line"> ]</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>运行 <code>npm run dev</code> 或者 <code>npm run production</code> ，浏览器中自动打开 <code>http://127.0.0.1:8888/</code> 页面。<br><img src="/img2.png" alt="img2.png"></p>
+<p>鼠标悬浮可以显示包大小</p>
+<p><img src="/img2_1.png" alt="img3.png"></p>
+</li>
+</ol>
+<h3 id="分离内存较大的库"><a href="#分离内存较大的库" class="headerlink" title="分离内存较大的库"></a>分离内存较大的库</h3><p>这些库会被 webpack 一起打包成一个 app.js，所以减小应用体积的最有效方法就是将这些库分离出去，别将它们与我们自己写的应用代码打包到一起。大部分有名的第三方库在公共CDN都有存放，如 <a target="_blank" rel="noopener" href="https://www.bootcdn.cn/">bootcss</a>, <a target="_blank" rel="noopener" href="https://www.unpkg.com/">unpkg</a> 等，速度飞快，可以直接引用。</p>
+<ol>
+<li><p>配置 <em>webpack.mix.js</em> ：</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mix.webpackConfig(&#123;</span><br><span class="line">    <span class="attr">plugins</span>: [</span><br><span class="line">        <span class="keyword">new</span> BundleAnalyzerPlugin(),</span><br><span class="line">    ],</span><br><span class="line">    <span class="attr">externals</span>: &#123;</span><br><span class="line">        <span class="string">&#x27;element-ui&#x27;</span>: <span class="string">&#x27;Element&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;vue&#x27;</span>: <span class="string">&#x27;Vue&#x27;</span>,</span><br><span class="line">        <span class="string">&#x27;lodash&#x27;</span>: <span class="string">&#x27;_&#x27;</span>,</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).js(<span class="string">&#x27;resources/js/app.js&#x27;</span>, <span class="string">&#x27;public/js&#x27;</span>)</span><br><span class="line">    .sass(<span class="string">&#x27;resources/sass/app.scss&#x27;</span>, <span class="string">&#x27;public/css&#x27;</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p><code>resources/views/layouts/app.blade.php</code> 文件中加入 <code>element-ui</code>、<code>vue</code>、<code>lodash</code> 的外链</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.bootcss.com/element-ui/2.0.11/theme-chalk/index.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;//cdn.bootcss.com/vue/2.5.13/vue.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;//cdn.bootcss.com/element-ui/2.0.11/index.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;//cdn.bootcss.com/lodash.js/4.17.4/lodash.min.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure></li>
+<li><p> <code>resources/js/app.js</code> 和 <code>resources/js/bootstrap.js</code> 文件中将 <code>require(&#39;vue&#39;)</code> 、<code>require(&#39;lodash&#39;)</code> 、<code>import ElementUI from &#39;element-ui&#39;</code> 的位置删除，否则编译时会报错。</p>
+</li>
+<li><p>运行 <code>npm run dev</code><br><img src="/img4.png" alt="img4.png"></p>
+</li>
+<li><p>运行 <code>npm run production</code><br><img src="/img5.png" alt="img5.png"></p>
+</li>
+</ol>
+<h3 id="优化浏览器加载时的大小"><a href="#优化浏览器加载时的大小" class="headerlink" title="优化浏览器加载时的大小"></a>优化浏览器加载时的大小</h3><p>在这里要做的就是开启 <strong>Nginx</strong> 的 <code>gzip</code> 压缩 。</p>
+<ul>
+<li>没开启时：<br><img src="/img6.png" alt="img6.png"></li>
+<li>开启 <code>gzip</code> 压缩后<br><img src="/img7.png" alt="img7.png"></li>
+</ul>
+<p>nginx.conf 中配置：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#gzip  on;</span><br><span class="line">gzip on;</span><br><span class="line">gzip_min_length  1k;            # 不压缩临界值，大于1K的才压缩，一般不用改</span><br><span class="line">gzip_buffers     4 32k;         # 设置用于处理请求压缩的缓冲区数量和大小。比如32 4K表示按照内存页（one memory page）大小以4K为单位（即一个系统中内存页为4K），申请32倍的内存空间。建议此项不设置，使用默认值。</span><br><span class="line">gzip_http_version 1.1;          </span><br><span class="line">gzip_comp_level 2;              # 压缩级别，1-10，数字越大压缩的越好，时间也越长，看心情随便改吧</span><br><span class="line">gzip_types       text/plain application/x-javascript text/css application/xml;      # 进行压缩的文件类型</span><br><span class="line">gzip_vary on;          # 跟Squid等缓存服务有关，on的话会在Header里增加&quot;Vary: Accept-Encoding&quot;，按需开启</span><br><span class="line">gzip_disable &quot;MSIE [1-6].&quot;;</span><br></pre></td></tr></table></figure>
+<br>
+<br>
 
-<p><strong>在某个位置插入新元素(lInsert)</strong></p>
-<p><code>Redis::BEFORE</code> 在之前插入</p>
-<p><code>Redis::AFTER</code> 在之后插入</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::BEFORE, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::AFTER, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, 0, <span class="number">-1</span>);</span><br><span class="line"><span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;C&#x27;</span>，<span class="string">&#x27;Y&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<p align="right">参考- <a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903555342532622">Laravel框架中缩小Vue应用的体积</a></p>
 
-<p><strong>设置、获取某个元素的值(lSet、lGet)</strong></p>
-<p><code>lSet()</code> 方法可以通过下标修改链表元素的值，下标是从0开始<br><code>lGet()</code> 方法可以通过下标获取链表元素的值，下标是从0开始</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;lSet(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;X&#x27;</span></span><br></pre></td></tr></table></figure>
 
-<p><strong>获取列表元素个数(lLen)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$length</span> = <span class="variable">$redis</span>-&gt;lLen(<span class="string">&#x27;list&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$length</span>;</span><br></pre></td></tr></table></figure>
 
-<p><strong>获取下标对应的元素(lIndex)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lIndex(<span class="string">&#x27;list&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$val</span>;</span><br></pre></td></tr></table></figure>
 
-<p><strong>获取某个选定范围元素集(lRange)</strong></p>
-<p>通过起止下标来获取列表某个范围内的元素集</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="regexp">//</span>前两个元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>); <span class="regexp">//</span>全部元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, -<span class="number">2</span>, -<span class="number">1</span>); <span class="regexp">//</span>后两个元素</span><br><span class="line">var_dump(<span class="variable">$arr</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>从列表左侧弹出数据(lPop)</strong></p>
-<p><code>lPop()</code> 方法将数据从列表左侧弹出，返回弹出的元素，数据元素在list中消失。</p>
-<p><code>rPop()</code> 右侧弹出</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span> ]</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;rPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span> ]</span><br></pre></td></tr></table></figure>
-
-<p><strong>根据值移除元素(lRem)</strong></p>
-<p>根据值来移除元素，并且可以指定要移除的元素个数，因为 list 中可能出现重复的元素</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 
                 <hr>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/07/ac3227b76e78/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（set 类型）">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2021/07/634c5e00d421/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（string 类型）">下一页 &rarr;</a>
+                            <a href="/2021/07/8150c425bab2/" data-toggle="tooltip" data-placement="top"
+                               title="什么是 CSRF">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -386,11 +371,14 @@
                         <h5><a href="/tags/">标签</a></h5>
                         <div class="tags">
                             
-                                <a class="tag" href="/tags/#php"
-                                   title="php">php</a>
+                                <a class="tag" href="/tags/#Laravel"
+                                   title="Laravel">Laravel</a>
                             
-                                <a class="tag" href="/tags/#redis"
-                                   title="redis">redis</a>
+                                <a class="tag" href="/tags/#Laravel-Mix"
+                                   title="Laravel-Mix">Laravel-Mix</a>
+                            
+                                <a class="tag" href="/tags/#webpack"
+                                   title="webpack">webpack</a>
                             
                         </div>
                     </section>

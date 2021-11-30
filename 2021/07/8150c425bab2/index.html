@@ -166,22 +166,8 @@
     <!-- Post Header -->
 <style type="text/css">
     
-    .intro-header {
-        background-color: rgba(0,0,0,0);
-    }
-    @media only screen and (min-width: 768px){
-        .post-heading {
-            color: #404040 !important;
-            padding: 100px 0 50px !important;
-        }
-    }
-    .navbar-custom .navbar-brand,
-    .navbar-custom .nav li a {
-        color: #404040;
-    }
-    #huxblog_navbar a:hover,
-    .navbar>.container-fluid .navbar-brand:hover {
-        color: black;
+    header.intro-header {
+        background-image: url('/images/ppp.jpg')
     }
     
 </style>
@@ -314,6 +300,11 @@
                 <hr>
                 <ul class="pager">
                     
+                        <li class="previous">
+                            <a href="/2021/10/30fc9eddc78b/" data-toggle="tooltip" data-placement="top"
+                               title="Laravel 中优化 app.js 的大小">&larr; 上一页</a>
+                        </li>
+                    
                     
                         <li class="next">
                             <a href="/2021/07/b934f7bfb536/" data-toggle="tooltip" data-placement="top"
@@ -363,6 +354,8 @@
     <script>
         <!--目录固定-->
         var hegiht = 270
+        
+            hegiht = 400
         
         window.onscroll = function () {
             var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度

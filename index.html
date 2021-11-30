@@ -164,7 +164,7 @@
 
     <!-- Main Content -->
     <!-- Page Header -->
-<header class="intro-header" style="background-image: url('/img/home-bg.jpg')">
+<header class="intro-header" style="background-image: url('/img/home-bg-o.jpg')">
     <div class="container">
         <div class="row">
             <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
@@ -197,6 +197,35 @@
             
                 <!-- Main Content -->
 
+
+<div class="post-preview">
+
+    <a href="/2021/10/30fc9eddc78b/">
+        <h2 class="post-title">
+            Laravel 中优化 app.js 的大小
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+近期做了一个小项目，前端是通过 Laravel Mix 编译的，产生的 app.js ，大小有 3M 还多，不得不优化一下……
+
+没做任何优化之前：
+
+查看应用的前端库结构
+安装 npm install --save-dev webpack-bundle-analyzer 。
+
+修改 webpack.mix.js 配置 。
+1234567const BundleAnalyzerPlugin......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-10-29
+    </p>
+
+</div>
+<hr>
 
 <div class="post-preview">
 
@@ -243,6 +272,27 @@ docker  [command]  [options]
 
 <div class="post-preview">
 
+    <a href="/2021/07/ac3227b76e78/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（set 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
+Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/07/bd70d53460ec/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（list 类型）
@@ -257,27 +307,6 @@ docker  [command]  [options]
 lPush() 方法将数据从左侧压入列表
 rPush() 方法将数据从右侧压入列表
 123456789101112131415161718192021$re......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2021/07/ac3227b76e78/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（set 类型）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
-Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
         </div>
     </a>
     <p class="post-meta">
@@ -404,30 +433,12 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2021/01/ee27d20440a9/">
-        <h2 class="post-title">
-            Sql 语句编写规范
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            1.使用 limit 对查询结果的记录进行限定2. 避免 select * ，将需要查找的字段列出来3. 使用连接（join）来代替子查询4. 拆分大的 delete 或 insert 语句5. 可通过开启慢查询日志来找出较慢的 SQL6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-01-24
-    </p>
-
-</div>
-<hr>
-
 
 <!-- Pager -->
 <ul class="pager">
     
+    
+        <li class="next"><a href="/page/2/">下一页  &rarr;</a></li>
     
 </ul>
 
@@ -452,6 +463,12 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                     <!-- no hr -->
                     <h5><a href="/tags/">标签</a></h5>
                     <div class="tags">
+                        
+                            
+                        
+                            
+                        
+                            
                         
                             
                         
