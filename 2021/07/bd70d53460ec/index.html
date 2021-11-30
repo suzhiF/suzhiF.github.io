@@ -165,6 +165,12 @@
     <!-- Main Content -->
     <!-- Post Header -->
 <style type="text/css">
+    hr {
+        border-top: 1px solid #ccc;
+    }
+    .post-meta span{
+        margin-right: 10px;
+    }
     
     .intro-header {
         background-color: rgba(0,0,0,0);
@@ -209,9 +215,17 @@
                     </div>
                     <h1>PHP 中 Redis 常用操作（list 类型）</h1>
                     <h2 class="subheading"></h2>
-                    <span class="meta">
+                    <div class="post-meta">
+                        <span class="fa fa-calendar-times-o">
                         2021-07-06
-                    </span>
+                        </span>
+                        <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#Redis"
+                                   title="Redis">Redis</a>
+                            
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -265,7 +279,7 @@
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br></pre></td></tr></table></figure>
 
 
-                <hr>
+                <br>
                 <ul class="pager">
                     
                         <li class="previous">
@@ -392,12 +406,6 @@
                                 <a class="tag" href="/tags/#docker"
                                    title="docker">docker</a>
                             
-                                <a class="tag" href="/tags/#php"
-                                   title="php">php</a>
-                            
-                                <a class="tag" href="/tags/#redis"
-                                   title="redis">redis</a>
-                            
                                 <a class="tag" href="/tags/#Laravel"
                                    title="Laravel">Laravel</a>
                             
@@ -406,6 +414,27 @@
                             
                                 <a class="tag" href="/tags/#webpack"
                                    title="webpack">webpack</a>
+                            
+                                <a class="tag" href="/tags/#linux"
+                                   title="linux">linux</a>
+                            
+                                <a class="tag" href="/tags/#top"
+                                   title="top">top</a>
+                            
+                                <a class="tag" href="/tags/#linux进程"
+                                   title="linux进程">linux进程</a>
+                            
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
+                                <a class="tag" href="/tags/#mysql索引"
+                                   title="mysql索引">mysql索引</a>
+                            
+                                <a class="tag" href="/tags/#php"
+                                   title="php">php</a>
+                            
+                                <a class="tag" href="/tags/#redis"
+                                   title="redis">redis</a>
                             
                         </div>
                     </section>

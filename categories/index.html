@@ -185,7 +185,7 @@
     <div class="row post-categroy">
         <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
             
-                <div class="one-tag-list">
+                <div class="one-tag-list" id="错误记录">
                 <span class="listing-seperator">
                     <span style="cursor:pointer;" class="fa fa-folder-open" id="category_0" onclick="onOff(0)"></span>
                     <span class="tag-text">错误记录</span>
@@ -210,12 +210,151 @@
                     </ul>
                 </div>
             
-                <div class="one-tag-list">
+                <div class="one-tag-list" id="网络">
                 <span class="listing-seperator">
                     <span style="cursor:pointer;" class="fa fa-folder-open" id="category_1" onclick="onOff(1)"></span>
-                    <span class="tag-text">Redis</span>
+                    <span class="tag-text">网络</span>
                 </span>
                     <ul id="category_post_1">
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/07/8150c425bab2/">
+                                    <span>
+                                        什么是 CSRF
+                                    </span>
+                                    <div class="post-meta">2021-07-27</div>
+                                </a>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+            
+                <div class="one-tag-list" id="Laravel">
+                <span class="listing-seperator">
+                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_2" onclick="onOff(2)"></span>
+                    <span class="tag-text">Laravel</span>
+                </span>
+                    <ul id="category_post_2">
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/10/30fc9eddc78b/">
+                                    <span>
+                                        Laravel 中优化 app.js 的大小
+                                    </span>
+                                    <div class="post-meta">2021-10-29</div>
+                                </a>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+            
+                <div class="one-tag-list" id="Linux">
+                <span class="listing-seperator">
+                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_3" onclick="onOff(3)"></span>
+                    <span class="tag-text">Linux</span>
+                </span>
+                    <ul id="category_post_3">
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/07/d8af1e4291bf/">
+                                    <span>
+                                        Linux 内存进程命令
+                                    </span>
+                                    <div class="post-meta">2021-07-30</div>
+                                </a>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+            
+                <div class="one-tag-list" id="MongoDB">
+                <span class="listing-seperator">
+                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_4" onclick="onOff(4)"></span>
+                    <span class="tag-text">MongoDB</span>
+                </span>
+                    <ul id="category_post_4">
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/08/8c38ef739811/">
+                                    <span>
+                                        MongoDB 地理空间
+                                    </span>
+                                    <div class="post-meta">2021-08-06</div>
+                                </a>
+
+                            </li>
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/08/b4b49ce1fe51/">
+                                    <span>
+                                        MongoDB 运算符
+                                    </span>
+                                    <div class="post-meta">2021-08-04</div>
+                                </a>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+            
+                <div class="one-tag-list" id="MySQL">
+                <span class="listing-seperator">
+                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_5" onclick="onOff(5)"></span>
+                    <span class="tag-text">MySQL</span>
+                </span>
+                    <ul id="category_post_5">
+                        
+                            <!-- <li class="listing-item">
+                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
+                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
+                            </li> -->
+                            <li>
+                                <a href="/2021/08/41e3cb957215/">
+                                    <span>
+                                        MySQL 索引失效情况
+                                    </span>
+                                    <div class="post-meta">2021-08-09</div>
+                                </a>
+
+                            </li>
+                        
+
+                    </ul>
+                </div>
+            
+                <div class="one-tag-list" id="Redis">
+                <span class="listing-seperator">
+                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_6" onclick="onOff(6)"></span>
+                    <span class="tag-text">Redis</span>
+                </span>
+                    <ul id="category_post_6">
                         
                             <!-- <li class="listing-item">
                             <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
@@ -297,31 +436,6 @@
                                         PHP 中 Redis 常用操作（hash 类型）
                                     </span>
                                     <div class="post-meta">2021-07-06</div>
-                                </a>
-
-                            </li>
-                        
-
-                    </ul>
-                </div>
-            
-                <div class="one-tag-list">
-                <span class="listing-seperator">
-                    <span style="cursor:pointer;" class="fa fa-folder-open" id="category_2" onclick="onOff(2)"></span>
-                    <span class="tag-text">Laravel</span>
-                </span>
-                    <ul id="category_post_2">
-                        
-                            <!-- <li class="listing-item">
-                            <time datetime="{{ post.date | date:"%Y-%m-%d" }}">{{ post.date | date:"%Y-%m-%d" }}</time>
-                            <a href="{{ post.url }}" title="{{ post.title }}">{{ post.title }}</a>
-                            </li> -->
-                            <li>
-                                <a href="/2021/10/30fc9eddc78b/">
-                                    <span>
-                                        Laravel 中优化 app.js 的大小
-                                    </span>
-                                    <div class="post-meta">2021-10-29</div>
                                 </a>
 
                             </li>

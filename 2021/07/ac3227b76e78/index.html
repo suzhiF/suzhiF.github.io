@@ -165,6 +165,12 @@
     <!-- Main Content -->
     <!-- Post Header -->
 <style type="text/css">
+    hr {
+        border-top: 1px solid #ccc;
+    }
+    .post-meta span{
+        margin-right: 10px;
+    }
     
     .intro-header {
         background-color: rgba(0,0,0,0);
@@ -209,9 +215,17 @@
                     </div>
                     <h1>PHP 中 Redis 常用操作（set 类型）</h1>
                     <h2 class="subheading"></h2>
-                    <span class="meta">
+                    <div class="post-meta">
+                        <span class="fa fa-calendar-times-o">
                         2021-07-06
-                    </span>
+                        </span>
+                        <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#Redis"
+                                   title="Redis">Redis</a>
+                            
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -259,7 +273,7 @@
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;1&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>);</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sUnion(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">1</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">2</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">3</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="regexp">//</span>&#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">2</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">1</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 
-                <hr>
+                <br>
                 <ul class="pager">
                     
                         <li class="previous">
@@ -386,12 +400,6 @@
                                 <a class="tag" href="/tags/#docker"
                                    title="docker">docker</a>
                             
-                                <a class="tag" href="/tags/#php"
-                                   title="php">php</a>
-                            
-                                <a class="tag" href="/tags/#redis"
-                                   title="redis">redis</a>
-                            
                                 <a class="tag" href="/tags/#Laravel"
                                    title="Laravel">Laravel</a>
                             
@@ -400,6 +408,27 @@
                             
                                 <a class="tag" href="/tags/#webpack"
                                    title="webpack">webpack</a>
+                            
+                                <a class="tag" href="/tags/#linux"
+                                   title="linux">linux</a>
+                            
+                                <a class="tag" href="/tags/#top"
+                                   title="top">top</a>
+                            
+                                <a class="tag" href="/tags/#linux进程"
+                                   title="linux进程">linux进程</a>
+                            
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
+                                <a class="tag" href="/tags/#mysql索引"
+                                   title="mysql索引">mysql索引</a>
+                            
+                                <a class="tag" href="/tags/#php"
+                                   title="php">php</a>
+                            
+                                <a class="tag" href="/tags/#redis"
+                                   title="redis">redis</a>
                             
                         </div>
                     </section>

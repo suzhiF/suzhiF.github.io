@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="google-site-verification" content="xBT4GhYoi5qRD5tr338pgPM5OWHHIDR6mNg1a3euekI" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="keyword"  content="">
+    <link rel="shortcut icon" href="/img/16gl-F.svg">
+
+    <title>
+        
+          MongoDB 地理空间 - Suf 的博客
+        
+    </title>
+
+    <link rel="canonical" href="http://localhost:4000/2021/08/8c38ef739811/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/other.min.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Think aloud</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" id="search" ><span class="fa fa-search fa-1x"></span></a>
+                    </li>
+                    
+                        <li>
+                            <a href="/">首页</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/archives">归档</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/categories">分类</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags">标签</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/about">关于</a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Search Modal -->
+<div class="modal search-modal">
+    <div class="search-container">
+        <div class="search-container-top">
+            <img src="/img/close.svg" alt="">
+        </div>
+        <input class="search-container-input" placeholder="请输入关键字搜索 " type="text">
+        <div class="search-container-content"></div>
+    </div>
+</div>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Header -->
+<style type="text/css">
+    hr {
+        border-top: 1px solid #ccc;
+    }
+    .post-meta span{
+        margin-right: 10px;
+    }
+    
+    .intro-header {
+        background-color: rgba(0,0,0,0);
+    }
+    @media only screen and (min-width: 768px){
+        .post-heading {
+            color: #404040 !important;
+            padding: 100px 0 50px !important;
+        }
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav li a {
+        color: #404040;
+    }
+    #huxblog_navbar a:hover,
+    .navbar>.container-fluid .navbar-brand:hover {
+        color: black;
+    }
+    .post-heading .tags a {
+        border: 1px solid #bfbfbf;
+        color: #bfbfbf;
+    }
+    .post-heading .tags a:hover {
+        border: 1px solid #337ab7;
+        color: #337ab7;
+    }
+    
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                            <a class="tag" href="/tags/#MongoDB"
+                               title="MongoDB">MongoDB</a>
+                        
+                    </div>
+                    <h1>MongoDB 地理空间</h1>
+                    <h2 class="subheading"></h2>
+                    <div class="post-meta">
+                        <span class="fa fa-calendar-times-o">
+                        2021-08-06
+                        </span>
+                        <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <h3 id="GeoJSON-对象"><a href="#GeoJSON-对象" class="headerlink" title="GeoJSON 对象"></a>GeoJSON 对象</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;field&gt;: &#123; </span><br><span class="line">    type: &lt;GeoJSON type&gt; ,      # 指定的 GeoJSON 类型 (Point、LineString、Polygon……)</span><br><span class="line">    coordinates: &lt;coordinates&gt;  # 指定对象坐标的字段 [&lt;longitude&gt;, &lt;latitude&gt; ]</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="meta">#</span><span class="bash"> 例：</span></span><br><span class="line">location: &#123;</span><br><span class="line">    type: &quot;Point&quot;,</span><br><span class="line">    coordinates: [ 116.408, 39.904]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="传统坐标对"><a href="#传统坐标对" class="headerlink" title="传统坐标对"></a>传统坐标对</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 数组型</span></span><br><span class="line">&lt;field&gt;: [ &lt;x&gt;, &lt;y&gt; ] </span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">&lt;field&gt;: [&lt;longitude&gt;, &lt;latitude&gt; ]</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或 嵌入文档型</span></span><br><span class="line">&lt;field&gt;: &#123; &lt;field1&gt;: &lt;longitude&gt;, &lt;field2&gt;: &lt;latitude&gt; &#125;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 要指定旧坐标对，数组优先于嵌入文档，因为某些语言不保证关联地图排序</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="地理空间索引"><a href="#地理空间索引" class="headerlink" title="地理空间索引"></a>地理空间索引</h3><blockquote>
+<p>2dsphere</p>
+</blockquote>
+<p>2dsphere 索引支持在类地球体上计算几何图形的查询</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建 2dsphere 索引：</span></span><br><span class="line">db.collection.createIndex( &#123; &lt;location field&gt; : &quot;2dsphere&quot; &#125; )</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>&lt;location field&gt;</code> 是一个字段，其值为 GeoJSON 对象或传统坐标对</p>
+<blockquote>
+<p>2d</p>
+</blockquote>
+<p>2d索引支持在二维平面上计算几何的查询, 可以支持 $nearSphere 在球面上计算的查询。（适用于 MongoDB 2.2 及更早版本）</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; &lt;location field&gt; : &quot;2d&quot; &#125; )</span><br></pre></td></tr></table></figure>
+
+<p>其中 <code>&lt;location field&gt;</code> 是一个字段，其值为传统坐标对。</p>
+<h3 id="地理空间查询运算符"><a href="#地理空间查询运算符" class="headerlink" title="地理空间查询运算符"></a>地理空间查询运算符</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>$geoIntersects</td>
+<td>选择与 GeoJSON 几何相交的几何。 2dsphere 索引支持 $geoIntersects。</td>
+</tr>
+<tr>
+<td>$geoWithin</td>
+<td>在边界GeoJSON 几何中选择几何。 2dsphere 和 2d 指标支持 $geoWithin。</td>
+</tr>
+<tr>
+<td>$near</td>
+<td>返回点附近的地理空间对象。需要地理空间索引。 2dsphere 和 2d 指标支持 $near。</td>
+</tr>
+<tr>
+<td>$nearSphere</td>
+<td>返回球体上某个点附近的地理空间对象。需要地理空间索引。 2dsphere 和 2d 指标支持 $nearSphere。</td>
+</tr>
+</tbody></table>
+<h3 id="地理空间聚合阶段"><a href="#地理空间聚合阶段" class="headerlink" title="地理空间聚合阶段"></a>地理空间聚合阶段</h3><blockquote>
+<p>$geoNear</p>
+</blockquote>
+<p>按离指定点最近到最远的顺序输出文档。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123; $geoNear: &#123; </span><br><span class="line">  &lt;geoNear options&gt; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>distanceField</td>
+<td>string</td>
+<td>包含计算距离的输出字段</td>
+</tr>
+<tr>
+<td>distanceMultiplier</td>
+<td>number</td>
+<td>可选的。乘以查询返回的所有距离的因子。例如，使用 distanceMultiplier 将球面查询返回的弧度乘以地球的半径来转换为公里</td>
+</tr>
+<tr>
+<td>includeLocs</td>
+<td>string</td>
+<td>可选的。这指定了标识用于计算距离的位置的输出字段。当位置字段包含多个位置时，此选项很有用</td>
+</tr>
+<tr>
+<td>key</td>
+<td></td>
+<td>可选的。指定计算距离时要使用的地理空间索引字段。如果您的集合具有多个2d和/或多个2dsphere 索引，则必须使用该key选项来指定要使用的索引字段路径</td>
+</tr>
+<tr>
+<td>maxDistance</td>
+<td>number</td>
+<td>可选的。到中心点的最大距离</td>
+</tr>
+<tr>
+<td>minDistance</td>
+<td>number</td>
+<td>可选的。到中心点的最小距离</td>
+</tr>
+<tr>
+<td>near</td>
+<td>GeoJSON 或 传统坐标对</td>
+<td>查找最近文档的点</td>
+</tr>
+<tr>
+<td>query</td>
+<td>document</td>
+<td>查询的匹配条件</td>
+</tr>
+<tr>
+<td>spherical</td>
+<td>boolean</td>
+<td>可选的。确定 MongoDB 如何计算两点之间的距离。<li><strong>true</strong>：MongoDB 使用 $nearSphere 语义并使用球面几何计算距离</li><li>**</td>
+</tr>
+<tr>
+<td>false**：MongoDB 使用 $near 语义：2dsphere 索引的球面几何和 2d 索引的平面几何</li></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>uniqueDocs</td>
+<td>boolean</td>
+<td>可选的。如果此值为true，则查询会返回匹配的文档一次，即使文档的多个位置字段与查询匹配也是如此（<strong>2.6版后已弃用</strong>）</td>
+</tr>
+</tbody></table>
+<ul>
+<li>只能使用$geoNear作为管道的第一阶段。</li>
+<li>必须包含 <code>distanceField</code> 字段。</li>
+<li><code>$geoNear</code> 需要地理空间索引，如果集合中有多个地理空间索引，请使用 keys参数指定要在计算中使用的字段。如果您只有一个地理空间索引，则$geoNear隐式使用索引字段进行计算。</li>
+<li>不能在 <code>$geoNear</code> 阶段的查询字段中指定 $near 谓词</li>
+<li>视图不支持 geoNear 操作</li>
+<li>从 4.2 版开始，$geoNear 不再有 100 个文档的默认限制</li>
+</ul>
+<blockquote>
+<p>示例 1：</p>
+</blockquote>
+<p>查找距离 [ -73.99279 , 40.719296 ] 点最小距离 2m ,并且 category 是 Parks 的所有文档</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">db.citys.aggregate([</span><br><span class="line">    &#123;</span><br><span class="line">        $geoNear: &#123;</span><br><span class="line">            near: &#123;</span><br><span class="line">                type: &quot;Point&quot;,</span><br><span class="line">                coordinates: [116.408, 39.904]</span><br><span class="line">            &#125;,</span><br><span class="line">            distanceMultiplier: 1/1000,           # 计算出的距离按公里显示</span><br><span class="line">            distanceField: &quot;dist.calculated&quot;,</span><br><span class="line">            includeLocs: &quot;dist.location&quot;,</span><br><span class="line">            minDistance: 2,</span><br><span class="line">            spherical: true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#### 结果 #####</span></span></span><br><span class="line">// 1</span><br><span class="line">&#123;</span><br><span class="line">    &quot;_id&quot;: ObjectId(&quot;610b931fd2620000ac000144&quot;),</span><br><span class="line">    &quot;name&quot;: &quot;tianjin&quot;,</span><br><span class="line">    &quot;location&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;Point&quot;,</span><br><span class="line">        &quot;coordinates&quot;: [</span><br><span class="line">            117.246,</span><br><span class="line">            39.117</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;dist&quot;: &#123;</span><br><span class="line">        &quot;calculated&quot;: 113.378060984206,       # 计算距离的字段</span><br><span class="line">        &quot;location&quot;: &#123;                         # 计算中使用的位置的字段</span><br><span class="line">            &quot;type&quot;: &quot;Point&quot;,</span><br><span class="line">            &quot;coordinates&quot;: [</span><br><span class="line">                117.246,</span><br><span class="line">                39.117</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>示例2：一个集合有多个地理空间索引</p>
+</blockquote>
+<p>places 集合中 <code>location</code> 字段有一个 2dsphere 索引， <code>legacy</code>字段有一个 2d 索引 如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 3,</span><br><span class="line">   &quot;name&quot; : &quot;Polo Grounds&quot;,</span><br><span class="line">   &quot;location&quot;: &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [ -73.9375, 40.8303 ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;legacy&quot; : [ -73.9375, 40.8303 ],</span><br><span class="line">   &quot;category&quot; : &quot;Stadiums&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>使用 <code>key</code> 选项来指定聚集应该使用 <code>location</code> 的字段值的 <code>$geoNear</code> 操作，而不是 <code>legacy</code> 字段值</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">db.places.aggregate([</span><br><span class="line">   &#123;</span><br><span class="line">     $geoNear: &#123;</span><br><span class="line">        near: &#123; type: &quot;Point&quot;, coordinates: [ -73.98142 , 40.71782 ] &#125;,</span><br><span class="line">        key: &quot;location&quot;,</span><br><span class="line">        distanceField: &quot;dist.calculated&quot;,</span><br><span class="line">        query: &#123; &quot;category&quot;: &quot;Parks&quot; &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   &#123; $limit: 5 &#125;</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#### 结果 #####</span></span></span><br><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 8,</span><br><span class="line">   &quot;name&quot; : &quot;Sara D. Roosevelt Park&quot;,</span><br><span class="line">   &quot;location&quot; : &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [</span><br><span class="line">         -73.9928,</span><br><span class="line">         40.7193</span><br><span class="line">      ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;category&quot; : &quot;Parks&quot;,</span><br><span class="line">   &quot;dist&quot; : &#123;</span><br><span class="line">      &quot;calculated&quot; : 974.175764916902</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 1,</span><br><span class="line">   &quot;name&quot; : &quot;Central Park&quot;,</span><br><span class="line">   &quot;location&quot; : &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [</span><br><span class="line">         -73.97,</span><br><span class="line">         40.77</span><br><span class="line">      ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;legacy&quot; : [</span><br><span class="line">      -73.97,</span><br><span class="line">      40.77</span><br><span class="line">   ],</span><br><span class="line">   &quot;category&quot; : &quot;Parks&quot;,</span><br><span class="line">   &quot;dist&quot; : &#123;</span><br><span class="line">      &quot;calculated&quot; : 5887.92792958097</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建集合</span></span><br><span class="line">db.provinces.insertMany([</span><br><span class="line">  &#123; name: &quot;北京&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [116.41667, 39.91667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;山东&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [117.000923, 36.675807] &#125;&#125;,</span><br><span class="line">  &#123; name: &quot;河北&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [115.48333, 38.03333] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;吉林&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [127.63333, 47.75000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;辽宁&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [123.38333, 41.80000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;新疆&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [87.68333, 43.76667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;广东&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [113.23333, 23.16667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;江西&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [115.90000, 28.68333] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;海南&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [110.35000, 20.01667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;上海&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [121.55333, 31.20000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;重庆&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [106.45000, 29.56667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;天津&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [117.20000, 39.13333] &#125; &#125;,</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建地理空间索引</span></span><br><span class="line">db.provinces.createIndex(&#123;location: &quot;2dsphere&quot;&#125;)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> [120.39629, 36.30744]</span></span><br><span class="line">db.provinces.findOne(&#123;</span><br><span class="line">  geometry: &#123;</span><br><span class="line">    $geoIntersects: &#123;</span><br><span class="line">      $geometry: &#123; type: &quot;Point&quot;, coordinates: [117.000923, 36.675807] &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+                <br>
+                <ul class="pager">
+                    
+                        <li class="previous">
+                            <a href="/2021/08/41e3cb957215/" data-toggle="tooltip" data-placement="top"
+                               title="MySQL 索引失效情况">&larr; 上一页</a>
+                        </li>
+                    
+                    
+                        <li class="next">
+                            <a href="/2021/08/b4b49ce1fe51/" data-toggle="tooltip" data-placement="top"
+                               title="MongoDB 运算符">下一页 &rarr;</a>
+                        </li>
+                    
+                </ul>
+                <!--评论框-->
+                <!--gitalk 插件评论功能  https://github.com/gitalk/gitalk -->
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: `f1946918188d5d6f545d`,
+        clientSecret: `5e6cbedbfde0eb399cf5627e65f7f3d5111cf8a4`,
+        repo: `suzhif.github.io`,
+        owner: `suzhiF`,
+        admin: `suzhiF`,
+        id: location.pathname,
+        distractionFreeMode: false,
+        perPage: 10
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+<!---->
+            </div>
+            <!--目录-->
+            
+    <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container" id="catalog">
+        <div class="side-catalog">
+            <hr class="hidden-sm hidden-xs">
+            <h5>
+                <a class="catalog-toggle" href="#">目录</a>
+            </h5>
+            <ul class="catalog-body"></ul>
+        </div>
+    </div>
+
+    <script>
+        <!--目录固定-->
+        var hegiht = 270
+        
+        window.onscroll = function () {
+            var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
+            if (scrollt > hegiht) {
+                document.getElementById('catalog').style.position = "fixed";
+                document.getElementById('catalog').style.top = "20px";
+            } else {
+                document.getElementById('catalog').style.position = "absolute";
+                document.getElementById('catalog').style.top = "";
+            }
+        };
+    </script>
+
+
+    <!-- async load function -->
+    <script>
+        function async(u, c) {
+            var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            o.src = u;
+            if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+            s.parentNode.insertBefore(o, s);
+        }
+    // <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+        async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+            anchors.options = {
+                visible: 'always',
+                placement: 'right',
+                icon: '#'
+            };
+            anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+        })
+    </script>
+    <style>
+        /* place left on bigger screen */
+        @media all and (min-width: 800px) {
+            .anchorjs-link{
+                position: absolute;
+                left: -0.75em;
+                font-size: 1.1em;
+                margin-top : -0.1em;
+            }
+        }
+    </style>
+
+<style>
+    .side-catalog > h5 {
+        margin-bottom: 0;
+    }
+    .catalog-body {
+        list-style: none
+    }
+    .catalog-body {
+        list-style: none;
+        padding: 0;
+        line-height: inherit;
+    }
+    .catalog-body li {
+        padding: 5px;
+        line-height: 20px;
+    }
+    #catalog {
+        position: absolute;
+        right: 65px;
+    }
+    .side-catalog > hr {
+        border-top: 1px solid #bfbfbf;
+    }
+    #catalog .active a{
+        /*border: 1px #9d9d9d;*/
+        /*background-color: #9d9d9d;*/
+        /*border: 1px solid #0085a1;*/
+        /*border-radius: 5px;*/
+        font-size: 24px;
+    }
+</style>
+
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                    <section>
+                        <!-- no hr -->
+                        <hr>
+                        <h5><a href="/tags/">标签</a></h5>
+                        <div class="tags">
+                            
+                                <a class="tag" href="/tags/#Composer"
+                                   title="Composer">Composer</a>
+                            
+                                <a class="tag" href="/tags/#docker"
+                                   title="docker">docker</a>
+                            
+                                <a class="tag" href="/tags/#Laravel"
+                                   title="Laravel">Laravel</a>
+                            
+                                <a class="tag" href="/tags/#Laravel-Mix"
+                                   title="Laravel-Mix">Laravel-Mix</a>
+                            
+                                <a class="tag" href="/tags/#webpack"
+                                   title="webpack">webpack</a>
+                            
+                                <a class="tag" href="/tags/#linux"
+                                   title="linux">linux</a>
+                            
+                                <a class="tag" href="/tags/#top"
+                                   title="top">top</a>
+                            
+                                <a class="tag" href="/tags/#linux进程"
+                                   title="linux进程">linux进程</a>
+                            
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
+                                <a class="tag" href="/tags/#mysql索引"
+                                   title="mysql索引">mysql索引</a>
+                            
+                                <a class="tag" href="/tags/#php"
+                                   title="php">php</a>
+                            
+                                <a class="tag" href="/tags/#redis"
+                                   title="redis">redis</a>
+                            
+                        </div>
+                    </section>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Think aloud 2021 
+                    <br>
+                    Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> 
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span> 
+                    Ported by <a target="_blank" rel="noopener" href="http://blog.kaijun.rocks">Kaijun</a> | 
+                    <iframe
+                        style="margin-left: 2px; margin-bottom:-5px;"
+                        frameborder="0" scrolling="0" width="91px" height="20px"
+                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
+                    </iframe>
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script src="/js/other.min.js"></script>
+
+
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- 
+     Because of the native support for backtick-style fenced code blocks 
+     right within the Markdown is landed in Github Pages, 
+     From V1.6, There is no need for Highlight.js, 
+     so Huxblog drops it officially.
+
+     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
+     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
+-->
+<!--
+    <script>
+        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
+            hljs.initHighlightingOnLoad();
+        })
+    </script>
+    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
+-->
+
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("http://localhost:4000/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+
+<!-- Google Analytics -->
+
+
+<script>
+    // dynamic User by Hux
+    var _gaId = 'UA-49627206-1';
+    var _gaDomain = 'huangxuan.me';
+
+    // Originial
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', _gaId, _gaDomain);
+    ga('send', 'pageview');
+</script>
+
+
+
+
+<!-- Baidu Tongji -->
+
+<script>
+    // dynamic User by Hux
+    var _baId = '4cc1f2d8f3067386cc5cdb626a202900';
+
+    // Originial
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?" + _baId;
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+
+
+<!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;    
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
+
+<!--搜索框-->
+<script>
+    $('.search-container').css({ "height": window.innerHeight, "overflow": 'hidden' })
+    $('.search-container-content').css({ "height": window.innerHeight - 70, "overflow": 'scroll' })
+    var allArticles = [];
+    var xReq = new XMLHttpRequest();
+    xReq.open('GET', '/search.json');
+    xReq.send();
+    xReq.onreadystatechange = function(){
+        if(xReq.readyState === 4 && xReq.status === 200){
+            allArticles = JSON.parse(xReq.responseText);
+        }
+    }
+
+    $('#search').on('click', function() {
+        document.body.style['overflow-y'] = 'hidden'
+        $('.search-modal').addClass('modal-show');
+    });
+
+    $('.search-modal,.search-container-top img').on('click', function() {
+        document.body.style['overflow-y'] = 'scroll';
+        $('.search-modal').removeClass('modal-show');
+    });
+
+    $('.search-container').on('click', function(e) {
+        e.stopPropagation();
+    });
+
+    $('.search-container-input').bind('input propertychange', function(e) {
+        var searchValue = e.currentTarget.value;
+        var correctArticles = allArticles.filter(article => article.content.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 || article.title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1)
+        var articleListHtml = '';
+        for (let index = 0; index < correctArticles.length; index++) {
+            var article = correctArticles[index];
+            article.description = article.content.replace(/<[^>]+>/g,"");
+            var title = article.title, description = '';
+            var searchReg = RegExp(searchValue, 'i');
+            var searchRegGlobal = RegExp(searchValue, 'ig');
+            if (article.title.match(searchReg)) {
+                title = article.title.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            }
+            var contentMatch = article.description.match(searchReg);
+            if (contentMatch) {
+                description = `...${article.description.substr(contentMatch['index'], 210)}...`.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            } else {
+                description = article.description.substr(0, 200);
+            }
+
+            articleListHtml += `<div class="search-container-content_item">
+        <a href="${article.url}" class="search-container-content_item-title">${title}</a>
+        <div class="search-container-content_item-description">${description}</div>
+      </div>`
+        }
+
+        $('.search-container-content').html(articleListHtml);
+    });
+</script>
+
+
+    <!--置顶-->
+    <div id="back_top"></div>
+
+<!-- Image to hack wechat -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>

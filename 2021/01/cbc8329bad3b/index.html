@@ -13,11 +13,11 @@
 
     <title>
         
-          Docker 常用命令 - Suf 的博客
+          Sql 语句编写规范 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="http://localhost:4000/2021/07/b934f7bfb536/">
+    <link rel="canonical" href="http://localhost:4000/2021/01/cbc8329bad3b/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -206,15 +206,12 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#docker"
-                               title="docker">docker</a>
-                        
                     </div>
-                    <h1>Docker 常用命令</h1>
+                    <h1>Sql 语句编写规范</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-07-24
+                        2021-01-24
                         </span>
                         <span class="fa fa-folder">
                             
@@ -237,25 +234,16 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p><img src="/images/docker.png" alt="avatar"></p>
-<p>docker  [command]  [options]</p>
-<figure class="highlight gauss"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">attach              <span class="meta"># 当前 shell 下 attach 连接指定运行镜像</span></span><br><span class="line">build               <span class="meta"># 通过 Dockerfile 定制镜像</span></span><br><span class="line">commit              <span class="meta"># 提交当前容器为新的镜像</span></span><br><span class="line">cp                  <span class="meta"># 从容器中拷贝指定文件或者目录带宿主机中</span></span><br><span class="line"><span class="keyword">create</span>              <span class="meta"># 创建一个新的容器，同 run ，但不启动容器</span></span><br><span class="line">diff                <span class="meta"># 查看 docker 容器变化</span></span><br><span class="line">events              <span class="meta"># 从 docker 服务获取容器实时事件</span></span><br><span class="line"><span class="built_in">exec</span>                <span class="meta"># 在已存在的容器上运行命令</span></span><br><span class="line">export              <span class="meta"># 导出容器的内容流作为一个 tar 归档文件[对应 import]</span></span><br><span class="line">history             <span class="meta"># 展示一个镜像形成的历史</span></span><br><span class="line">images              <span class="meta"># 列出系统当前镜像</span></span><br><span class="line">import              <span class="meta"># 从 tar 包中的内容创建一个新的文件系统映像[对应 export]</span></span><br><span class="line">info                <span class="meta"># 显示系统相关信息</span></span><br><span class="line">inspect             <span class="meta"># 查看容器详细信息</span></span><br><span class="line">kill                <span class="meta"># kill 指定 docker 容器</span></span><br><span class="line"><span class="keyword">load</span>                <span class="meta"># 从一个 tar 包中加载一个镜像</span></span><br><span class="line">login               <span class="meta"># 注册或者登陆一个 docker 源服务器</span></span><br><span class="line">logout              <span class="meta"># 从当前 Docker registry 退出</span></span><br><span class="line">logs                <span class="meta"># 输出当前容器日志信息</span></span><br><span class="line">port                <span class="meta"># 查看映射端口对应容器内部源端口</span></span><br><span class="line"><span class="built_in">pause</span>               <span class="meta"># 暂停容器</span></span><br><span class="line">ps                  <span class="meta"># 列出容器列表</span></span><br><span class="line">pull                <span class="meta"># 从 docker 镜像源服务器拉取指定镜像或者库镜像</span></span><br><span class="line"><span class="keyword">push</span>                <span class="meta"># 推送指定镜像或者库镜像至 docker 源服务器</span></span><br><span class="line">restart             <span class="meta"># 重启运行的容器</span></span><br><span class="line">rm                  <span class="meta"># 移除一个或者多个容器</span></span><br><span class="line">rmi                 <span class="meta"># 移除一个或者多个镜像[无容器使用该镜像才可删除，否则需删除相关内容才可以继续或 -f 强制删除]</span></span><br><span class="line"><span class="keyword">run</span>                 <span class="meta"># 创建一个新的容器并运行一个命令</span></span><br><span class="line"><span class="keyword">save</span>                <span class="meta"># 保证一个镜像为一个 tar 包[对应 load]</span></span><br><span class="line">search              <span class="meta"># 在 docker hub 中搜索镜像</span></span><br><span class="line">start               <span class="meta"># 启动容器</span></span><br><span class="line"><span class="keyword">stop</span>                <span class="meta"># 停止容器</span></span><br><span class="line">tag                 <span class="meta"># 给源中镜像打标签</span></span><br><span class="line">top                 <span class="meta"># 查看容器中运行的进程信息</span></span><br><span class="line">unpause             <span class="meta"># 取消暂停容器</span></span><br><span class="line">version             <span class="meta"># 查看 docker 版本号</span></span><br><span class="line"><span class="built_in">wait</span>                <span class="meta"># 截取容器停止时的退出状态值</span></span><br></pre></td></tr></table></figure>
+                <p>1.使用 limit 对查询结果的记录进行限定<br>2. 避免 select * ，将需要查找的字段列出来<br>3. 使用连接（join）来代替子查询<br>4. 拆分大的 delete 或 insert 语句<br>5. 可通过开启慢查询日志来找出较慢的 SQL<br>6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边<br>7.sql 语句尽可能简单：一条 sql 只能在一个 cpu 运算；大语句拆小语句，减少锁时间；一条大 sql 可以堵死整个库<br>9. 不用函数和触发器，在应用程序实现<br>10. 避免 % xxx 式查询<br>12. 使用同类型进行比较，比如用’123’和’123’比，123 和 123 比<br>15. 列表数据不要拿全表，要使用 LIMIT 来分页，. 每页数量也不要太大</p>
 
-
-<p align="right">参考- <a target="_blank" rel="noopener" href="https://space.bilibili.com/95256449">遇见狂神说</a></p>
                 <br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/8150c425bab2/" data-toggle="tooltip" data-placement="top"
-                               title="什么是 CSRF">&larr; 上一页</a>
+                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top"
+                               title="Composer 提示 Allowed memory size of bytes exhausted">&larr; 上一页</a>
                         </li>
                     
-                    
-                        <li class="next">
-                            <a href="/2021/07/bd70d53460ec/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（list 类型）">下一页 &rarr;</a>
-                        </li>
                     
                 </ul>
                 <!--评论框-->
