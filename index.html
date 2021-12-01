@@ -433,27 +433,6 @@ docker  [command]  [options]
 
 <div class="post-preview">
 
-    <a href="/2021/07/ac3227b76e78/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（set 类型）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
-Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2021/07/bd70d53460ec/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（list 类型）
@@ -468,6 +447,27 @@ Redis的Set是string类型的无需集合。它底层其实是一个value为null
 lPush() 方法将数据从左侧压入列表
 rPush() 方法将数据从右侧压入列表
 123456789101112131415161718192021$re......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/07/ac3227b76e78/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（set 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
+Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
         </div>
     </a>
     <p class="post-meta">
@@ -620,16 +620,11 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
                 <p class="copyright text-muted">
                     Copyright &copy; Think aloud 2021 
                     <br>
-                    Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> 
-                    <span style="display: inline-block; margin: 0 5px;">
-                        <i class="fa fa-heart"></i>
-                    </span> 
-                    Ported by <a target="_blank" rel="noopener" href="http://blog.kaijun.rocks">Kaijun</a> | 
-                    <iframe
-                        style="margin-left: 2px; margin-bottom:-5px;"
-                        frameborder="0" scrolling="0" width="91px" height="20px"
-                        src="https://ghbtns.com/github-btn.html?user=kaijun&repo=hexo-theme-huxblog&type=star&count=true" >
-                    </iframe>
+<!--                    Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a> -->
+<!--                    <span style="display: inline-block; margin: 0 5px;">-->
+<!--                        <i class="fa fa-heart"></i>-->
+<!--                    </span> -->
+<!--                    Ported by <a target="_blank" rel="noopener" href="http://blog.kaijun.rocks">Kaijun</a>-->
                 </p>
             </div>
         </div>
@@ -668,25 +663,6 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
     }
 </script>
 
-<!-- 
-     Because of the native support for backtick-style fenced code blocks 
-     right within the Markdown is landed in Github Pages, 
-     From V1.6, There is no need for Highlight.js, 
-     so Huxblog drops it officially.
-
-     - https://github.com/blog/2100-github-pages-now-faster-and-simpler-with-jekyll-3-0  
-     - https://help.github.com/articles/creating-and-highlighting-code-blocks/    
--->
-<!--
-    <script>
-        async("http://cdn.bootcss.com/highlight.js/8.6/highlight.min.js", function(){
-            hljs.initHighlightingOnLoad();
-        })
-    </script>
-    <link href="http://cdn.bootcss.com/highlight.js/8.6/styles/github.min.css" rel="stylesheet">
--->
-
-
 <!-- jquery.tagcloud.js -->
 <script>
     // only load tagcloud.js in tag.html
@@ -715,8 +691,8 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 
 <script>
     // dynamic User by Hux
-    var _gaId = 'UA-49627206-1';
-    var _gaDomain = 'huangxuan.me';
+    var _gaId = 'G-YBHHEGFXJB';
+    var _gaDomain = '';
 
     // Originial
     (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -728,7 +704,16 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
     ga('send', 'pageview');
 </script>
 
+<!--谷歌统计-->
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YBHHEGFXJB"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
 
+    gtag('config', 'G-YBHHEGFXJB');
+</script>
 
 <!-- Side Catalog -->
 
