@@ -253,9 +253,9 @@
 <p><strong>添加元素到集合(sAdd)</strong></p>
 <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>);                <span class="regexp">//</span> int(<span class="number">1</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);    <span class="regexp">//</span> int(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
 
-<p><strong>随机获取一个元素(sPop)</strong></p>
+<p><strong>随机获取一个元素或多个(sPop)</strong></p>
 <p>无序性，是随机的</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v1&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v3&#x27;</span>,</span><br></pre></td></tr></table></figure>
+<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v1&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v3&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>, <span class="number">2</span>);            <span class="regexp">//</span> [<span class="string">&#x27;v1&#x27;</span>,<span class="string">&#x27;v3&#x27;</span>],</span><br></pre></td></tr></table></figure>
 
 <p><strong>删除集合里指定的值(sRem)</strong></p>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sRem(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);      <span class="regexp">//</span> k =&gt; array(<span class="string">&#x27;v1&#x27;</span>)</span><br></pre></td></tr></table></figure>
@@ -277,14 +277,14 @@
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/bd70d53460ec/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（list 类型）">&larr; 上一页</a>
+                            <a href="/2021/07/b934f7bfb536/" data-toggle="tooltip" data-placement="top"
+                               title="Docker 常用命令">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2021/07/634c5e00d421/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（string 类型）">下一页 &rarr;</a>
+                            <a href="/2021/07/bd70d53460ec/" data-toggle="tooltip" data-placement="top"
+                               title="PHP 中 Redis 常用操作（list 类型）">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -409,6 +409,9 @@
                                 <a class="tag" href="/tags/#webpack"
                                    title="webpack">webpack</a>
                             
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
                                 <a class="tag" href="/tags/#linux"
                                    title="linux">linux</a>
                             
@@ -417,9 +420,6 @@
                             
                                 <a class="tag" href="/tags/#linux进程"
                                    title="linux进程">linux进程</a>
-                            
-                                <a class="tag" href="/tags/#MongoDB"
-                                   title="MongoDB">MongoDB</a>
                             
                                 <a class="tag" href="/tags/#mysql索引"
                                    title="mysql索引">mysql索引</a>
