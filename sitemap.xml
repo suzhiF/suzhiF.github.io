@@ -205,6 +205,27 @@
     </url>
     
     <url>
+        <loc>https://suzhif.github.io/tags/Laravel/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/tags/Laravel-Mix/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/tags/webpack/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
         <loc>https://suzhif.github.io/tags/linux/</loc>
         <lastmod>2021-12-06</lastmod>
         <changefreq>weekly</changefreq>
@@ -220,6 +241,13 @@
     
     <url>
         <loc>https://suzhif.github.io/tags/linux%E8%BF%9B%E7%A8%8B/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/tags/MongoDB/</loc>
         <lastmod>2021-12-06</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -246,34 +274,6 @@
         <priority>0.2</priority>
     </url>
     
-    <url>
-        <loc>https://suzhif.github.io/tags/Laravel/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/Laravel-Mix/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/webpack/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/MongoDB/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
 
     
     <url>
@@ -291,7 +291,21 @@
     </url>
     
     <url>
+        <loc>https://suzhif.github.io/categories/Laravel/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
         <loc>https://suzhif.github.io/categories/Linux/</loc>
+        <lastmod>2021-12-06</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/categories/MongoDB/</loc>
         <lastmod>2021-12-06</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -306,20 +320,6 @@
     
     <url>
         <loc>https://suzhif.github.io/categories/Redis/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/categories/Laravel/</loc>
-        <lastmod>2021-12-06</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/categories/MongoDB/</loc>
         <lastmod>2021-12-06</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
