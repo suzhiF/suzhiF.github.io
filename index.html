@@ -446,32 +446,6 @@ docker  [command]  [options]
 
 <div class="post-preview">
 
-    <a href="/2021/07/634c5e00d421/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（string 类型）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            
-string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一个key对应一个value。
- string 类型是二进制安全的。这意味着 Redis 的 string 可以包含任何数据。比如JPG图片或者序列化的对象。
- 一个 Redis 中字符串 value 最多可以是512M
-
-设置(set)
-仅支持字符串操作，不支持内置数据编码功能。如果需要存储PHP的非字符......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
     <a href="/2021/07/bd70d53460ec/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（list 类型）
@@ -497,16 +471,42 @@ rPush() 方法将数据从右侧压入列表
 
 <div class="post-preview">
 
-    <a href="/2021/07/6042abf4cf50/">
+    <a href="/2021/07/ac3227b76e78/">
         <h2 class="post-title">
-            PHP 中 Redis 常用操作（基础操作）
+            PHP 中 Redis 常用操作（set 类型）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            连接 redis 服务器，实例化 redis 对象
-123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
+            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
+Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/07/634c5e00d421/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（string 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一个key对应一个value。
+ string 类型是二进制安全的。这意味着 Redis 的 string 可以包含任何数据。比如JPG图片或者序列化的对象。
+ 一个 Redis 中字符串 value 最多可以是512M
+
+设置(set)
+仅支持字符串操作，不支持内置数据编码功能。如果需要存储PHP的非字符......
         </div>
     </a>
     <p class="post-meta">
@@ -568,6 +568,30 @@ rPush() 方法将数据从右侧压入列表
                             
                         
                             
+                            <a href="/tags/#mysql索引" title="mysql索引" rel="1">mysql索引</a>
+                            
+                        
+                            
+                            <a href="/tags/#php" title="php" rel="6">php</a>
+                            
+                        
+                            
+                            <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
+                            
+                        
+                            
+                            <a href="/tags/#redis" title="redis" rel="6">redis</a>
+                            
+                        
+                            
+                            <a href="/tags/#slowlog" title="slowlog" rel="1">slowlog</a>
+                            
+                        
+                            
+                            <a href="/tags/#MongoDB" title="MongoDB" rel="2">MongoDB</a>
+                            
+                        
+                            
                             <a href="/tags/#Laravel" title="Laravel" rel="1">Laravel</a>
                             
                         
@@ -577,22 +601,6 @@ rPush() 方法将数据从右侧压入列表
                         
                             
                             <a href="/tags/#webpack" title="webpack" rel="1">webpack</a>
-                            
-                        
-                            
-                            <a href="/tags/#mysql索引" title="mysql索引" rel="1">mysql索引</a>
-                            
-                        
-                            
-                            <a href="/tags/#MongoDB" title="MongoDB" rel="2">MongoDB</a>
-                            
-                        
-                            
-                            <a href="/tags/#php" title="php" rel="5">php</a>
-                            
-                        
-                            
-                            <a href="/tags/#redis" title="redis" rel="5">redis</a>
                             
                         
                     </div>
