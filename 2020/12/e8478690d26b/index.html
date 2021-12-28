@@ -14,11 +14,11 @@
 
     <title>
         
-          PHP 中 Redis 常用操作（set 类型） - Suf 的博客
+          跨域资源共享（CORS） - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/07/ac3227b76e78/">
+    <link rel="canonical" href="https://suzhif.github.io/2020/12/e8478690d26b/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -232,23 +232,23 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#php"
-                               title="php">php</a>
+                            <a class="tag" href="/tags/#笔记"
+                               title="笔记">笔记</a>
                         
-                            <a class="tag" href="/tags/#redis"
-                               title="redis">redis</a>
+                            <a class="tag" href="/tags/#cors"
+                               title="cors">cors</a>
                         
                     </div>
-                    <h1>PHP 中 Redis 常用操作（set 类型）</h1>
+                    <h1>跨域资源共享（CORS）</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-07-06
+                        2020-12-28
                         </span>
                         <span class="fa fa-folder">
                             
-                                <a class="tag" href="/categories/#Redis"
-                                   title="Redis">Redis</a>
+                                <a class="tag" href="/categories/#网络"
+                                   title="网络">网络</a>
                             
                         </span>
                     </div>
@@ -269,49 +269,105 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。</p>
-<p>Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O(1)。</p>
-<p>集合数据的特征：</p>
+                <h3 id="什么是跨域资源共享（CORS）"><a href="#什么是跨域资源共享（CORS）" class="headerlink" title="什么是跨域资源共享（CORS）"></a>什么是跨域资源共享（CORS）</h3><p>跨域资源共享是一种基于 HTTP 头的机制，该机制通过允许服务器标示除了自己以外的其他 <code>origin</code> (域、协议和端口)，浏览器可以访问加载这些资源。</p>
+<p>跨域资源共享还通过一种机制来检查服务器是否允许要发送真实请求，该机制通过浏览器发送一个到服务器托管的跨域源资源的 <code>预检</code> 请求。<code>预检</code> 中浏览器发送的头中标示有 HTTP 方法和真实请求中会用到的头。</p>
+<blockquote>
+<p>在 <a target="_blank" rel="noopener" href="http://domain-a.com/">http://domain-a.com</a> 页面中对 <a target="_blank" rel="noopener" href="https://domain-b.com/">https://domain-b.com</a> 发送一个请求</p>
+</blockquote>
+<p>跨域资源共享标准新增一组 HTTP 首部字段，允许服务器声明哪些源站通过浏览器有权限访问哪些资源。另外，对于那些可能对服务器数据产生副作用的 HTTP 方法（ <code>GET</code> 以外的 HTTP 请求，或者搭配某些 MIME类型 的 <code>POST</code> 请求），浏览器必须首先使用 <code>OPTIONS</code> 方法发起一个预检请求(preflight request)，获知服务端是否允许该跨源请求。服务器确认允许之后，才发起实际的 HTTP 请求。</p>
+<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><h4 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h4><p>不会触发 <code>CORS 预检请求</code>。若请求满足以下条件，则视为“简单请求”：</p>
 <ul>
-<li>元素不能重复，保持唯一性</li>
-<li>元素无序，不能使用索引(下标)操作</li>
+<li>使用 <code>GET</code>、<code>HEAD</code>、<code>POST</code>。</li>
+<li>除了类用户代理自动设置的首部字段（Connection、User-Agent）和在 <code>Fetch</code> 规范中定义为 禁用首部名称 的其他首部，允许人为设置的字段为 <code>Fetch</code> 规范定义的对 <code>CORS</code> 安全的首部字段集合：<ul>
+<li>Accept</li>
+<li>Accept-Language</li>
+<li>Content-Language</li>
+<li>Content-Type</li>
 </ul>
-<p><strong>添加元素到集合(sAdd)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>);                <span class="regexp">//</span> int(<span class="number">1</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);    <span class="regexp">//</span> int(<span class="number">2</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>Content-Type 的值仅限于下列三者之一：<ul>
+<li>text/plain</li>
+<li>multipart/form-data</li>
+<li>application/x-www-form-urlencodedvar</li>
+</ul>
+</li>
+<li>请求中的任意 <code>XMLHttpRequest</code> 对象均没有注册任何事件监听器；<code>XMLHttpRequest</code> 对象可以使用 <code>XMLHttpRequest.upload</code> 属性访问</li>
+<li>请求中没有使用 <code>ReadableStream</code> 对象。</li>
+</ul>
+<p><strong>测试一个简单请求：</strong></p>
+<ul>
+<li>客户端 <code>http://test-a.test</code> ：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
+<li>服务端 <code>http://test-b.test</code>：响应头增加: <code>Access-Control-Allow-Origin: *</code></li>
+</ul>
+<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_1.png" alt="请求标头"><br><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_2.png" alt="响应表头">  </p>
+<p>对于<strong>简单请求</strong>，只需在服务器响应中添加 <code>Access-Control-Allow-Origin: *</code>，可以被任意外域访问。</p>
+<h4 id="预检请求-浏览器自动发送"><a href="#预检请求-浏览器自动发送" class="headerlink" title="预检请求 (浏览器自动发送)"></a>预检请求 (浏览器自动发送)</h4><p>用于检查服务器是否支持 CORS 即跨域资源共享，使用 <code>OPTIONS</code> 方法发起一个预检请求到服务器。</p>
+<p>一般请求头部会包含: <code>Access-Control-Allow-Method</code> 、<code>Access-Control-Allow-Headers</code>、<code>Origin</code></p>
+<p><strong>测试</strong></p>
+<ul>
+<li>客户端：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.setRequestHeader(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;application/xml&#x27;</span>); <span class="comment">// 增加 首部字段</span></span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>如果现在不修改服务端代码，会怎么样？</p>
+<p>控制台报错：Access to XMLHttpRequest at ‘<a target="_blank" rel="noopener" href="http://test-b.test/test-cors&#39;">http://test-b.test/test-cors&#39;</a> from origin ‘<a target="_blank" rel="noopener" href="http://test-a.test&/#39;">http://test-a.test&#39;</a> has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.</p>
+<p>预检请求的响应 Access-Control-Allow-Headers 中不允许请求头部有 Content-type 字段</p>
+</blockquote>
+<ul>
+<li><p>服务端：</p>
+<p>需再在响应头部增加 <code>Access-Control-Allow-Headers: Content-type</code></p>
+<p>额外: </p>
+<ul>
+<li><code>Access-Control-Allow-Methods</code>：服务器允许客户端使用什么方法发起请求</li>
+<li><code>Access-Control-Max-Age</code>：响应的有效时间内浏览器不需要为同一请求再发送预检请求。</li>
+</ul>
+</li>
+</ul>
+<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_3.png" alt="OPTIONS 请求标头"><br><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_4.png" alt="OPTIONS 响应标头"></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>预检请求的成功仅限于 200~299 状态，其他状态会导致不会被共享或使 CORS 预检请求失败</p>
+</blockquote>
+<h4 id="附带身份凭证的请求"><a href="#附带身份凭证的请求" class="headerlink" title="附带身份凭证的请求"></a>附带身份凭证的请求</h4><blockquote>
+<p>当发出跨源请求时，第三方 cookie 策略仍将适用</p>
+</blockquote>
+<p><strong>测试：</strong></p>
+<ul>
+<li>客户端：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.withCredentials = <span class="literal">true</span>;     <span class="comment">// 发送凭证信息</span></span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<blockquote>
+<p>不修改服务端的情况下发送请求尝试</p>
+<p>控制台报错：The value of the ‘Access-Control-Allow-Origin’ header in the response must not be the wildcard ‘*’ when the request’s credentials mode is ‘include’. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.</p>
+<p>意思大体就是当请求附带凭证时响应中 <code>Access-Control-Allow-Origin</code> 的值不能是 <code>*</code> ，而且还告诉说 <code>XMLHttpRequest</code> 发起带身份凭据的请求是 <code>withCredentials</code> 属性控制的。</p>
+</blockquote>
+<ul>
+<li>服务端：<br>响应头部修改 <code>Access-Control-Allow-Origin: http://test-a.test</code>，并且还需增加 <code>Access-Control-Allow-Credentials: true</code>。</li>
+</ul>
+<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_5.png" alt="响应标头"></p>
+<blockquote>
+<p><strong>注意：</strong></p>
+<p>在响应附带身份凭证的请求时：服务器不能将 <code>Access-Control-Allow-Origin</code> 、<code>Access-Control-Allow-Headers</code> 、<code>Access-Control-Allow-Methods</code> 的值设置为 <code>*</code> 。</p>
+</blockquote>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="HTTP-响应头部字段"><a href="#HTTP-响应头部字段" class="headerlink" title="HTTP 响应头部字段"></a>HTTP 响应头部字段</h4><ul>
+<li>Access-Control-Allow-Origin：允许访问该资源的外域 URI，如果值为具体域名，则在响应首部中 <code>Vary</code> 字段值必须包含 <code>Origin</code></li>
+<li>Access-Control-Allow-Headers：请求所允许使用的 HTTP 方法</li>
+<li>Access-Control-Allow-Methods：求中允许携带的首部字段</li>
+<li>Access-Control-Max-Age：缓存预检请求结果</li>
+<li>Access-Control-Allow-Credentials：决定请求是否可以使用 credentials</li>
+<li>Access-Control-Expose-Headers：控制 <code>XMLHttpRequest</code> 对象的 <code>getResponseHeader()</code> 方法获得除基本响应头（Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma）以外的响应头。</li>
+</ul>
+<br>
+<br>
 
-<p><strong>随机获取一个元素或多个(sPop)</strong></p>
-<p>无序性，是随机的</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v1&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>);            <span class="regexp">//</span> <span class="string">&#x27;v3&#x27;</span>,</span><br><span class="line"><span class="variable">$redis</span>-&gt;sPop(<span class="string">&#x27;k&#x27;</span>, <span class="number">2</span>);            <span class="regexp">//</span> [<span class="string">&#x27;v1&#x27;</span>,<span class="string">&#x27;v3&#x27;</span>],</span><br></pre></td></tr></table></figure>
-
-<p><strong>删除集合里指定的值(sRem)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sRem(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);      <span class="regexp">//</span> k =&gt; array(<span class="string">&#x27;v1&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
-<p><strong>遍历集合(sScan)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//不使用迭代器，匹配所有的元素，进行遍历</span></span><br><span class="line"><span class="variable">$iterator</span> = <span class="literal">null</span>;</span><br><span class="line"><span class="variable">$elements</span> = <span class="variable">$redis</span>-&gt;sScan(<span class="string">&#x27;team&#x27;</span>, <span class="variable">$iterator</span>, <span class="string">&#x27;*&#x27;</span>);</span><br><span class="line"><span class="keyword">foreach</span> (<span class="variable">$elements</span> <span class="keyword">as</span> <span class="variable">$element</span>) &#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$element</span>, <span class="string">&#x27;&lt;br&gt;&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取所有成员(sMembers)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$members</span> = <span class="variable">$redis</span>-&gt;sMembers(<span class="string">&#x27;k&#x27;</span>);</span><br><span class="line">var_dump(<span class="variable">$members</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取集合元素个数(sCard)</strong></p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;k&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sCard(<span class="string">&#x27;k&#x27;</span>);    <span class="regexp">//</span> <span class="number">3</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>并集(sUnion)，差集(sDiff),交集(sInter)</strong></p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;1&#x27;</span>, <span class="string">&#x27;2&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;1&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;sAdd(<span class="string">&#x27;s2&#x27;</span>, <span class="string">&#x27;3&#x27;</span>, <span class="string">&#x27;4&#x27;</span>);</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sUnion(<span class="string">&#x27;s0&#x27;</span>, <span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">1</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">2</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">3</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;2&quot;</span></span><br><span class="line"><span class="regexp">//</span>&#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">2</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;1&quot;</span></span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line">var_dump(<span class="variable">$redis</span>-&gt;sDiff(<span class="string">&#x27;s1&#x27;</span>, <span class="string">&#x27;s2&#x27;</span>));</span><br><span class="line"><span class="regexp">//</span>array(<span class="number">1</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>  [<span class="number">0</span>]=&gt;</span><br><span class="line"><span class="regexp">//</span>  string(<span class="number">1</span>) <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
+<p>参见：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS">跨域资源共享</a> 、 <a target="_blank" rel="noopener" href="https://fetch.spec.whatwg.org/#http-cors-protocol">https://fetch.spec.whatwg.org/#http-cors-protocol</a></p>
 
                 <br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/07/bd70d53460ec/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（list 类型）">&larr; 上一页</a>
+                            <a href="/2021/01/cbc8329bad3b/" data-toggle="tooltip" data-placement="top"
+                               title="Sql 语句编写规范">&larr; 上一页</a>
                         </li>
                     
-                    
-                        <li class="next">
-                            <a href="/2021/07/634c5e00d421/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（string 类型）">下一页 &rarr;</a>
-                        </li>
                     
                 </ul>
                 <!--评论框-->
@@ -339,6 +395,36 @@
             </div>
             <!--目录-->
             
+    <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container" id="catalog">
+        <div class="side-catalog">
+            <hr class="hidden-sm hidden-xs">
+            <h5>
+                <a class="catalog-toggle" href="#">目录</a>
+            </h5>
+            <ul class="catalog-body"></ul>
+        </div>
+    </div>
+
+    <script>
+        <!--目录固定-->
+        var hegiht = 270
+        
+        window.onscroll = function () {
+            var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
+            if (scrollt > hegiht) {
+                document.getElementById('catalog').style.position = "fixed";
+                document.getElementById('catalog').style.top = "20px";
+            } else {
+                document.getElementById('catalog').style.position = "absolute";
+                document.getElementById('catalog').style.top = "";
+            }
+        };
+    </script>
+
 
     <!-- async load function -->
     <script>
@@ -606,6 +692,50 @@
 </script>
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 <!--搜索框-->
 <script>
