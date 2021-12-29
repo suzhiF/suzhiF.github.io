@@ -14,11 +14,11 @@
 
     <title>
         
-          Sql 语句编写规范 - Suf 的博客
+          Nginx 反向代理 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/01/cbc8329bad3b/">
+    <link rel="canonical" href="https://suzhif.github.io/2021/05/8f50415f2752/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -232,14 +232,26 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                            <a class="tag" href="/tags/#反向代理"
+                               title="反向代理">反向代理</a>
+                        
+                            <a class="tag" href="/tags/#proxy"
+                               title="proxy">proxy</a>
+                        
+                            <a class="tag" href="/tags/#http_proxy_module"
+                               title="http_proxy_module">http_proxy_module</a>
+                        
                     </div>
-                    <h1>Sql 语句编写规范</h1>
+                    <h1>Nginx 反向代理</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-01-24
+                        2021-05-27
                         </span>
                         <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#Nginx"
+                                   title="Nginx">Nginx</a>
                             
                         </span>
                     </div>
@@ -260,20 +272,74 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>1.使用 limit 对查询结果的记录进行限定<br>2. 避免 select * ，将需要查找的字段列出来<br>3. 使用连接（join）来代替子查询<br>4. 拆分大的 delete 或 insert 语句<br>5. 可通过开启慢查询日志来找出较慢的 SQL<br>6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边<br>7.sql 语句尽可能简单：一条 sql 只能在一个 cpu 运算；大语句拆小语句，减少锁时间；一条大 sql 可以堵死整个库<br>9. 不用函数和触发器，在应用程序实现<br>10. 避免 % xxx 式查询<br>12. 使用同类型进行比较，比如用’123’和’123’比，123 和 123 比<br>15. 列表数据不要拿全表，要使用 LIMIT 来分页，. 每页数量也不要太大</p>
+                <h3 id="正向代理"><a href="#正向代理" class="headerlink" title="正向代理"></a>正向代理</h3><p>这里先说下什么是<strong>代理（正向代理）</strong>，一个点外卖的例子，用户通过外卖平台在商家点菜下单的场景，这里的外卖平台就是属于一个代理。还有在使用谷歌搜素的时候不得不<em>科学</em>一下，这里的<em>科学</em>就是一个代理；还比如吃鸡时用的网路加速器。<strong>正向代理</strong> 时客户端发送对目标服务器的请求，代理服务器在中间将请求转发给目标服务器，并将结果返回给客户端。<br><img src="/images/nginx/proxy-img_1.png" alt="正向代理"></p>
+<p>场景：</p>
+<ul>
+<li>访问原来无法访问的资源</li>
+<li>加速访问资源</li>
+<li>对客户端访问授权，上网进行认证</li>
+<li>代理可以记录用户访问记录（上网行为管理）</li>
+<li>隐藏客户端身份</li>
+</ul>
+<h3 id="反向代理"><a href="#反向代理" class="headerlink" title="反向代理"></a>反向代理</h3><p>由于单机服务器处理请求的能力有限，处理大量客户端请求时压力很大，甚至出现问题，所以在增加目标服务器的同时，在这些   目标服务器和客户端之间增加代理服务器负责接收客户端请求，并分发给目标服务器，然后在把目标服务器的响应结果返回给客户端。类似于拨打客服热线时，热线电话是固定的，但是会分配不同客服人员接听来解决问题。<br><img src="/images/nginx/proxy-img_2.png" alt="反向代理"></p>
+<p>场景：</p>
+<ul>
+<li>保护和隐藏原始资源服务器，防止攻击，通常将反向代理作为公网访问地址，Web服务器是内网</li>
+<li>负载均衡，通过反向代理来进行服务器资源的优化处理</li>
+<li>加密和 SSL 加速</li>
+<li>缓存静态内容</li>
+<li>压缩、减速上传、安全、外网发布等</li>
+</ul>
+<blockquote>
+<p>这两者的主要区别就是 正向代理的代理对象是客户端，反向代理的代理对象是服务端。</p>
+</blockquote>
+<h3 id="Nginx-反向代理的实现"><a href="#Nginx-反向代理的实现" class="headerlink" title="Nginx 反向代理的实现"></a>Nginx 反向代理的实现</h3><p>要实现 <strong>Nginx</strong> 反向代理，这里就要提到它的 <code>http_proxy_module</code> 模块，它允许将请求传递给另一个服务器。</p>
+<p><strong>测试：</strong></p>
+<p>简单使用 NodeJS 编写一个 HTTP 服务器：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> http = <span class="built_in">require</span>(<span class="string">&#x27;http&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> server = http.createServer(<span class="function"><span class="keyword">function</span> (<span class="params">req, res</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (req.url == <span class="string">&#x27;/&#x27;</span>) &#123;</span><br><span class="line">        res.end(<span class="string">&#x27;Hello world&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;).listen(<span class="string">&#x27;888&#x27;</span>, <span class="string">&#x27;localhost&#x27;</span>);</span><br></pre></td></tr></table></figure>
+<p>访问 <a target="_blank" rel="noopener" href="http://localhost:888/">http://localhost:888</a><br><img src="/images/nginx/proxy-img_4.png" alt="img_4.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Wed, 29 Dec 2021 07:32:49 GMT</span><br><span class="line">Connection: keep-alive</span><br><span class="line">Content-Length: 11</span><br></pre></td></tr></table></figure>
+
+<p>Nginx 配置代理：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name my_proxy.test</span><br><span class="line">    </span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass       http://localhost:888;</span><br><span class="line">        proxy_set_header Host      $host;</span><br><span class="line">        proxy_set_header X-Real-IP $remote_addr;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>访问 <a target="_blank" rel="noopener" href="http://my_proxy.test/">http://my_proxy.test</a><br><img src="/images/nginx/proxy-img_3.png" alt="img_3.png"></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">server: nginx/1.11.5</span><br><span class="line">date: Wed, 29 Dec 2021 07:32:22 GMT</span><br><span class="line">transfer-encoding: chunked</span><br><span class="line">connection: keep-alive</span><br></pre></td></tr></table></figure>
+
+<h4 id="常用配置项"><a href="#常用配置项" class="headerlink" title="常用配置项"></a>常用配置项</h4><ul>
+<li><p><code>proxy_pass</code></p>
+<p>  监听代理服务器的端口或套接字，以及将被反射到的URI的位置。端口可以用主机名或地址和端口的名称来表示</p>
+  <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">proxy_pass http:<span class="regexp">//</span>localhost:<span class="number">8000</span><span class="regexp">/uri/</span>;</span><br><span class="line"><span class="regexp">//</span> 或者</span><br><span class="line">proxy_pass http:<span class="regexp">//u</span>nix:<span class="regexp">/tmp/</span>backend.socket:<span class="regexp">/uri/</span>;</span><br></pre></td></tr></table></figure></li>
+<li><p><code>proxy_set_header</code></p>
+<p>重定义或添加一些请求头行，这些请求头行将被传输到代理服务器。作为值，可以使用文本、变量及其组合。</p>
+</li>
+<li><p><code>proxy_read_timeout</code></p>
+<p>定义从代理服务器读取响应的超时。超时时间只设置在两个连续的读操作之间，而不是整个响应的传输。如果代理服务器在此时间内没有传输任何内容，则连接将被关闭。默认 <code>60s</code></p>
+</li>
+<li><p><code>proxy_send_timeout</code></p>
+<p>设置将请求传输到代理服务器的超时时间。超时时间只设置在两个连续的写操作之间，而不是整个请求的传输。如果代理服务器在此时间内没有接收到任何信息，则连接将被关闭。默认 <code>60s</code>。</p>
+</li>
+<li><p><code>proxy_connect_timeout</code></p>
+<p>定义与代理服务器建立连接的超时时间。应该注意的是，这个超时通常不能超过75秒。默认 <code>60s</code>。</p>
+</li>
+<li><p><code>proxy_http_version</code></p>
+<p>设置代理使用的 HTTP 协议版本。默认情况下，使用 1.0版本。对于 keepalive 连接和 NTLM 身份验证，建议使用 1.1版本。</p>
+</li>
+</ul>
+<p>详细配置见：<a target="_blank" rel="noopener" href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html">http://nginx.org/en/docs/http/ngx_http_proxy_module.html</a></p>
 
                 <br>
                 <ul class="pager">
                     
                         <li class="previous">
-                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top"
-                               title="Composer 提示 Allowed memory size of bytes exhausted">&larr; 上一页</a>
+                            <a href="/2021/07/124fc284dddc/" data-toggle="tooltip" data-placement="top"
+                               title="PHP 中 Redis 常用操作（hash 类型）">&larr; 上一页</a>
                         </li>
                     
                     
                         <li class="next">
-                            <a href="/2020/12/e8478690d26b/" data-toggle="tooltip" data-placement="top"
-                               title="跨域资源共享（CORS）">下一页 &rarr;</a>
+                            <a href="/2021/05/9ad1242d5530/" data-toggle="tooltip" data-placement="top"
+                               title="php、mysql、redis 慢日志 slowlog">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -302,6 +368,36 @@
             </div>
             <!--目录-->
             
+    <div class="
+                col-lg-2 col-lg-offset-0
+                visible-lg-block
+                sidebar-container
+                catalog-container" id="catalog">
+        <div class="side-catalog">
+            <hr class="hidden-sm hidden-xs">
+            <h5>
+                <a class="catalog-toggle" href="#">目录</a>
+            </h5>
+            <ul class="catalog-body"></ul>
+        </div>
+    </div>
+
+    <script>
+        <!--目录固定-->
+        var hegiht = 270
+        
+        window.onscroll = function () {
+            var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
+            if (scrollt > hegiht) {
+                document.getElementById('catalog').style.position = "fixed";
+                document.getElementById('catalog').style.top = "20px";
+            } else {
+                document.getElementById('catalog').style.position = "absolute";
+                document.getElementById('catalog').style.top = "";
+            }
+        };
+    </script>
+
 
     <!-- async load function -->
     <script>
@@ -578,6 +674,50 @@
 </script>
 
 <!-- Side Catalog -->
+
+<script type="text/javascript">
+    function generateCatalog (selector) {
+        var P = $('div.post-container'),a,n,t,l,i,c;
+        a = P.find('h1,h2,h3,h4,h5,h6');
+        a.each(function () {
+            n = $(this).prop('tagName').toLowerCase();
+            i = "#"+$(this).prop('id');
+            t = $(this).text();
+            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
+            l = $('<li class="'+n+'_nav"></li>').append(c);
+            $(selector).append(l);
+        });
+        return true;
+    }
+
+    generateCatalog(".catalog-body");
+
+    // toggle side catalog
+    $(".catalog-toggle").click((function(e){
+        e.preventDefault();
+        $('.side-catalog').toggleClass("fold")
+    }))
+
+    /*
+     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
+     * Fork by Hux to support padding
+     */
+    async("/js/jquery.nav.js", function () {
+        $('.catalog-body').onePageNav({
+            currentClass: "active",
+            changeHash: !1,
+            easing: "swing",
+            filter: "",
+            scrollSpeed: 700,
+            scrollOffset: 0,
+            scrollThreshold: .2,
+            begin: null,
+            end: null,
+            scrollChange: null,
+            padding: 80
+        });
+    });
+</script>
 
 <!--搜索框-->
 <script>
