@@ -2,6 +2,15 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     
     <url>
+        <loc>https://suzhif.github.io/2021/05/7e5ce4197b09/</loc>
+        
+        <lastmod>2021-12-30</lastmod>
+        
+        <changefreq>monthly</changefreq>
+        <priority>0.6</priority>
+    </url>
+    
+    <url>
         <loc>https://suzhif.github.io/2021/05/8f50415f2752/</loc>
         
         <lastmod>2021-12-30</lastmod>
@@ -32,15 +41,6 @@
         <loc>https://suzhif.github.io/2020/12/e8478690d26b/</loc>
         
         <lastmod>2021-12-29</lastmod>
-        
-        <changefreq>monthly</changefreq>
-        <priority>0.6</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/2021/05/9ad1242d5530/</loc>
-        
-        <lastmod>2021-12-07</lastmod>
         
         <changefreq>monthly</changefreq>
         <priority>0.6</priority>
@@ -337,6 +337,13 @@
     </url>
     
     <url>
+        <loc>https://suzhif.github.io/tags/CORS/</loc>
+        <lastmod>2021-12-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
         <loc>https://suzhif.github.io/tags/mysql/</loc>
         <lastmod>2021-12-30</lastmod>
         <changefreq>weekly</changefreq>
@@ -345,13 +352,6 @@
     
     <url>
         <loc>https://suzhif.github.io/tags/slowlog/</loc>
-        <lastmod>2021-12-30</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/CORS/</loc>
         <lastmod>2021-12-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -375,6 +375,13 @@
     
     <url>
         <loc>https://suzhif.github.io/categories/Nginx/</loc>
+        <lastmod>2021-12-30</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/categories/%E8%BF%90%E7%BB%B4/</loc>
         <lastmod>2021-12-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -410,13 +417,6 @@
     
     <url>
         <loc>https://suzhif.github.io/categories/Redis/</loc>
-        <lastmod>2021-12-30</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/categories/%E5%85%B6%E4%BB%96/</loc>
         <lastmod>2021-12-30</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
