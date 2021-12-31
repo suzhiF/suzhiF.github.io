@@ -14,11 +14,11 @@
 
     <title>
         
-          php、mysql、redis 慢日志 slowlog - Suf 的博客
+          使用 WSL 安装环境时的问题记录 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/05/7e5ce4197b09/">
+    <link rel="canonical" href="https://suzhif.github.io/2021/12/27dbc8e7aedb/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -228,29 +228,23 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#php"
-                               title="php">php</a>
+                            <a class="tag" href="/tags/#笔记"
+                               title="笔记">笔记</a>
                         
-                            <a class="tag" href="/tags/#redis"
-                               title="redis">redis</a>
-                        
-                            <a class="tag" href="/tags/#mysql"
-                               title="mysql">mysql</a>
-                        
-                            <a class="tag" href="/tags/#slowlog"
-                               title="slowlog">slowlog</a>
+                            <a class="tag" href="/tags/#WSL"
+                               title="WSL">WSL</a>
                         
                     </div>
-                    <h1>php、mysql、redis 慢日志 slowlog</h1>
+                    <h1>使用 WSL 安装环境时的问题记录</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-05-07
+                        2021-12-31
                         </span>
                         <span class="fa fa-folder">
                             
-                                <a class="tag" href="/categories/#运维"
-                                   title="运维">运维</a>
+                                <a class="tag" href="/categories/#其他"
+                                   title="其他">其他</a>
                             
                         </span>
                     </div>
@@ -271,62 +265,44 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h2 id="MySQl-慢日志"><a href="#MySQl-慢日志" class="headerlink" title="MySQl 慢日志"></a>MySQl 慢日志</h2><p>查看是否开启慢查询日志功能：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span></span><br><span class="line">+---------------------+-----------------------------------+</span><br><span class="line">| Variable_name       | Value                             |</span><br><span class="line">+---------------------+-----------------------------------+</span><br><span class="line">| slow_query_log      | OFF                               |</span><br><span class="line">| slow_query_log_file | /var/lib/mysql/homestead-slow.log |</span><br><span class="line">+---------------------+-----------------------------------+</span><br><span class="line">2 rows in set (0.01 sec)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> show variables like <span class="string">&#x27;long_query_time&#x27;</span>;</span></span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| Variable_name   | Value     |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">| long_query_time | 10.000000 |</span><br><span class="line">+-----------------+-----------+</span><br><span class="line">1 row in set (0.03 sec)</span><br></pre></td></tr></table></figure>
+                <blockquote>
+<p>WLS 安装文档：<a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/install">https://docs.microsoft.com/zh-cn/windows/wsl/install</a></p>
+</blockquote>
+<h3 id="在-Microsoft-Store-下载-Ubuntu-时-Store-打不开"><a href="#在-Microsoft-Store-下载-Ubuntu-时-Store-打不开" class="headerlink" title="在 Microsoft Store 下载 Ubuntu 时 Store 打不开"></a>在 Microsoft Store 下载 Ubuntu 时 Store 打不开</h3><p>空白页或者是提示没有网络<br><img src="/images/%E5%85%B6%E4%BB%96/wsl-img.png" alt="img.png"></p>
+<ol>
+<li>检测网络是否配置了代理，关闭</li>
+<li>设置：<em>网络——属性——Internet 选项——连接——局域网设置——自动检测设置</em></li>
+</ol>
+<h3 id="安装-Ubuntu-后打开报错-0x80080005"><a href="#安装-Ubuntu-后打开报错-0x80080005" class="headerlink" title="安装 Ubuntu 后打开报错 0x80080005"></a>安装 Ubuntu 后打开报错 0x80080005</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Installing, this may take a few minutes...</span><br><span class="line">WslRegisterDistribution failed with error: 0x80080005</span><br><span class="line">Error: 0x80080005 ???????</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Press any key to continue...</span><br></pre></td></tr></table></figure>
 
-<ul>
-<li>slow_query_log：开启状态（on/off）</li>
-<li>slow_query_log_file：慢查询日志存放文件位置</li>
-<li>long_query_time：超过多长时间会记录</li>
-</ul>
-<p><strong>临时配置</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 开启慢日志</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> <span class="built_in">set</span> global slow_query_log=<span class="string">&#x27;ON&#x27;</span>;</span></span><br><span class="line">Query OK, 0 rows affected (0.01 sec)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 指定存放路径</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> <span class="built_in">set</span> global slow_query_log_file=<span class="string">&#x27;/var/lib/mysql/slow.log&#x27;</span></span></span><br><span class="line">    -&gt; ;</span><br><span class="line">Query OK, 0 rows affected (0.02 sec)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 配置超出时间</span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> <span class="built_in">set</span> global long_query_time=2;</span></span><br><span class="line">Query OK, 0 rows affected (0.00 sec)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">mysql&gt;</span><span class="bash"> show variables like <span class="string">&#x27;slow_query%&#x27;</span>;</span></span><br><span class="line">+---------------------+-------------------------+</span><br><span class="line">| Variable_name       | Value                   |</span><br><span class="line">+---------------------+-------------------------+</span><br><span class="line">| slow_query_log      | ON                      |</span><br><span class="line">| slow_query_log_file | /var/lib/mysql/slow.log |</span><br><span class="line">+---------------------+-------------------------+</span><br><span class="line">2 rows in set (0.00 sec)</span><br></pre></td></tr></table></figure>
-
-<p><strong>永久配置</strong></p>
-<p>修改 mysql 配置文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># Here you can see queries with especially long duration</span><br><span class="line">slow_query_log         = 1</span><br><span class="line">slow_query_log_file    = /var/log/mysql/mysql-slow.log</span><br><span class="line">long_query_time = 2</span><br></pre></td></tr></table></figure>
-<p>重启 mysql 完成。</p>
-<h2 id="Redis-慢日志"><a href="#Redis-慢日志" class="headerlink" title="Redis 慢日志"></a>Redis 慢日志</h2><p><strong>临时配置（当前会话）</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; config set slowlog-log-slower-than 10000</span><br><span class="line">OK</span><br><span class="line">127.0.0.1:6379&gt; config get slowlog-log-slower-than</span><br><span class="line">1) &quot;slowlog-log-slower-than&quot;</span><br><span class="line">2) &quot;10000&quot;</span><br></pre></td></tr></table></figure>
-
-<p><strong>永久配置</strong></p>
-<p>修改配置文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">################################## SLOW LOG ###################################</span><br><span class="line"># The following time is expressed in microseconds, so 1000000 is equivalent</span><br><span class="line"># to one second. Note that a negative number disables the slow log, while</span><br><span class="line"># a value of zero forces the logging of every command.</span><br><span class="line">slowlog-log-slower-than 10000</span><br><span class="line"></span><br><span class="line"># There is no limit to this length. Just be aware that it will consume memory.</span><br><span class="line"># You can reclaim memory used by the slow log with SLOWLOG RESET.</span><br><span class="line">slowlog-max-len 128</span><br></pre></td></tr></table></figure>
-
-<p><strong>查看慢查询日志</strong></p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">127.0.0.1:6379&gt; slowlog get</span><br><span class="line">1) 1) (integer) 4               # 唯一标识符</span><br><span class="line">   2) (integer) 1638858424      # 执行时系统时间戳</span><br><span class="line">   3) (integer) 5               # 执行时长（微妙）</span><br><span class="line">   4) 1) &quot;get&quot;                  # 命令</span><br><span class="line">      2) &quot;name&quot;</span><br><span class="line">   5) &quot;127.0.0.1:46102&quot;</span><br><span class="line">   6) &quot;&quot;</span><br></pre></td></tr></table></figure>
-
-<h2 id="PHP-慢日志"><a href="#PHP-慢日志" class="headerlink" title="PHP 慢日志"></a>PHP 慢日志</h2><p>在配置文件 <code>php-fpm.conf</code> 或者 <code>www.conf</code>, 查找 <code>slowlog</code> 。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">; The log file for slow requests</span><br><span class="line">; Default Value: not set</span><br><span class="line">; Note: slowlog is mandatory if request_slowlog_timeout is set</span><br><span class="line">slowlog = log/$pool.log.slow</span><br><span class="line"></span><br><span class="line">; The timeout for serving a single request after which a PHP backtrace will be</span><br><span class="line">; dumped to the &#x27;slowlog&#x27; file. A value of &#x27;0s&#x27; means &#x27;off&#x27;.</span><br><span class="line">; Available units: s(econds)(default), m(inutes), h(ours), or d(ays)</span><br><span class="line">; Default Value: 0</span><br><span class="line">request_slowlog_timeout = 1</span><br><span class="line"></span><br><span class="line">; Depth of slow log stack trace.</span><br><span class="line">; Default Value: 20</span><br><span class="line">request_slowlog_trace_depth = 20</span><br></pre></td></tr></table></figure>
-<p><code>设置的路径需要存在的路径，或提前手动创建</code></p>
-<p><strong>查看</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[07-Dec-2021 07:16:41]  [pool www] pid 6249</span><br><span class="line">script_filename = /home/vagrant/code/MeEdu/public/index.php</span><br><span class="line">[0x00007f0c4c61c420] Composer\Autoload\includeFile() /home/vagrant/code/MeEdu/vendor/composer/ClassLoader.php:322</span><br><span class="line">[0x00007f0c4c61c380] loadClass() unknown:0</span><br><span class="line">[0x00007f0c4c61c320] spl_autoload_call() unknown:0</span><br><span class="line">[0x00007ffe3c6eeb40] ???() /home/vagrant/code/MeEdu/public/index.php:55</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
+<p>管理员身份打开命令提示符，尝试重启 Linux 子系统的管理器：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc stop LxssManager</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc start LxssManager</span><br></pre></td></tr></table></figure>
+<p>然后查询确保状态是4，Running.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sc query LxssManager</span><br></pre></td></tr></table></figure>
+<p>再次尝试打开 <strong>Ubuntu</strong>，如果这次再次出现不同的错误，尝试卸载并重新安装该应用程序</p>
+<h3 id="修改-WLS-安装目录"><a href="#修改-WLS-安装目录" class="headerlink" title="修改 WLS 安装目录"></a>修改 WLS 安装目录</h3><p>在 <strong>Microsoft Store</strong> 安装的 <strong>Ubuntu</strong> 默认安装到了 C盘,下面把它修改到 D盘。</p>
+<p>运行管理员命令窗</p>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/basic-commands#list-installed-linux-distributions">查看所有分发版本</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">C:\WINDOWS\system32&gt;wsl -l -v</span><br><span class="line">  NAME                   STATE           VERSION</span><br><span class="line">* docker-desktop-data    Running         2</span><br><span class="line">  docker-desktop         Running         2</span><br><span class="line">  Ubuntu-20.04           Running         2</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/basic-commands#export-a-distribution-to-a-tar-file">导出分发版为 TAR 文件</a>到 D盘：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --export Ubuntu-20.04 d:\ubuntu20.04.tar</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/basic-commands#unregister-or-uninstall-a-linux-distribution">注销当前分发版</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --unregister Ubuntu-20.04</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://docs.microsoft.com/zh-cn/windows/wsl/basic-commands#import-a-new-distribution">导入并安装</a>：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wsl --import Ubuntu-20.04 d:\Ubuntu20.04 d:\ubuntu20.04.tar --version 2</span><br></pre></td></tr></table></figure>
+<p>设置默认登陆用户为安装时用户名：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ubuntu2004 config --default-user Username</span><br></pre></td></tr></table></figure>
 
 
 
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/05/8f50415f2752/" data-toggle="tooltip" data-placement="top"
-                               title="Nginx 反向代理">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top"
-                               title="Composer 提示 Allowed memory size of bytes exhausted">下一页 &rarr;</a>
+                            <a href="/2021/10/30fc9eddc78b/" data-toggle="tooltip" data-placement="top"
+                               title="Laravel 中优化 app.js 的大小">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
