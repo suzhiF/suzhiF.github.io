@@ -14,11 +14,11 @@
 
     <title>
         
-          MongoDB 地理空间 - Suf 的博客
+          Ubuntu 安装 RabbitMQ - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/08/8c38ef739811/">
+    <link rel="canonical" href="https://suzhif.github.io/2022/01/a50bfdd6f483/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -228,20 +228,20 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#MongoDB"
-                               title="MongoDB">MongoDB</a>
+                            <a class="tag" href="/tags/#RabbitMQ"
+                               title="RabbitMQ">RabbitMQ</a>
+                        
+                            <a class="tag" href="/tags/#消息队列"
+                               title="消息队列">消息队列</a>
                         
                     </div>
-                    <h1>MongoDB 地理空间</h1>
+                    <h1>Ubuntu 安装 RabbitMQ</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-08-06
+                        2022-01-11
                         </span>
                         <span class="fa fa-folder">
-                            
-                                <a class="tag" href="/categories/#MongoDB"
-                                   title="MongoDB">MongoDB</a>
                             
                         </span>
                     </div>
@@ -262,155 +262,44 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="GeoJSON-对象"><a href="#GeoJSON-对象" class="headerlink" title="GeoJSON 对象"></a>GeoJSON 对象</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&lt;field&gt;: &#123; </span><br><span class="line">    type: &lt;GeoJSON type&gt; ,      # 指定的 GeoJSON 类型 (Point、LineString、Polygon……)</span><br><span class="line">    coordinates: &lt;coordinates&gt;  # 指定对象坐标的字段 [&lt;longitude&gt;, &lt;latitude&gt; ]</span><br><span class="line">&#125;</span><br><span class="line">   </span><br><span class="line"><span class="meta">#</span><span class="bash"> 例：</span></span><br><span class="line">location: &#123;</span><br><span class="line">    type: &quot;Point&quot;,</span><br><span class="line">    coordinates: [ 116.408, 39.904]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="传统坐标对"><a href="#传统坐标对" class="headerlink" title="传统坐标对"></a>传统坐标对</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 数组型</span></span><br><span class="line">&lt;field&gt;: [ &lt;x&gt;, &lt;y&gt; ] </span><br><span class="line"><span class="meta">#</span><span class="bash"> 或</span></span><br><span class="line">&lt;field&gt;: [&lt;longitude&gt;, &lt;latitude&gt; ]</span><br><span class="line"><span class="meta">#</span><span class="bash"> 或 嵌入文档型</span></span><br><span class="line">&lt;field&gt;: &#123; &lt;field1&gt;: &lt;longitude&gt;, &lt;field2&gt;: &lt;latitude&gt; &#125;</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 要指定旧坐标对，数组优先于嵌入文档，因为某些语言不保证关联地图排序</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="地理空间索引"><a href="#地理空间索引" class="headerlink" title="地理空间索引"></a>地理空间索引</h3><blockquote>
-<p>2dsphere</p>
+                <blockquote>
+<p>参考官网文档：</p>
+<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/install-debian.html">https://www.rabbitmq.com/install-debian.html</a><br><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/install-debian.html#apt-quick-start-packagecloud">https://www.rabbitmq.com/install-debian.html#apt-quick-start-packagecloud</a></p>
 </blockquote>
-<p>2dsphere 索引支持在类地球体上计算几何图形的查询</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建 2dsphere 索引：</span></span><br><span class="line">db.collection.createIndex( &#123; &lt;location field&gt; : &quot;2dsphere&quot; &#125; )</span><br></pre></td></tr></table></figure>
+<h3 id="启用-apt-HTTPS-传输"><a href="#启用-apt-HTTPS-传输" class="headerlink" title="启用 apt HTTPS 传输"></a>启用 apt HTTPS 传输</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install apt-transport-https</span><br></pre></td></tr></table></figure>
 
-<p>其中 <code>&lt;location field&gt;</code> 是一个字段，其值为 GeoJSON 对象或传统坐标对</p>
-<blockquote>
-<p>2d</p>
-</blockquote>
-<p>2d索引支持在二维平面上计算几何的查询, 可以支持 $nearSphere 在球面上计算的查询。（适用于 MongoDB 2.2 及更早版本）</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">db.collection.createIndex( &#123; &lt;location field&gt; : &quot;2d&quot; &#125; )</span><br></pre></td></tr></table></figure>
-
-<p>其中 <code>&lt;location field&gt;</code> 是一个字段，其值为传统坐标对。</p>
-<h3 id="地理空间查询运算符"><a href="#地理空间查询运算符" class="headerlink" title="地理空间查询运算符"></a>地理空间查询运算符</h3><table>
-<thead>
-<tr>
-<th>名称</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>$geoIntersects</td>
-<td>选择与 GeoJSON 几何相交的几何。 2dsphere 索引支持 $geoIntersects。</td>
-</tr>
-<tr>
-<td>$geoWithin</td>
-<td>在边界GeoJSON 几何中选择几何。 2dsphere 和 2d 指标支持 $geoWithin。</td>
-</tr>
-<tr>
-<td>$near</td>
-<td>返回点附近的地理空间对象。需要地理空间索引。 2dsphere 和 2d 指标支持 $near。</td>
-</tr>
-<tr>
-<td>$nearSphere</td>
-<td>返回球体上某个点附近的地理空间对象。需要地理空间索引。 2dsphere 和 2d 指标支持 $nearSphere。</td>
-</tr>
-</tbody></table>
-<h3 id="地理空间聚合阶段"><a href="#地理空间聚合阶段" class="headerlink" title="地理空间聚合阶段"></a>地理空间聚合阶段</h3><blockquote>
-<p>$geoNear</p>
-</blockquote>
-<p>按离指定点最近到最远的顺序输出文档。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123; $geoNear: &#123; </span><br><span class="line">  &lt;geoNear options&gt; </span><br><span class="line">  &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<table>
-<thead>
-<tr>
-<th>字段</th>
-<th>类型</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>distanceField</td>
-<td>string</td>
-<td>包含计算距离的输出字段</td>
-</tr>
-<tr>
-<td>distanceMultiplier</td>
-<td>number</td>
-<td>可选的。乘以查询返回的所有距离的因子。例如，使用 distanceMultiplier 将球面查询返回的弧度乘以地球的半径来转换为公里</td>
-</tr>
-<tr>
-<td>includeLocs</td>
-<td>string</td>
-<td>可选的。这指定了标识用于计算距离的位置的输出字段。当位置字段包含多个位置时，此选项很有用</td>
-</tr>
-<tr>
-<td>key</td>
-<td></td>
-<td>可选的。指定计算距离时要使用的地理空间索引字段。如果您的集合具有多个2d和/或多个2dsphere 索引，则必须使用该key选项来指定要使用的索引字段路径</td>
-</tr>
-<tr>
-<td>maxDistance</td>
-<td>number</td>
-<td>可选的。到中心点的最大距离</td>
-</tr>
-<tr>
-<td>minDistance</td>
-<td>number</td>
-<td>可选的。到中心点的最小距离</td>
-</tr>
-<tr>
-<td>near</td>
-<td>GeoJSON 或 传统坐标对</td>
-<td>查找最近文档的点</td>
-</tr>
-<tr>
-<td>query</td>
-<td>document</td>
-<td>查询的匹配条件</td>
-</tr>
-<tr>
-<td>spherical</td>
-<td>boolean</td>
-<td>可选的。确定 MongoDB 如何计算两点之间的距离。<li><strong>true</strong>：MongoDB 使用 $nearSphere 语义并使用球面几何计算距离</li><li>**</td>
-</tr>
-<tr>
-<td>false**：MongoDB 使用 $near 语义：2dsphere 索引的球面几何和 2d 索引的平面几何</li></td>
-<td></td>
-<td></td>
-</tr>
-<tr>
-<td>uniqueDocs</td>
-<td>boolean</td>
-<td>可选的。如果此值为true，则查询会返回匹配的文档一次，即使文档的多个位置字段与查询匹配也是如此（<strong>2.6版后已弃用</strong>）</td>
-</tr>
-</tbody></table>
+<h3 id="添加存储库签名密钥"><a href="#添加存储库签名密钥" class="headerlink" title="添加存储库签名密钥"></a>添加存储库签名密钥</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Team RabbitMQ&#x27;s main signing key</span></span></span><br><span class="line">curl -1sLf &quot;https://keys.openpgp.org/vks/v1/by-fingerprint/0A9AF2115F4687BD29803A206B73A36E6026DFCA&quot; | sudo gpg --dearmor | sudo tee /usr/share/keyrings/com.rabbitmq.team.gpg &gt; /dev/null</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Launchpad PPA that provides modern Erlang releases</span></span></span><br><span class="line">curl -1sLf &quot;https://keyserver.ubuntu.com/pks/lookup?op=get&amp;search=0xf77f1eda57ebb1cc&quot; | sudo gpg --dearmor | sudo tee /usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg &gt; /dev/null</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># PackageCloud RabbitMQ repository</span></span></span><br><span class="line">curl -1sLf &quot;https://packagecloud.io/rabbitmq/rabbitmq-server/gpgkey&quot; | sudo gpg --dearmor | sudo tee /usr/share/keyrings/io.packagecloud.rabbitmq.gpg &gt; /dev/null</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/signatures.html">签名指南</a></p>
+<h3 id="添加源列表文件"><a href="#添加源列表文件" class="headerlink" title="添加源列表文件"></a>添加源列表文件</h3><p>为了建立一个恰当的存储库来提供正确的包，需要做一些决策。一是确定发行版名称。它通常与使用的 Debian 或 Ubuntu 版本相匹配<br>PackageCloud 上 RabbitMQ apt 存储库中应该使用的 OS 版本和发行版名称:</p>
 <ul>
-<li>只能使用$geoNear作为管道的第一阶段。</li>
-<li>必须包含 <code>distanceField</code> 字段。</li>
-<li><code>$geoNear</code> 需要地理空间索引，如果集合中有多个地理空间索引，请使用 keys参数指定要在计算中使用的字段。如果您只有一个地理空间索引，则$geoNear隐式使用索引字段进行计算。</li>
-<li>不能在 <code>$geoNear</code> 阶段的查询字段中指定 $near 谓词</li>
-<li>视图不支持 geoNear 操作</li>
-<li>从 4.2 版开始，$geoNear 不再有 100 个文档的默认限制</li>
+<li><code>focal</code> —— Ubuntu 20.04</li>
+<li><code>bionic</code> —— Ubuntu 18.04</li>
+<li><code>buster</code> —— Debian Buster</li>
+<li><code>buster</code> —— Debian Bullseye</li>
+<li><code>buster</code> —— Debian Sid</li>
 </ul>
-<blockquote>
-<p>示例 1：</p>
-</blockquote>
-<p>查找距离 [ -73.99279 , 40.719296 ] 点最小距离 2m ,并且 category 是 Parks 的所有文档</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">db.citys.aggregate([</span><br><span class="line">    &#123;</span><br><span class="line">        $geoNear: &#123;</span><br><span class="line">            near: &#123;</span><br><span class="line">                type: &quot;Point&quot;,</span><br><span class="line">                coordinates: [116.408, 39.904]</span><br><span class="line">            &#125;,</span><br><span class="line">            distanceMultiplier: 1/1000,           # 计算出的距离按公里显示</span><br><span class="line">            distanceField: &quot;dist.calculated&quot;,</span><br><span class="line">            includeLocs: &quot;dist.location&quot;,</span><br><span class="line">            minDistance: 2,</span><br><span class="line">            spherical: true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#### 结果 #####</span></span></span><br><span class="line">// 1</span><br><span class="line">&#123;</span><br><span class="line">    &quot;_id&quot;: ObjectId(&quot;610b931fd2620000ac000144&quot;),</span><br><span class="line">    &quot;name&quot;: &quot;tianjin&quot;,</span><br><span class="line">    &quot;location&quot;: &#123;</span><br><span class="line">        &quot;type&quot;: &quot;Point&quot;,</span><br><span class="line">        &quot;coordinates&quot;: [</span><br><span class="line">            117.246,</span><br><span class="line">            39.117</span><br><span class="line">        ]</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;dist&quot;: &#123;</span><br><span class="line">        &quot;calculated&quot;: 113.378060984206,       # 计算距离的字段</span><br><span class="line">        &quot;location&quot;: &#123;                         # 计算中使用的位置的字段</span><br><span class="line">            &quot;type&quot;: &quot;Point&quot;,</span><br><span class="line">            &quot;coordinates&quot;: [</span><br><span class="line">                117.246,</span><br><span class="line">                39.117</span><br><span class="line">            ]</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/apt/sources.list.d/rabbitmq.list &lt;&lt;EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Provides modern Erlang/OTP releases</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># &quot;bionic&quot; as distribution name should work for any reasonably recent Ubuntu or Debian release.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># See the release to distribution mapping table in RabbitMQ doc guides to learn more.</span></span></span><br><span class="line">deb [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu bionic main</span><br><span class="line">deb-src [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu bionic main</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Provides RabbitMQ</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Replace $distribution with the name of the Ubuntu release used.</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># On Debian, &quot;deb/ubuntu&quot; should be replaced with &quot;deb/debian&quot;</span></span></span><br><span class="line">deb [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ $distribution main</span><br><span class="line">deb-src [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ $distribution main</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<p>其中 <code>$distribution</code> 修改为 Debian 或 Ubuntu 发行版的名称。</p>
+<p>例：Ubuntu 20.04 中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sudo tee /etc/apt/sources.list.d/rabbitmq.list &lt;&lt;EOF</span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Provides modern Erlang/OTP releases</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># &quot;bionic&quot; as distribution name should work for any reasonably recent Ubuntu or Debian release.</span></span></span><br><span class="line">deb [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu bionic main</span><br><span class="line">deb-src [signed-by=/usr/share/keyrings/net.launchpad.ppa.rabbitmq.erlang.gpg] http://ppa.launchpad.net/rabbitmq/rabbitmq-erlang/ubuntu bionic main</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Provides RabbitMQ</span></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#</span></span></span><br><span class="line">deb [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main</span><br><span class="line">deb-src [signed-by=/usr/share/keyrings/io.packagecloud.rabbitmq.gpg] https://packagecloud.io/rabbitmq/rabbitmq-server/ubuntu/ focal main</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
 
-<blockquote>
-<p>示例2：一个集合有多个地理空间索引</p>
-</blockquote>
-<p>places 集合中 <code>location</code> 字段有一个 2dsphere 索引， <code>legacy</code>字段有一个 2d 索引 如下：</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 3,</span><br><span class="line">   &quot;name&quot; : &quot;Polo Grounds&quot;,</span><br><span class="line">   &quot;location&quot;: &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [ -73.9375, 40.8303 ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;legacy&quot; : [ -73.9375, 40.8303 ],</span><br><span class="line">   &quot;category&quot; : &quot;Stadiums&quot;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="更新-apt"><a href="#更新-apt" class="headerlink" title="更新 apt"></a>更新 apt</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get update -y</span><br></pre></td></tr></table></figure>
 
-<p>使用 <code>key</code> 选项来指定聚集应该使用 <code>location</code> 的字段值的 <code>$geoNear</code> 操作，而不是 <code>legacy</code> 字段值</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">db.places.aggregate([</span><br><span class="line">   &#123;</span><br><span class="line">     $geoNear: &#123;</span><br><span class="line">        near: &#123; type: &quot;Point&quot;, coordinates: [ -73.98142 , 40.71782 ] &#125;,</span><br><span class="line">        key: &quot;location&quot;,</span><br><span class="line">        distanceField: &quot;dist.calculated&quot;,</span><br><span class="line">        query: &#123; &quot;category&quot;: &quot;Parks&quot; &#125;</span><br><span class="line">     &#125;</span><br><span class="line">   &#125;,</span><br><span class="line">   &#123; $limit: 5 &#125;</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"><span class="comment">#### 结果 #####</span></span></span><br><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 8,</span><br><span class="line">   &quot;name&quot; : &quot;Sara D. Roosevelt Park&quot;,</span><br><span class="line">   &quot;location&quot; : &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [</span><br><span class="line">         -73.9928,</span><br><span class="line">         40.7193</span><br><span class="line">      ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;category&quot; : &quot;Parks&quot;,</span><br><span class="line">   &quot;dist&quot; : &#123;</span><br><span class="line">      &quot;calculated&quot; : 974.175764916902</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#123;</span><br><span class="line">   &quot;_id&quot; : 1,</span><br><span class="line">   &quot;name&quot; : &quot;Central Park&quot;,</span><br><span class="line">   &quot;location&quot; : &#123;</span><br><span class="line">      &quot;type&quot; : &quot;Point&quot;,</span><br><span class="line">      &quot;coordinates&quot; : [</span><br><span class="line">         -73.97,</span><br><span class="line">         40.77</span><br><span class="line">      ]</span><br><span class="line">   &#125;,</span><br><span class="line">   &quot;legacy&quot; : [</span><br><span class="line">      -73.97,</span><br><span class="line">      40.77</span><br><span class="line">   ],</span><br><span class="line">   &quot;category&quot; : &quot;Parks&quot;,</span><br><span class="line">   &quot;dist&quot; : &#123;</span><br><span class="line">      &quot;calculated&quot; : 5887.92792958097</span><br><span class="line">   &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="安装-Erlang"><a href="#安装-Erlang" class="headerlink" title="安装 Erlang"></a>安装 Erlang</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"><span class="comment"># Install Erlang packages</span></span></span><br><span class="line">sudo apt-get install -y erlang-base \</span><br><span class="line">                        erlang-asn1 erlang-crypto erlang-eldap erlang-ftp erlang-inets \</span><br><span class="line">                        erlang-mnesia erlang-os-mon erlang-parsetools erlang-public-key \</span><br><span class="line">                        erlang-runtime-tools erlang-snmp erlang-ssl \</span><br><span class="line">                        erlang-syntax-tools erlang-tftp erlang-tools erlang-xmerl</span><br></pre></td></tr></table></figure>
 
-<h3 id="案例"><a href="#案例" class="headerlink" title="案例"></a>案例</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建集合</span></span><br><span class="line">db.provinces.insertMany([</span><br><span class="line">  &#123; name: &quot;北京&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [116.41667, 39.91667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;山东&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [117.000923, 36.675807] &#125;&#125;,</span><br><span class="line">  &#123; name: &quot;河北&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [115.48333, 38.03333] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;吉林&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [127.63333, 47.75000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;辽宁&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [123.38333, 41.80000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;新疆&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [87.68333, 43.76667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;广东&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [113.23333, 23.16667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;江西&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [115.90000, 28.68333] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;海南&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [110.35000, 20.01667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;上海&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [121.55333, 31.20000] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;重庆&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [106.45000, 29.56667] &#125; &#125;,</span><br><span class="line">  &#123; name: &quot;天津&quot;, location: &#123; type: &quot;Point&quot;, coordinates: [117.20000, 39.13333] &#125; &#125;,</span><br><span class="line">])</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 创建地理空间索引</span></span><br><span class="line">db.provinces.createIndex(&#123;location: &quot;2dsphere&quot;&#125;)</span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> [120.39629, 36.30744]</span></span><br><span class="line">db.provinces.findOne(&#123;</span><br><span class="line">  geometry: &#123;</span><br><span class="line">    $geoIntersects: &#123;</span><br><span class="line">      $geometry: &#123; type: &quot;Point&quot;, coordinates: [117.000923, 36.675807] &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="安装-rabbitmq-server-及其依赖"><a href="#安装-rabbitmq-server-及其依赖" class="headerlink" title="安装 rabbitmq-server 及其依赖"></a>安装 rabbitmq-server 及其依赖</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install rabbitmq-server -y --fix-missing</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动测试"><a href="#启动测试" class="headerlink" title="启动测试"></a>启动测试</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo service rabbitmq-server start</span><br></pre></td></tr></table></figure>
+
+<p><code>* Starting message broker rabbitmq-server      [ OK ]</code></p>
 
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/08/41e3cb957215/" data-toggle="tooltip" data-placement="top"
-                               title="MySQL 索引失效情况">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2021/08/b4b49ce1fe51/" data-toggle="tooltip" data-placement="top"
-                               title="MongoDB 运算符">下一页 &rarr;</a>
+                            <a href="/2021/12/27dbc8e7aedb/" data-toggle="tooltip" data-placement="top"
+                               title="使用 WSL 安装环境时的问题记录">下一页 &rarr;</a>
                         </li>
                     
                 </ul>

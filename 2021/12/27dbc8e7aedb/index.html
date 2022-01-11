@@ -196,28 +196,12 @@
         margin-right: 10px;
     }
     
-    .intro-header {
-        background-color: rgba(0,0,0,0);
+    header.intro-header {
+        background-image: url('/images/其他/wsl-banner.png')
     }
-    .post-heading {
-        color: #404040 !important;
-        padding: 100px 0 50px !important;
-    }
-    .navbar-custom .navbar-brand,
-    .navbar-custom .nav li a {
-        color: #404040;
-    }
-    #huxblog_navbar a:hover,
-    .navbar>.container-fluid .navbar-brand:hover {
-        color: black;
-    }
-    .post-heading .tags a {
-        border: 1px solid #bfbfbf;
-        color: #bfbfbf;
-    }
-    .post-heading .tags a:hover {
-        border: 1px solid #337ab7;
-        color: #337ab7;
+    .post-meta span,
+    .post-meta span a{
+        color: white;
     }
     
 </style>
@@ -299,6 +283,11 @@
                 <br>
                 <ul class="pager">
                     
+                        <li class="previous">
+                            <a href="/2022/01/a50bfdd6f483/" data-toggle="tooltip" data-placement="top"
+                               title="Ubuntu 安装 RabbitMQ">&larr; 上一页</a>
+                        </li>
+                    
                     
                         <li class="next">
                             <a href="/2021/10/30fc9eddc78b/" data-toggle="tooltip" data-placement="top"
@@ -348,6 +337,8 @@
     <script>
         <!--目录固定-->
         var hegiht = 270
+        
+            hegiht = 400
         
         window.onscroll = function () {
             var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
@@ -444,6 +435,12 @@
                             
                                 <a class="tag" href="/tags/#Composer"
                                    title="Composer">Composer</a>
+                            
+                                <a class="tag" href="/tags/#RabbitMQ"
+                                   title="RabbitMQ">RabbitMQ</a>
+                            
+                                <a class="tag" href="/tags/#消息队列"
+                                   title="消息队列">消息队列</a>
                             
                                 <a class="tag" href="/tags/#nginx"
                                    title="nginx">nginx</a>
@@ -553,7 +550,7 @@
 
                 </ul>
                 <p class="copyright text-muted">
-                    Copyright &copy; Think aloud 2021 
+                    Copyright &copy; Think aloud 2022 
                     <br>
                     Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a>
                     <span style="display: inline-block; margin: 0 5px;">
