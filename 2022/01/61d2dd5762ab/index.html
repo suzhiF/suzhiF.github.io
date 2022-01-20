@@ -14,11 +14,11 @@
 
     <title>
         
-          跨域资源共享（CORS） - Suf 的博客
+          RabbitMQ - 路由模式 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2020/12/e8478690d26b/">
+    <link rel="canonical" href="https://suzhif.github.io/2022/01/61d2dd5762ab/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -228,23 +228,23 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#笔记"
-                               title="笔记">笔记</a>
+                            <a class="tag" href="/tags/#RabbitMQ"
+                               title="RabbitMQ">RabbitMQ</a>
                         
-                            <a class="tag" href="/tags/#CORS"
-                               title="CORS">CORS</a>
+                            <a class="tag" href="/tags/#消息队列"
+                               title="消息队列">消息队列</a>
                         
                     </div>
-                    <h1>跨域资源共享（CORS）</h1>
+                    <h1>RabbitMQ - 路由模式</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2020-12-28
+                        2022-01-19
                         </span>
                         <span class="fa fa-folder">
                             
-                                <a class="tag" href="/categories/#网络"
-                                   title="网络">网络</a>
+                                <a class="tag" href="/categories/#消息队列"
+                                   title="消息队列">消息队列</a>
                             
                         </span>
                     </div>
@@ -265,109 +265,23 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <h3 id="什么是跨域资源共享（CORS）"><a href="#什么是跨域资源共享（CORS）" class="headerlink" title="什么是跨域资源共享（CORS）"></a>什么是跨域资源共享（CORS）</h3><p>跨域资源共享是一种基于 HTTP 头的机制，该机制通过允许服务器标示除了自己以外的其他 <code>origin</code> (域、协议和端口)，浏览器可以访问加载这些资源。</p>
-<p>跨域资源共享还通过一种机制来检查服务器是否允许要发送真实请求，该机制通过浏览器发送一个到服务器托管的跨域源资源的 <code>预检</code> 请求。<code>预检</code> 中浏览器发送的头中标示有 HTTP 方法和真实请求中会用到的头。</p>
-<blockquote>
-<p>在 <a target="_blank" rel="noopener" href="http://domain-a.com/">http://domain-a.com</a> 页面中对 <a target="_blank" rel="noopener" href="https://domain-b.com/">https://domain-b.com</a> 发送一个请求</p>
-</blockquote>
-<p>跨域资源共享标准新增一组 HTTP 首部字段，允许服务器声明哪些源站通过浏览器有权限访问哪些资源。另外，对于那些可能对服务器数据产生副作用的 HTTP 方法（ <code>GET</code> 以外的 HTTP 请求，或者搭配某些 MIME类型 的 <code>POST</code> 请求），浏览器必须首先使用 <code>OPTIONS</code> 方法发起一个预检请求(preflight request)，获知服务端是否允许该跨源请求。服务器确认允许之后，才发起实际的 HTTP 请求。</p>
-<h3 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h3><h4 id="简单请求"><a href="#简单请求" class="headerlink" title="简单请求"></a>简单请求</h4><p>不会触发 <code>CORS 预检请求</code>。若请求满足以下条件，则视为“简单请求”：</p>
-<ul>
-<li>使用 <code>GET</code>、<code>HEAD</code>、<code>POST</code>。</li>
-<li>除了类用户代理自动设置的首部字段（Connection、User-Agent）和在 <code>Fetch</code> 规范中定义为 禁用首部名称 的其他首部，允许人为设置的字段为 <code>Fetch</code> 规范定义的对 <code>CORS</code> 安全的首部字段集合：<ul>
-<li>Accept</li>
-<li>Accept-Language</li>
-<li>Content-Language</li>
-<li>Content-Type</li>
-</ul>
-</li>
-<li>Content-Type 的值仅限于下列三者之一：<ul>
-<li>text/plain</li>
-<li>multipart/form-data</li>
-<li>application/x-www-form-urlencodedvar</li>
-</ul>
-</li>
-<li>请求中的任意 <code>XMLHttpRequest</code> 对象均没有注册任何事件监听器；<code>XMLHttpRequest</code> 对象可以使用 <code>XMLHttpRequest.upload</code> 属性访问</li>
-<li>请求中没有使用 <code>ReadableStream</code> 对象。</li>
-</ul>
-<p><strong>测试一个简单请求：</strong></p>
-<ul>
-<li>客户端 <code>http://test-a.test</code> ：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
-<li>服务端 <code>http://test-b.test</code>：响应头增加: <code>Access-Control-Allow-Origin: *</code></li>
-</ul>
-<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_1.png" alt="请求标头"><br><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_2.png" alt="响应表头">  </p>
-<p>对于<strong>简单请求</strong>，只需在服务器响应中添加 <code>Access-Control-Allow-Origin: *</code>，可以被任意外域访问。</p>
-<h4 id="预检请求-浏览器自动发送"><a href="#预检请求-浏览器自动发送" class="headerlink" title="预检请求 (浏览器自动发送)"></a>预检请求 (浏览器自动发送)</h4><p>用于检查服务器是否支持 CORS 即跨域资源共享，使用 <code>OPTIONS</code> 方法发起一个预检请求到服务器。</p>
-<p>一般请求头部会包含: <code>Access-Control-Allow-Method</code> 、<code>Access-Control-Allow-Headers</code>、<code>Origin</code></p>
-<p><strong>测试</strong></p>
-<ul>
-<li>客户端：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.setRequestHeader(<span class="string">&#x27;Content-Type&#x27;</span>, <span class="string">&#x27;application/xml&#x27;</span>); <span class="comment">// 增加 首部字段</span></span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>如果现在不修改服务端代码，会怎么样？</p>
-<p>控制台报错：Access to XMLHttpRequest at ‘<a target="_blank" rel="noopener" href="http://test-b.test/test-cors&#39;">http://test-b.test/test-cors&#39;</a> from origin ‘<a target="_blank" rel="noopener" href="http://test-a.test&/#39;">http://test-a.test&#39;</a> has been blocked by CORS policy: Request header field content-type is not allowed by Access-Control-Allow-Headers in preflight response.</p>
-<p>预检请求的响应 Access-Control-Allow-Headers 中不允许请求头部有 Content-type 字段</p>
-</blockquote>
-<ul>
-<li><p>服务端：</p>
-<p>需再在响应头部增加 <code>Access-Control-Allow-Headers: Content-type</code></p>
-<p>额外: </p>
-<ul>
-<li><code>Access-Control-Allow-Methods</code>：服务器允许客户端使用什么方法发起请求</li>
-<li><code>Access-Control-Max-Age</code>：响应的有效时间内浏览器不需要为同一请求再发送预检请求。</li>
-</ul>
-</li>
-</ul>
-<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_3.png" alt="OPTIONS 请求标头"><br><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_4.png" alt="OPTIONS 响应标头"></p>
-<blockquote>
-<p><strong>注意：</strong></p>
-<p>预检请求的成功仅限于 200~299 状态，其他状态会导致不会被共享或使 CORS 预检请求失败</p>
-</blockquote>
-<h4 id="附带身份凭证的请求"><a href="#附带身份凭证的请求" class="headerlink" title="附带身份凭证的请求"></a>附带身份凭证的请求</h4><blockquote>
-<p>当发出跨源请求时，第三方 cookie 策略仍将适用</p>
-</blockquote>
-<p><strong>测试：</strong></p>
-<ul>
-<li>客户端：<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> xhr = <span class="keyword">new</span> XMLHttpRequest();</span><br><span class="line"><span class="keyword">var</span> url = <span class="string">&#x27;http://test-b.test/test-cors&#x27;</span>;</span><br><span class="line">xhr.open(<span class="string">&#x27;post&#x27;</span>, url);</span><br><span class="line">xhr.withCredentials = <span class="literal">true</span>;     <span class="comment">// 发送凭证信息</span></span><br><span class="line">xhr.send();</span><br></pre></td></tr></table></figure></li>
-</ul>
-<blockquote>
-<p>不修改服务端的情况下发送请求尝试</p>
-<p>控制台报错：The value of the ‘Access-Control-Allow-Origin’ header in the response must not be the wildcard ‘*’ when the request’s credentials mode is ‘include’. The credentials mode of requests initiated by the XMLHttpRequest is controlled by the withCredentials attribute.</p>
-<p>意思大体就是当请求附带凭证时响应中 <code>Access-Control-Allow-Origin</code> 的值不能是 <code>*</code> ，而且还告诉说 <code>XMLHttpRequest</code> 发起带身份凭据的请求是 <code>withCredentials</code> 属性控制的。</p>
-</blockquote>
-<ul>
-<li>服务端：<br>响应头部修改 <code>Access-Control-Allow-Origin: http://test-a.test</code>，并且还需增加 <code>Access-Control-Allow-Credentials: true</code>。</li>
-</ul>
-<p><img src="/images/%E7%BD%91%E7%BB%9C/cors-img_5.png" alt="响应标头"></p>
-<blockquote>
-<p><strong>注意：</strong></p>
-<p>在响应附带身份凭证的请求时：服务器不能将 <code>Access-Control-Allow-Origin</code> 、<code>Access-Control-Allow-Headers</code> 、<code>Access-Control-Allow-Methods</code> 的值设置为 <code>*</code> 。</p>
-</blockquote>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><h4 id="HTTP-响应头部字段"><a href="#HTTP-响应头部字段" class="headerlink" title="HTTP 响应头部字段"></a>HTTP 响应头部字段</h4><ul>
-<li>Access-Control-Allow-Origin：允许访问该资源的外域 URI，如果值为具体域名，则在响应首部中 <code>Vary</code> 字段值必须包含 <code>Origin</code></li>
-<li>Access-Control-Allow-Headers：请求所允许使用的 HTTP 方法</li>
-<li>Access-Control-Allow-Methods：求中允许携带的首部字段</li>
-<li>Access-Control-Max-Age：缓存预检请求结果</li>
-<li>Access-Control-Allow-Credentials：决定请求是否可以使用 credentials</li>
-<li>Access-Control-Expose-Headers：控制 <code>XMLHttpRequest</code> 对象的 <code>getResponseHeader()</code> 方法获得除基本响应头（Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma）以外的响应头。</li>
-</ul>
-<br>
-<br>
+                <p><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq-routing-img_1.png"></p>
+<h4 id="生产者"><a href="#生产者" class="headerlink" title="生产者"></a>生产者</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">&#x27;/vendor/autoload.php&#x27;</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Connection</span>\<span class="title">AMQPStreamConnection</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Message</span>\<span class="title">AMQPMessage</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$connection</span> = <span class="keyword">new</span> AMQPStreamConnection(<span class="string">&#x27;localhost&#x27;</span>, <span class="number">5672</span>, <span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>);</span><br><span class="line"><span class="variable">$channel</span> = <span class="variable">$connection</span>-&gt;channel();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建交换机 类型：direct、topic、headers 和 fanout</span></span><br><span class="line"><span class="variable">$exchange</span> = <span class="string">&#x27;direct_exchange&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;exchange_declare(<span class="variable">$exchange</span>, <span class="string">&#x27;direct&#x27;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 级别 &#x27;info&#x27;、&#x27;warning&#x27;、&#x27;error&#x27;</span></span><br><span class="line"><span class="variable">$severity</span> = <span class="keyword">isset</span>(<span class="variable">$argv</span>[<span class="number">1</span>]) &amp;&amp; !<span class="keyword">empty</span>(<span class="variable">$argv</span>[<span class="number">1</span>]) ? <span class="variable">$argv</span>[<span class="number">1</span>] : <span class="string">&#x27;info&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$data</span> = implode(<span class="string">&#x27; &#x27;</span>, array_slice(<span class="variable">$argv</span>, <span class="number">2</span>));</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$data</span>)) <span class="variable">$data</span> = <span class="string">&#x27;Hello World!!&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$msg</span> = <span class="keyword">new</span> AMQPMessage(<span class="variable">$data</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 设置路由  $severity</span></span><br><span class="line"><span class="variable">$channel</span>-&gt;basic_publish(<span class="variable">$msg</span>, <span class="variable">$exchange</span>, <span class="variable">$severity</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot; [x] 发送 &quot;</span>,<span class="variable">$severity</span>,<span class="string">&#x27;:&#x27;</span>,<span class="variable">$data</span>,<span class="string">&quot; \n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$channel</span>-&gt;close();</span><br><span class="line"><span class="variable">$connection</span>-&gt;close();</span><br></pre></td></tr></table></figure>
 
-<p>参见：<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/CORS">跨域资源共享</a> 、 <a target="_blank" rel="noopener" href="https://fetch.spec.whatwg.org/#http-cors-protocol">https://fetch.spec.whatwg.org/#http-cors-protocol</a></p>
+<h4 id="消费者"><a href="#消费者" class="headerlink" title="消费者"></a>消费者</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="keyword">__DIR__</span> . <span class="string">&#x27;/vendor/autoload.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Connection</span>\<span class="title">AMQPStreamConnection</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$connection</span> = <span class="keyword">new</span> AMQPStreamConnection(<span class="string">&#x27;localhost&#x27;</span>, <span class="number">5672</span>, <span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>);</span><br><span class="line"><span class="variable">$channel</span> = <span class="variable">$connection</span>-&gt;channel();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建交换机 </span></span><br><span class="line"><span class="variable">$exchange</span> = <span class="string">&#x27;direct_exchange&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;exchange_declare(<span class="variable">$exchange</span>, <span class="string">&#x27;direct&#x27;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="comment">// 创建随机队列</span></span><br><span class="line"><span class="keyword">list</span>(<span class="variable">$queue_name</span>, ,) = <span class="variable">$channel</span>-&gt;queue_declare(<span class="string">&quot;&quot;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$severities</span> = array_slice(<span class="variable">$argv</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">empty</span>(<span class="variable">$severities</span> )) &#123;</span><br><span class="line">    file_put_contents(<span class="string">&#x27;php://s  tderr&#x27;</span>, <span class="string">&quot;Usage: <span class="subst">$argv</span>[0] [info] [warning] [error]\n&quot;</span>);</span><br><span class="line">    <span class="keyword">exit</span>(<span class="number">1</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 为每个级别创建新绑定</span></span><br><span class="line"><span class="keyword">foreach</span>(<span class="variable">$severities</span> <span class="keyword">as</span> <span class="variable">$severity</span>) &#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@pararm</span>1 queue 队列名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@pararm</span>2 exchange 交换机名称</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@pararm</span>3 routing_key 路由 key (fanout 模式没有效果！)</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="variable">$channel</span>-&gt;queue_bind(<span class="variable">$queue_name</span>, <span class="variable">$exchange</span>, <span class="variable">$severity</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$queue_name</span>, <span class="string">&#x27; 绑定 routingKey：&#x27;</span>, <span class="variable">$severity</span>, <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27; [*] Waiting for logs. To exit press CTRL+C&#x27;</span>, <span class="string">&quot;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$callback</span> = <span class="function"><span class="keyword">function</span>(<span class="params"><span class="variable">$msg</span></span>)</span>&#123;</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27; [x] &#x27;</span>,<span class="variable">$msg</span>-&gt;delivery_info[<span class="string">&#x27;routing_key&#x27;</span>], <span class="string">&#x27;:&#x27;</span>, <span class="variable">$msg</span>-&gt;body, <span class="string">&quot;\n&quot;</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable">$channel</span>-&gt;basic_consume(<span class="variable">$queue_name</span>, <span class="string">&#x27;&#x27;</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="variable">$callback</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">while</span>(count(<span class="variable">$channel</span>-&gt;callbacks)) &#123;</span><br><span class="line">    <span class="variable">$channel</span>-&gt;wait();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$channel</span>-&gt;close();</span><br><span class="line"><span class="variable">$connection</span>-&gt;close();</span><br></pre></td></tr></table></figure>
 
+<h4 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&gt;php emit_log_direct.php error <span class="string">&#x27;发生一个错误&#x27;</span></span><br><span class="line"> [x] 发送 error:<span class="string">&#x27;发生一个错误&#x27;</span></span><br><span class="line"></span><br><span class="line">&gt;php emit_log_direct.php info <span class="string">&#x27;Hello world!&#x27;</span></span><br><span class="line"> [x] 发送 info:<span class="string">&#x27;Hello world!&#x27;</span></span><br><span class="line"></span><br><span class="line">&gt;php emit_log_direct.php warning <span class="string">&#x27;警告！警告&#x27;</span></span><br><span class="line"> [x] 发送 warning:<span class="string">&#x27;警告！警告&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;php receive_logs_direct.php error warning</span><br><span class="line">amq.gen-Pl1yQBt6tjp-zCzNoucYXA 绑定 routingKey：error</span><br><span class="line">amq.gen-Pl1yQBt6tjp-zCzNoucYXA 绑定 routingKey：warning</span><br><span class="line"> [*] Waiting <span class="keyword">for</span> logs. To <span class="built_in">exit</span> press CTRL+C</span><br><span class="line"> [x] error:<span class="string">&#x27;发生一个错误&#x27;</span></span><br><span class="line"> [x] warning:<span class="string">&#x27;警告！警告&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt;php receive_logs_direct.php info warning</span><br><span class="line">amq.gen-SFe2hF_A7i9fjD5ynFUW9A 绑定 routingKey：info</span><br><span class="line">amq.gen-SFe2hF_A7i9fjD5ynFUW9A 绑定 routingKey：warning</span><br><span class="line"> [*] Waiting <span class="keyword">for</span> logs. To <span class="built_in">exit</span> press CTRL+C</span><br><span class="line"> [x] info:<span class="string">&#x27;Hello world!&#x27;</span></span><br><span class="line"> [x] warning:<span class="string">&#x27;警告！警告&#x27;</span></span><br></pre></td></tr></table></figure>
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/01/cbc8329bad3b/" data-toggle="tooltip" data-placement="top"
-                               title="Sql 语句编写规范">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2020/12/f659e8d93e88/" data-toggle="tooltip" data-placement="top"
-                               title="什么是 CSRF">下一页 &rarr;</a>
+                            <a href="/2022/01/923b4f5b62dd/" data-toggle="tooltip" data-placement="top"
+                               title="RabbitMQ-发布/订阅模式">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -396,36 +310,6 @@
             </div>
             <!--目录-->
             
-    <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container" id="catalog">
-        <div class="side-catalog">
-            <hr class="hidden-sm hidden-xs">
-            <h5>
-                <a class="catalog-toggle" href="#">目录</a>
-            </h5>
-            <ul class="catalog-body"></ul>
-        </div>
-    </div>
-
-    <script>
-        <!--目录固定-->
-        var hegiht = 270
-        
-        window.onscroll = function () {
-            var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
-            if (scrollt > hegiht) {
-                document.getElementById('catalog').style.position = "fixed";
-                document.getElementById('catalog').style.top = "20px";
-            } else {
-                document.getElementById('catalog').style.position = "absolute";
-                document.getElementById('catalog').style.top = "";
-            }
-        };
-    </script>
-
 
     <!-- async load function -->
     <script>
@@ -714,50 +598,6 @@
 </script>
 
 <!-- Side Catalog -->
-
-<script type="text/javascript">
-    function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#"+$(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
-            l = $('<li class="'+n+'_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;
-    }
-
-    generateCatalog(".catalog-body");
-
-    // toggle side catalog
-    $(".catalog-toggle").click((function(e){
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    /*
-     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
-     * Fork by Hux to support padding
-     */
-    async("/js/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
 
 <!--搜索框-->
 <script>

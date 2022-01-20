@@ -14,11 +14,11 @@
 
     <title>
         
-          Composer 提示 Allowed memory size of bytes exhausted - Suf 的博客
+          Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/04/c8824c4f5063/">
+    <link rel="canonical" href="https://suzhif.github.io/page/3/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -187,304 +187,288 @@
 
 
     <!-- Main Content -->
-    <!-- Post Header -->
-<style type="text/css">
-    hr {
-        border-top: 1px solid #ccc;
-    }
-    .post-meta span{
-        margin-right: 10px;
-    }
-    
-    .intro-header {
-        background-color: rgba(0,0,0,0);
-    }
-    .post-heading {
-        color: #404040 !important;
-        padding: 100px 0 50px !important;
-    }
-    .navbar-custom .navbar-brand,
-    .navbar-custom .nav li a {
-        color: #404040;
-    }
-    #huxblog_navbar a:hover,
-    .navbar>.container-fluid .navbar-brand:hover {
-        color: black;
-    }
-    .post-heading .tags a {
-        border: 1px solid #bfbfbf;
-        color: #bfbfbf;
-    }
-    .post-heading .tags a:hover {
-        border: 1px solid #337ab7;
-        color: #337ab7;
-    }
-    
-</style>
-<header class="intro-header">
+    <!-- Page Header -->
+<header class="intro-header" style="background-image: url('/img/home-bg-o.jpg')">
     <div class="container">
         <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
-                <div class="post-heading">
-                    <div class="tags">
-                        
-                            <a class="tag" href="/tags/#Composer"
-                               title="Composer">Composer</a>
-                        
-                    </div>
-                    <h1>Composer 提示 Allowed memory size of bytes exhausted</h1>
-                    <h2 class="subheading"></h2>
-                    <div class="post-meta">
-                        <span class="fa fa-calendar-times-o">
-                        2021-04-10
-                        </span>
-                        <span class="fa fa-folder">
-                            
-                                <a class="tag" href="/categories/#错误记录"
-                                   title="错误记录">错误记录</a>
-                            
-                        </span>
-                    </div>
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 ">
+                <div class="site-heading">
+                    <h1>Think aloud</h1>
+                    <!--<hr class="small">-->
+                    <span class="subheading"></span>
                 </div>
             </div>
         </div>
     </div>
 </header>
 
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
 
-            <!-- Post Container -->
+
+<!-- Main Content -->
+<div class="container">
+    <div class="row">
+        
+
+<!-- USE SIDEBAR -->
+    <!-- Post Container -->
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                post-container">
-
-                <p>运行 composer 命令时提示：</p>
-<blockquote>
-<p><code>PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 67108864 bytes)</code></p>
-</blockquote>
-<p>修改 php.ini 中 memory_limit 的值为 -1，重启</p>
-<p>执行 <code>php -r &quot;echo ini_get(&#39;memory_limit&#39;).PHP_EOL;&quot;</code> 查看是否修改成功</p>
-
-                <br>
-                <ul class="pager">
-                    
-                        <li class="previous">
-                            <a href="/2021/05/7e5ce4197b09/" data-toggle="tooltip" data-placement="top"
-                               title="php、mysql、redis 慢日志 slowlog">&larr; 上一页</a>
-                        </li>
-                    
-                    
-                        <li class="next">
-                            <a href="/2021/01/cbc8329bad3b/" data-toggle="tooltip" data-placement="top"
-                               title="Sql 语句编写规范">下一页 &rarr;</a>
-                        </li>
-                    
-                </ul>
-                <!--评论框-->
-                <!--gitalk 插件评论功能  https://github.com/gitalk/gitalk -->
-
-<div id="gitalk-container"></div>
-<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
-<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
-<script>
-    var gitalk = new Gitalk({
-        clientID: `f1946918188d5d6f545d`,
-        clientSecret: `5e6cbedbfde0eb399cf5627e65f7f3d5111cf8a4`,
-        repo: `suzhif.github.io`,
-        owner: `suzhiF`,
-        admin: `suzhiF`,
-        id: location.pathname,
-        distractionFreeMode: false,
-        perPage: 10
-    })
-    gitalk.render('gitalk-container')
-</script>
-
-
-<!---->
-            </div>
-            <!--目录-->
+                col-lg-8 col-lg-offset-1
+                col-md-8 col-md-offset-1
+                col-sm-12
+                col-xs-12
+                post-container
+            ">
             
+                <!-- Main Content -->
 
-    <!-- async load function -->
-    <script>
-        function async(u, c) {
-            var d = document, t = 'script',
-                o = d.createElement(t),
-                s = d.getElementsByTagName(t)[0];
-            o.src = u;
-            if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-            s.parentNode.insertBefore(o, s);
-        }
-    // <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
-        async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
-            anchors.options = {
-                visible: 'always',
-                placement: 'right',
-                icon: '#'
-            };
-            anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
-        })
-    </script>
-    <style>
-        /* place left on bigger screen */
-        @media all and (min-width: 800px) {
-            .anchorjs-link{
-                position: absolute;
-                left: -0.75em;
-                font-size: 1.1em;
-                margin-top : -0.1em;
-            }
-        }
-    </style>
 
-<style>
-    .side-catalog > h5 {
-        margin-bottom: 0;
-    }
-    .catalog-body {
-        list-style: none
-    }
-    .catalog-body {
-        list-style: none;
-        padding: 0;
-        line-height: inherit;
-    }
-    .catalog-body li {
-        padding: 5px;
-        line-height: 20px;
-    }
-    #catalog {
-        position: absolute;
-        right: 65px;
-    }
-    .side-catalog > hr {
-        border-top: 1px solid #bfbfbf;
-    }
-    #catalog .active a{
-        /*border: 1px #9d9d9d;*/
-        /*background-color: #9d9d9d;*/
-        /*border: 1px solid #0085a1;*/
-        /*border-radius: 5px;*/
-        font-size: 24px;
-    }
-</style>
+<div class="post-preview">
 
-            <!-- Sidebar Container -->
+    <a href="/2021/05/7e5ce4197b09/">
+        <h2 class="post-title">
+            php、mysql、redis 慢日志 slowlog
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            MySQl 慢日志查看是否开启慢查询日志功能：
+12345678910111213141516mysql&gt; show variables like &#x27;slow_query%&#x27;;+---------------------+-----------------------------------+| Variable_name       | Value        ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-05-07
+    </p>
 
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/04/c8824c4f5063/">
+        <h2 class="post-title">
+            Composer 提示 Allowed memory size of bytes exhausted
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            运行 composer 命令时提示：
+
+PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to allocate 67108864 bytes)
+
+修改 php.ini 中 memory_limit 的值为 -1，重启
+执行 php -r &quot;echo ini_get(&#39;mem......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-04-10
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2021/01/cbc8329bad3b/">
+        <h2 class="post-title">
+            Sql 语句编写规范
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            1.使用 limit 对查询结果的记录进行限定2. 避免 select * ，将需要查找的字段列出来3. 使用连接（join）来代替子查询4. 拆分大的 delete 或 insert 语句5. 可通过开启慢查询日志来找出较慢的 SQL6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-01-24
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/12/e8478690d26b/">
+        <h2 class="post-title">
+            跨域资源共享（CORS）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            什么是跨域资源共享（CORS）跨域资源共享是一种基于 HTTP 头的机制，该机制通过允许服务器标示除了自己以外的其他 origin (域、协议和端口)，浏览器可以访问加载这些资源。
+跨域资源共享还通过一种机制来检查服务器是否允许要发送真实请求，该机制通过浏览器发送一个到服务器托管的跨域源资源的 预检 请求。预检 中浏览器发送的头中标示有 HTTP 方法和真实请求中会用到的头。
+
+在 http......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2020-12-28
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2020/12/f659e8d93e88/">
+        <h2 class="post-title">
+            什么是 CSRF
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            一.CSRF是什么？是什么？是什么？是什么？是什么？是什么？CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
+二.CSRF可以做什么？你这可以这么理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。CSRF能够做的事情包括：以你名义发送邮......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2020-12-27
+    </p>
+
+</div>
+<hr>
+
+
+<!-- Pager -->
+<ul class="pager">
+    
+        <li class="previous"><a href="/page/2/">&larr;  上一页</a></li>
+    
+    
+</ul>
+
+
+
+
+                <!-- 如果开启评论功能 -->
+                
+
+            </div>
+    <!-- Sidebar Container -->
             <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
+                col-lg-3 col-lg-offset-0
+                col-md-3 col-md-offset-0
+                col-sm-12
+                col-xs-12
+                sidebar-container
+            ">
                 <!-- Featured Tags -->
                 
-                    <section>
-                        <!-- no hr -->
-                        <hr>
-                        <h5><a href="/tags/">标签</a></h5>
-                        <div class="tags">
+                <section>
+                    <!-- no hr -->
+                    <h5><a href="/tags/">标签</a></h5>
+                    <div class="tags">
+                        
                             
-                                <a class="tag" href="/tags/#Composer"
-                                   title="Composer">Composer</a>
+                            <a href="/tags/#Composer" title="Composer" rel="1">Composer</a>
                             
-                                <a class="tag" href="/tags/#nginx"
-                                   title="nginx">nginx</a>
+                        
                             
-                                <a class="tag" href="/tags/#反向代理"
-                                   title="反向代理">反向代理</a>
+                            <a href="/tags/#nginx" title="nginx" rel="1">nginx</a>
                             
-                                <a class="tag" href="/tags/#笔记"
-                                   title="笔记">笔记</a>
+                        
                             
-                                <a class="tag" href="/tags/#docker"
-                                   title="docker">docker</a>
+                            <a href="/tags/#反向代理" title="反向代理" rel="1">反向代理</a>
                             
-                                <a class="tag" href="/tags/#Laravel"
-                                   title="Laravel">Laravel</a>
+                        
                             
-                                <a class="tag" href="/tags/#Laravel-Mix"
-                                   title="Laravel-Mix">Laravel-Mix</a>
+                            <a href="/tags/#笔记" title="笔记" rel="2">笔记</a>
                             
-                                <a class="tag" href="/tags/#webpack"
-                                   title="webpack">webpack</a>
+                        
                             
-                                <a class="tag" href="/tags/#linux"
-                                   title="linux">linux</a>
+                            <a href="/tags/#docker" title="docker" rel="1">docker</a>
                             
-                                <a class="tag" href="/tags/#top"
-                                   title="top">top</a>
+                        
                             
-                                <a class="tag" href="/tags/#linux进程"
-                                   title="linux进程">linux进程</a>
+                            <a href="/tags/#Laravel" title="Laravel" rel="1">Laravel</a>
                             
-                                <a class="tag" href="/tags/#MongoDB"
-                                   title="MongoDB">MongoDB</a>
+                        
                             
-                                <a class="tag" href="/tags/#mysql索引"
-                                   title="mysql索引">mysql索引</a>
+                            <a href="/tags/#Laravel-Mix" title="Laravel-Mix" rel="1">Laravel-Mix</a>
                             
-                                <a class="tag" href="/tags/#proxy"
-                                   title="proxy">proxy</a>
+                        
                             
-                                <a class="tag" href="/tags/#http_proxy_module"
-                                   title="http_proxy_module">http_proxy_module</a>
+                            <a href="/tags/#webpack" title="webpack" rel="1">webpack</a>
                             
-                                <a class="tag" href="/tags/#php"
-                                   title="php">php</a>
+                        
                             
-                                <a class="tag" href="/tags/#redis"
-                                   title="redis">redis</a>
+                            <a href="/tags/#linux" title="linux" rel="1">linux</a>
                             
-                                <a class="tag" href="/tags/#RabbitMQ"
-                                   title="RabbitMQ">RabbitMQ</a>
+                        
                             
-                                <a class="tag" href="/tags/#消息队列"
-                                   title="消息队列">消息队列</a>
+                            <a href="/tags/#top" title="top" rel="1">top</a>
                             
-                                <a class="tag" href="/tags/#WSL"
-                                   title="WSL">WSL</a>
+                        
                             
-                                <a class="tag" href="/tags/#CORS"
-                                   title="CORS">CORS</a>
+                            <a href="/tags/#linux进程" title="linux进程" rel="1">linux进程</a>
                             
-                                <a class="tag" href="/tags/#mysql"
-                                   title="mysql">mysql</a>
+                        
                             
-                                <a class="tag" href="/tags/#slowlog"
-                                   title="slowlog">slowlog</a>
+                            <a href="/tags/#MongoDB" title="MongoDB" rel="2">MongoDB</a>
                             
-                        </div>
-                    </section>
+                        
+                            
+                            <a href="/tags/#mysql索引" title="mysql索引" rel="1">mysql索引</a>
+                            
+                        
+                            
+                            <a href="/tags/#proxy" title="proxy" rel="1">proxy</a>
+                            
+                        
+                            
+                            <a href="/tags/#http_proxy_module" title="http_proxy_module" rel="1">http_proxy_module</a>
+                            
+                        
+                            
+                            <a href="/tags/#php" title="php" rel="6">php</a>
+                            
+                        
+                            
+                            <a href="/tags/#redis" title="redis" rel="6">redis</a>
+                            
+                        
+                            
+                            <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="4">RabbitMQ</a>
+                            
+                        
+                            
+                            <a href="/tags/#消息队列" title="消息队列" rel="5">消息队列</a>
+                            
+                        
+                            
+                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
+                            
+                        
+                            
+                            <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
+                            
+                        
+                            
+                            <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
+                            
+                        
+                            
+                            <a href="/tags/#slowlog" title="slowlog" rel="1">slowlog</a>
+                            
+                        
+                    </div>
+                </section>
+                
+
+                <!-- Short About -->
+                
+
+                <!-- Friends Blog -->
                 
             </div>
-
-        </div>
+        
     </div>
-</article>
+</div>
 
-<!--<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-min.js"></script>
-<script>
-    AV.init({
-        appId: "JvTEeajFVQ9Gpr4gFBzFObBm-gzGzoHsz",
-        appKey: "HIIO5EH8gMpYGSVk62KCnnvA",
-        serverURL: "https://suzhif.github.io",
-    })
-//    开启调试日志
-    localStorage.setItem('debug', 'leancloud*');
-
-    const TestObject = AV.Object.extend('TestObject');
-    const testObject = new TestObject();
-    testObject.set('words', 'Hello world!');
-    testObject.save().then((testObject) => {
-        console.log('保存成功。')
-    })
-</script>-->
 
     <!-- Footer -->
     <!-- Footer -->
