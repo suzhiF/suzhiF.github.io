@@ -224,16 +224,44 @@
 
 <div class="post-preview">
 
-    <a href="/2022/01/61d2dd5762ab/">
+    <a href="/2022/01/3619d7c118f9/">
         <h2 class="post-title">
-            RabbitMQ - 路由模式
+            RabbitMQ - Topic 模式
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
             
-生产者123456789101112131415161718192021222324252627&lt;?phprequire_once __DIR__ . &#x27;/vendor/autoload.php&#x27;;use PhpAmqpLib\Connection\AMQPStreamConnection;use PhpAmqpLib\Message\AMQPMessage;$c......
+官网教程：https://www.rabbitmq.com/tutorials/tutorial-five-php.html
+
+
+
+Messages sent to a topic exchange can’t have an arbitrary routing_key - it must be a list of words, delimited by dots. The words c......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2022-01-20
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2022/01/61d2dd5762ab/">
+        <h2 class="post-title">
+            RabbitMQ - 路由模式 (direct)
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+官网教程：https://www.rabbitmq.com/tutorials/tutorial-four-php.html
+
+
+生产者123456789101112131415161718192021222324252627&lt;?phprequire_once __DIR__ . &#x27;/vendor/autoload.php&#x27;;use PhpAmqpLib\Conn......
         </div>
     </a>
     <p class="post-meta">
@@ -247,7 +275,7 @@
 
     <a href="/2022/01/923b4f5b62dd/">
         <h2 class="post-title">
-            RabbitMQ-发布/订阅模式
+            RabbitMQ-发布/订阅模式（Fanout）
         </h2>
         <h3 class="post-subtitle">
             
@@ -258,6 +286,31 @@
 
 RabbitMQ 中消息传递模型的核心思想是生产者从不直接向队列发送任何消息。实际上，生产者通常根本不知道消息是否会被传递到任何队列。
 生产者只能向交换器发送消息。交换是一件非常简单的事情。一方面它接收来自生产者的消息，另一方面它将它们推送到队列中。交换必须确切......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2022-01-19
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
+    <a href="/2022/01/75aef2175824/">
+        <h2 class="post-title">
+            RabbitMQ - 工作队列
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+官网教程：https://www.rabbitmq.com/tutorials/tutorial-two-php.html
+
+
+轮询调度
+生产者：12345678910111213141516171819&lt;?phprequire_once &#x27;../../vendor/autoload.php&#x27;; use PhpAmqpLib\Connection\AMQPStre......
         </div>
     </a>
     <p class="post-meta">
@@ -425,54 +478,6 @@ WLS 安装文档：https://docs.microsoft.com/zh-cn/windows/wsl/install
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2021/08/41e3cb957215/">
-        <h2 class="post-title">
-            MySQL 索引失效情况
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            User 表：
-
-
-1：查询的数量是大表的大部分，30％以上，索引失效
-
-
-2：like 以 % 开头，索引失效
-
-123456789101112131415161718192021################ 创建 name 字段的索引 ################mysql&gt; CREATE INDEX name ON users(name);Query OK, 0 rows......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-08-09
-    </p>
-
-</div>
-<hr>
-
-<div class="post-preview">
-
-    <a href="/2021/08/8c38ef739811/">
-        <h2 class="post-title">
-            MongoDB 地理空间
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            GeoJSON 对象12345678910&lt;field&gt;: &#123;     type: &lt;GeoJSON type&gt; ,      # 指定的 GeoJSON 类型 (Point、LineString、Polygon……)    coordinates: &lt;coordinates&gt;  # 指定对象坐标的字段 [&lt;longitude&gt;, &......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-08-06
-    </p>
-
-</div>
-<hr>
-
 
 <!-- Pager -->
 <ul class="pager">
@@ -573,19 +578,19 @@ WLS 安装文档：https://docs.microsoft.com/zh-cn/windows/wsl/install
                             
                         
                             
-                            <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="4">RabbitMQ</a>
+                            <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="7">RabbitMQ</a>
                             
                         
                             
-                            <a href="/tags/#消息队列" title="消息队列" rel="5">消息队列</a>
-                            
-                        
-                            
-                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
+                            <a href="/tags/#消息队列" title="消息队列" rel="8">消息队列</a>
                             
                         
                             
                             <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
+                            
+                        
+                            
+                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
                             
                         
                             
