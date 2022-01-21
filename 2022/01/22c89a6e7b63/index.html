@@ -14,11 +14,11 @@
 
     <title>
         
-          Sql 语句编写规范 - Suf 的博客
+          RabbitMQ - 死信队列 - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/01/cbc8329bad3b/">
+    <link rel="canonical" href="https://suzhif.github.io/2022/01/22c89a6e7b63/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -228,14 +228,29 @@
                 <div class="post-heading">
                     <div class="tags">
                         
+                            <a class="tag" href="/tags/#RabbitMQ"
+                               title="RabbitMQ">RabbitMQ</a>
+                        
+                            <a class="tag" href="/tags/#消息队列"
+                               title="消息队列">消息队列</a>
+                        
+                            <a class="tag" href="/tags/#MQ"
+                               title="MQ">MQ</a>
+                        
+                            <a class="tag" href="/tags/#DLX"
+                               title="DLX">DLX</a>
+                        
                     </div>
-                    <h1>Sql 语句编写规范</h1>
+                    <h1>RabbitMQ - 死信队列</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-01-24
+                        2022-01-20
                         </span>
                         <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#消息队列"
+                                   title="消息队列">消息队列</a>
                             
                         </span>
                     </div>
@@ -256,20 +271,25 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>1.使用 limit 对查询结果的记录进行限定<br>2. 避免 select * ，将需要查找的字段列出来<br>3. 使用连接（join）来代替子查询<br>4. 拆分大的 delete 或 insert 语句<br>5. 可通过开启慢查询日志来找出较慢的 SQL<br>6. 不做列运算：SELECT id WHERE age + 1 = 10，任何对列的操作都将导致表扫描，它包括数据库教程函数、计算表达式等等，查询时要尽可能将操作移至等号右边<br>7.sql 语句尽可能简单：一条 sql 只能在一个 cpu 运算；大语句拆小语句，减少锁时间；一条大 sql 可以堵死整个库<br>9. 不用函数和触发器，在应用程序实现<br>10. 避免 % xxx 式查询<br>12. 使用同类型进行比较，比如用’123’和’123’比，123 和 123 比<br>15. 列表数据不要拿全表，要使用 LIMIT 来分页，. 每页数量也不要太大</p>
+                <blockquote>
+<p>官网：<br><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/dlx.html">https://www.rabbitmq.com/dlx.html</a><br><a target="_blank" rel="noopener" href="https://www.rabbitmq.com/ttl.html">https://www.rabbitmq.com/ttl.html</a></p>
+</blockquote>
+<p><code>DLX</code> (Dead Letter Exchanges) 当消息在一个队列中变成 Dead 之后，它能被重新发送到另一个交换机中，这个交换机就是 DLX。</p>
+<p>产生原因：<br>    - 使用 <code>basic.reject</code> 或 <code>basic.nack</code> 并将 <code>requeue</code> 参数设置为false ，消息被拒绝。<br>    - 消息在队列中停留的时间超过了配置的 TTL<br>    - 队列达到最大长度，先入队的消息会被删除</p>
+<pre><code>注意：队列的过期不会死信其中的消息。
+</code></pre>
+<p><code>DLX</code> 是一个普通的交换机，和一般的交换机没有区别，它能在任何的队列上被指定，实际上就是设置某一个队列的属性。当这个队列中存在死信时，<code>RabbitMQ</code> 就会自动地将这个消息重新发布到设置的 <code>DLX</code> 上去，进而被路由到另一个队列，即死信队列。</p>
+<h4 id="创建一个死信队列"><a href="#创建一个死信队列" class="headerlink" title="创建一个死信队列"></a>创建一个死信队列</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">require_once</span> <span class="string">&#x27;../vendor/autoload.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Connection</span>\<span class="title">AMQPStreamConnection</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Message</span>\<span class="title">AMQPMessage</span>;</span><br><span class="line"><span class="keyword">use</span> <span class="title">PhpAmqpLib</span>\<span class="title">Wire</span>\<span class="title">AMQPTable</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$connection</span> = <span class="keyword">new</span> AMQPStreamConnection(<span class="string">&#x27;localhost&#x27;</span>, <span class="number">5672</span>, <span class="string">&#x27;guest&#x27;</span>, <span class="string">&#x27;guest&#x27;</span>);</span><br><span class="line"><span class="variable">$channel</span> = <span class="variable">$connection</span>-&gt;channel();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个处理死信的交换机和队列</span></span><br><span class="line"><span class="variable">$dead_exchange</span> = <span class="string">&#x27;dead_direct_exchange&#x27;</span>;</span><br><span class="line"><span class="variable">$dead_queue_name</span> = <span class="string">&#x27;dead_queue&#x27;</span>;</span><br><span class="line"><span class="variable">$dead_routing_key</span> = <span class="string">&#x27;dead&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;exchange_declare(<span class="variable">$dead_exchange</span>, <span class="string">&#x27;direct&#x27;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_declare(<span class="variable">$dead_queue_name</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_bind(<span class="variable">$dead_queue_name</span>, <span class="variable">$dead_exchange</span>, <span class="variable">$dead_routing_key</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$ttl_exchange</span> = <span class="string">&#x27;ttl_exchange&#x27;</span>;</span><br><span class="line"><span class="variable">$ttl_routing_key</span> = <span class="string">&#x27;ttl_message&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;exchange_declare(<span class="variable">$ttl_exchange</span>, <span class="string">&#x27;direct&#x27;</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 TTL 消息的队列</span></span><br><span class="line"><span class="variable">$arguments</span> = <span class="keyword">new</span> AMQPTable();</span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-message-ttl&#x27;</span>, <span class="number">5000</span>);                             <span class="comment">// 设置队列中消息的过期时间  5s</span></span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-dead-letter-exchange&#x27;</span>, <span class="variable">$dead_exchange</span>);          <span class="comment">// 设置处理死信消息的交换机</span></span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-dead-letter-routing-key&#x27;</span>, <span class="variable">$dead_routing_key</span>);    <span class="comment">// 指定一个路由关键字用于死信消息。如果没有设置，则使用消息自己的路由键(fanout 模式不需要)</span></span><br><span class="line"><span class="variable">$ttl_queue_message</span> = <span class="string">&#x27;ttl_queue_message&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_declare(<span class="variable">$ttl_queue_message</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="variable">$arguments</span>);</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_bind(<span class="variable">$ttl_queue_message</span>, <span class="variable">$ttl_exchange</span>, <span class="variable">$ttl_routing_key</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 创建一个 TTL 的队列 (过期后不会死信消息！)</span></span><br><span class="line"><span class="variable">$arguments</span> = <span class="keyword">new</span> AMQPTable();</span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-expires&#x27;</span>, <span class="number">10000</span>);                                <span class="comment">// 设置队列的过期时间  10s</span></span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-dead-letter-exchange&#x27;</span>, <span class="variable">$dead_exchange</span>);          <span class="comment">// 设置处理死信消息的交换机</span></span><br><span class="line"><span class="variable">$arguments</span>-&gt;set(<span class="string">&#x27;x-dead-letter-routing-key&#x27;</span>, <span class="variable">$dead_routing_key</span>);    <span class="comment">// 指定一个路由关键字用于死信消息。如果没有设置，则使用消息自己的路由键(fanout 模式不需要)</span></span><br><span class="line"><span class="variable">$ttl_queue</span> = <span class="string">&#x27;ttl_queue&#x27;</span>;</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_declare(<span class="variable">$ttl_queue</span>, <span class="literal">false</span>, <span class="literal">true</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="literal">false</span>, <span class="variable">$arguments</span>);</span><br><span class="line"><span class="variable">$channel</span>-&gt;queue_bind(<span class="variable">$ttl_queue</span>, <span class="variable">$ttl_exchange</span>, <span class="variable">$ttl_routing_key</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 往队列中发送 10 条消息</span></span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span> = <span class="number">1</span>; <span class="variable">$i</span> &lt;= <span class="number">10</span>; <span class="variable">$i</span>++) &#123;</span><br><span class="line">    <span class="variable">$msg</span> = <span class="keyword">new</span> AMQPMessage(<span class="string">&#x27;AAA test test——&#x27;</span> . <span class="variable">$i</span>, [</span><br><span class="line">        <span class="string">&#x27;expiration&#x27;</span> =&gt; <span class="number">10000</span>          <span class="comment">// 设置每条消息过期时间。（当同时指定了每队列和每条消息的 TTL 时，将选择两者之间的较低值）</span></span><br><span class="line">    ]);</span><br><span class="line">    <span class="variable">$channel</span>-&gt;basic_publish(<span class="variable">$msg</span>, <span class="variable">$ttl_exchange</span>, <span class="variable">$ttl_routing_key</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="variable">$channel</span>-&gt;close();</span><br><span class="line"><span class="variable">$connection</span>-&gt;close();</span><br></pre></td></tr></table></figure>
+
+<h3 id="运行"><a href="#运行" class="headerlink" title="运行"></a>运行</h3><p><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq-dlx1.png"> 10s 后：<img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq-dlx2.png"></p>
 
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/04/c8824c4f5063/" data-toggle="tooltip" data-placement="top"
-                               title="Composer 提示 Allowed memory size of bytes exhausted">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2020/12/e8478690d26b/" data-toggle="tooltip" data-placement="top"
-                               title="跨域资源共享（CORS）">下一页 &rarr;</a>
+                            <a href="/2022/01/3619d7c118f9/" data-toggle="tooltip" data-placement="top"
+                               title="RabbitMQ - Topic 模式">下一页 &rarr;</a>
                         </li>
                     
                 </ul>

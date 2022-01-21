@@ -224,6 +224,35 @@
 
 <div class="post-preview">
 
+    <a href="/2021/10/30fc9eddc78b/">
+        <h2 class="post-title">
+            Laravel 中优化 app.js 的大小
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            
+近期做了一个小项目，前端是通过 Laravel Mix 编译的，产生的 app.js ，大小有 3M 还多，不得不优化一下……
+
+没做任何优化之前：
+
+查看应用的前端库结构
+安装 npm install --save-dev webpack-bundle-analyzer 。
+
+修改 webpack.mix.js 配置 。
+1234567const BundleAnalyzerPlugin......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-10-29
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/08/41e3cb957215/">
         <h2 class="post-title">
             MySQL 索引失效情况
@@ -485,27 +514,6 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2021/07/6042abf4cf50/">
-        <h2 class="post-title">
-            PHP 中 Redis 常用操作（基础操作）
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            连接 redis 服务器，实例化 redis 对象
-123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2021-07-06
-    </p>
-
-</div>
-<hr>
-
 
 <!-- Pager -->
 <ul class="pager">
@@ -608,19 +616,27 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
                             
                         
                             
-                            <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="7">RabbitMQ</a>
+                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
                             
                         
                             
-                            <a href="/tags/#消息队列" title="消息队列" rel="8">消息队列</a>
+                            <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="8">RabbitMQ</a>
+                            
+                        
+                            
+                            <a href="/tags/#消息队列" title="消息队列" rel="9">消息队列</a>
+                            
+                        
+                            
+                            <a href="/tags/#MQ" title="MQ" rel="1">MQ</a>
+                            
+                        
+                            
+                            <a href="/tags/#DLX" title="DLX" rel="1">DLX</a>
                             
                         
                             
                             <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
-                            
-                        
-                            
-                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
                             
                         
                             
