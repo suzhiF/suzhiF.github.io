@@ -227,6 +227,29 @@
 
 <div class="post-preview">
 
+    <a href="/2021/07/c6af5ed70b30/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（zset 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis 有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。
+不同的是每个元素都会关联一个 double 类型的分数。redis 正是通过分数来为集合中的成员进行从小到大的排序。
+有序集合的成员是唯一的,但分数(score)却可以重复。处理元素时，也要加上score的处理
+集合是通过哈希表实现的，所以添加，删除，查找的复杂度都是O(1)。 集合中最大的成员数为 232 ......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/07/6042abf4cf50/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（基础操作）
@@ -447,7 +470,7 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                             
                         
                             
-                            <a href="/tags/#笔记" title="笔记" rel="2">笔记</a>
+                            <a href="/tags/#笔记" title="笔记" rel="3">笔记</a>
                             
                         
                             
@@ -507,6 +530,10 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                             
                         
                             
+                            <a href="/tags/#composer" title="composer" rel="1">composer</a>
+                            
+                        
+                            
                             <a href="/tags/#RabbitMQ" title="RabbitMQ" rel="8">RabbitMQ</a>
                             
                         
@@ -523,15 +550,15 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                             
                         
                             
-                            <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
-                            
-                        
-                            
                             <a href="/tags/#mysql" title="mysql" rel="1">mysql</a>
                             
                         
                             
                             <a href="/tags/#slowlog" title="slowlog" rel="1">slowlog</a>
+                            
+                        
+                            
+                            <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
                             
                         
                     </div>

@@ -14,11 +14,11 @@
 
     <title>
         
-          PHP 中 Redis 常用操作（list 类型） - Suf 的博客
+          发布的 composer 包安装报错 Could not find package xxxx/xxxx - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2021/07/bd70d53460ec/">
+    <link rel="canonical" href="https://suzhif.github.io/2022/02/245589d0be12/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -231,23 +231,23 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#php"
-                               title="php">php</a>
+                            <a class="tag" href="/tags/#笔记"
+                               title="笔记">笔记</a>
                         
-                            <a class="tag" href="/tags/#redis"
-                               title="redis">redis</a>
+                            <a class="tag" href="/tags/#composer"
+                               title="composer">composer</a>
                         
                     </div>
-                    <h1>PHP 中 Redis 常用操作（list 类型）</h1>
+                    <h1>发布的 composer 包安装报错 Could not find package xxxx/xxxx</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2021-07-06
+                        2022-02-17
                         </span>
                         <span class="fa fa-folder">
                             
-                                <a class="tag" href="/categories/#Redis"
-                                   title="Redis">Redis</a>
+                                <a class="tag" href="/categories/#其他"
+                                   title="其他">其他</a>
                             
                         </span>
                     </div>
@@ -268,54 +268,28 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <p>Redis列表是简单的字符串列表，按照插入顺序排序。你可以添加一个元素到列表的头部（左边）或者尾部（右边）</p>
-<p>一个列表最多可以包含232 - 1 个元素 (4294967295, 每个列表超过40亿个元素)。</p>
-<p><strong>将元素压入链表(lPush)</strong></p>
-<p><code>lPush()</code> 方法将数据从左侧压入列表</p>
-<p><code>rPush()</code> 方法将数据从右侧压入列表</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list2&#x27;</span>, <span class="string">&#x27;v1&#x27;</span>, <span class="string">&#x27;v2&#x27;</span>, <span class="string">&#x27;v3&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"></span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list1&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line">var_dump( <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list2&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>) );</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list1:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="regexp">//</span> list2:</span><br><span class="line"><span class="regexp">//</span> array(<span class="number">4</span>) &#123;</span><br><span class="line"><span class="regexp">//</span>   [<span class="number">0</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v1&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">1</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v2&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">2</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v3&quot;</span></span><br><span class="line"><span class="regexp">//</span>   [<span class="number">3</span>]=&gt; string(<span class="number">2</span>) <span class="string">&quot;v4&quot;</span></span><br><span class="line"><span class="regexp">//</span> &#125;</span><br></pre></td></tr></table></figure>
+                <h4 id="报错一："><a href="#报错一：" class="headerlink" title="报错一："></a>报错一：</h4><blockquote>
+<p>[InvalidArgumentException]<br>Could not find a version of package suzhif/laravel-workerman matching your minimum-stability (dev). Require it with an explicit version constraint allowing its desired<br>stability.</p>
+</blockquote>
+<p><strong>原因：</strong> 新发布的 <code>composer</code> 包没有设置版本号</p>
+<figure class="highlight armasm"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">composer</span> <span class="meta">require</span> xxxxx/xxxxx:dev-master</span><br></pre></td></tr></table></figure>
 
-<p><strong>在某个位置插入新元素(lInsert)</strong></p>
-<p><code>Redis::BEFORE</code> 在之前插入</p>
-<p><code>Redis::AFTER</code> 在之后插入</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;v4&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::BEFORE, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lInsert(<span class="string">&#x27;list&#x27;</span>, Redis::AFTER, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Y&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, 0, <span class="number">-1</span>);</span><br><span class="line"><span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;X&#x27;</span>, <span class="string">&#x27;C&#x27;</span>，<span class="string">&#x27;Y&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h4 id="报错二："><a href="#报错二：" class="headerlink" title="报错二："></a>报错二：</h4><blockquote>
+<p>[InvalidArgumentException]<br>Could not find package xxxxx/xxxxx.</p>
+<p>Did you mean this?<br>xxxxx/xxxxx</p>
+</blockquote>
+<p><code>composer -v</code>  查看版本号。<br><code>composer</code> 1.* 版本已经不在支持新发布的包，升级到 2.* 版本。</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">composer <span class="keyword">self</span>-update</span><br></pre></td></tr></table></figure>
 
-<p><strong>设置、获取某个元素的值(lSet、lGet)</strong></p>
-<p><code>lSet()</code> 方法可以通过下标修改链表元素的值，下标是从0开始<br><code>lGet()</code> 方法可以通过下标获取链表元素的值，下标是从0开始</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;A&#x27;</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;lSet(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="string">&#x27;X&#x27;</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lGet(<span class="string">&#x27;key1&#x27;</span>, 0);     <span class="regexp">//</span> <span class="string">&#x27;X&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p><strong>获取列表元素个数(lLen)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$length</span> = <span class="variable">$redis</span>-&gt;lLen(<span class="string">&#x27;list&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$length</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取下标对应的元素(lIndex)</strong></p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lIndex(<span class="string">&#x27;list&#x27;</span>, <span class="number">1</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$val</span>;</span><br></pre></td></tr></table></figure>
-
-<p><strong>获取某个选定范围元素集(lRange)</strong></p>
-<p>通过起止下标来获取列表某个范围内的元素集</p>
-<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="regexp">//</span>前两个元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, <span class="number">0</span>, -<span class="number">1</span>); <span class="regexp">//</span>全部元素</span><br><span class="line"><span class="variable">$arr</span> = <span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;list&#x27;</span>, -<span class="number">2</span>, -<span class="number">1</span>); <span class="regexp">//</span>后两个元素</span><br><span class="line">var_dump(<span class="variable">$arr</span>);</span><br></pre></td></tr></table></figure>
-
-<p><strong>从列表左侧弹出数据(lPop)</strong></p>
-<p><code>lPop()</code> 方法将数据从列表左侧弹出，返回弹出的元素，数据元素在list中消失。</p>
-<p><code>rPop()</code> 右侧弹出</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span>)</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;lPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;C&#x27;</span> ]</span><br><span class="line"><span class="variable">$val</span> = <span class="variable">$redis</span>-&gt;rPop(<span class="string">&#x27;list&#x27;</span>);    <span class="regexp">//</span> list =&gt; [ <span class="string">&#x27;B&#x27;</span> ]</span><br></pre></td></tr></table></figure>
-
-<p><strong>根据值移除元素(lRem)</strong></p>
-<p>根据值来移除元素，并且可以指定要移除的元素个数，因为 list 中可能出现重复的元素</p>
-<figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$redis</span>-&gt;lPush(<span class="string">&#x27;list&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRem(<span class="string">&#x27;key1&#x27;</span>, <span class="string">&#x27;A&#x27;</span>, <span class="number">2</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;lRange(<span class="string">&#x27;key1&#x27;</span>, 0, <span class="number">-1</span>);   <span class="regexp">//</span> array(<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;B&#x27;</span>, <span class="string">&#x27;A&#x27;</span>)</span><br></pre></td></tr></table></figure>
-
+<p>升级后再安装</p>
 
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2021/07/b934f7bfb536/" data-toggle="tooltip" data-placement="top"
-                               title="Docker 常用命令">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2021/07/ac3227b76e78/" data-toggle="tooltip" data-placement="top"
-                               title="PHP 中 Redis 常用操作（set 类型）">下一页 &rarr;</a>
+                            <a href="/2022/01/22c89a6e7b63/" data-toggle="tooltip" data-placement="top"
+                               title="RabbitMQ - 死信队列">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
