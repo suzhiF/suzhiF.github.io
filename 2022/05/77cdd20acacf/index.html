@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<!-- Head tag -->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="baidu-site-verification" content="code-qjJliHINmS" />
+    <meta name="google-site-verification" content="El1rgnUOF0cQzwnHtGemAQs_SnL85nIHwPXBwmFDMk4" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="关于本博客使用 Hexo 建造，主题来自 https://github.com/Kaijun/hexo-theme-huxblog">
+    <meta name="keyword"  content="Suf博客 Suf, 个人博客, Think aloud, 博客, 个人网站">
+    <link rel="shortcut icon" href="/img/16gl-F.svg">
+
+    <title>
+        
+          安装Ubuntu困扰我两天的问题 - Suf 的博客
+        
+    </title>
+
+    <link rel="canonical" href="https://suzhif.github.io/2022/05/77cdd20acacf/">
+
+    <!-- Bootstrap Core CSS -->
+    
+<link rel="stylesheet" href="/css/bootstrap.min.css">
+
+
+    <!-- Custom CSS -->
+    
+<link rel="stylesheet" href="/css/hux-blog.min.css">
+
+
+    <!-- Pygments Highlight CSS -->
+    
+<link rel="stylesheet" href="/css/highlight.css">
+
+
+    
+<link rel="stylesheet" href="/css/other.min.css">
+
+
+    <!-- Custom Fonts -->
+    <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
+    <!-- Hux change font-awesome CDN to qiniu -->
+    <link href="https://cdn.staticfile.org/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+
+    <!-- Hux Delete, sad but pending in China
+    <link href='http://fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/
+    css'>
+    -->
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- ga & ba script hoook -->
+    <script></script>
+
+    <!--百度统计-->
+    
+        <script>
+            var _baId = 'efa3b8a0c5e3861f3e1d8b2b162ea3c3';
+            // Originial
+            var _hmt = _hmt || [];
+            (function() {
+                var hm = document.createElement("script");
+                hm.src = "//hm.baidu.com/hm.js?" + _baId;
+                var s = document.getElementsByTagName("script")[0];
+                s.parentNode.insertBefore(hm, s);
+            })();
+        </script>
+    
+    <!--谷歌统计-->
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-YBHHEGFXJB"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-YBHHEGFXJB');
+    </script>
+    
+
+    <!--谷歌广告-->
+    <script data-ad-client="ca-pub-3588686587719188" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+
+<!-- hack iOS CSS :active style -->
+<body ontouchstart="">
+
+    <!-- Navigation -->
+<nav class="navbar navbar-default navbar-custom navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Think aloud</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Known Issue, found by Hux:
+            <nav>'s height woule be hold on by its content.
+            so, when navbar scale out, the <nav> will cover tags.
+            also mask any touch event of tags, unfortunately.
+        -->
+        <div id="huxblog_navbar">
+            <div class="navbar-collapse">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="#" id="search" ><span class="fa fa-search fa-1x"></span></a>
+                    </li>
+                    
+                        <li>
+                            <a href="/">首页</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/archives">归档</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/categories">分类</a>
+                        </li>
+                    
+                        <li>
+                            <a href="/tags">标签</a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<!-- Search Modal -->
+<div class="modal search-modal">
+    <div class="search-container">
+        <div class="search-container-top">
+            <img src="/img/close.svg" alt="">
+        </div>
+        <input class="search-container-input" placeholder="请输入关键字搜索 " type="text">
+        <div class="search-container-content"></div>
+    </div>
+</div>
+
+<script>
+    // Drop Bootstarp low-performance Navbar
+    // Use customize navbar with high-quality material design animation
+    // in high-perf jank-free CSS3 implementation
+    var $body   = document.body;
+    var $toggle = document.querySelector('.navbar-toggle');
+    var $navbar = document.querySelector('#huxblog_navbar');
+    var $collapse = document.querySelector('.navbar-collapse');
+
+    $toggle.addEventListener('click', handleMagic)
+    function handleMagic(e){
+        if ($navbar.className.indexOf('in') > 0) {
+        // CLOSE
+            $navbar.className = " ";
+            // wait until animation end.
+            setTimeout(function(){
+                // prevent frequently toggle
+                if($navbar.className.indexOf('in') < 0) {
+                    $collapse.style.height = "0px"
+                }
+            },400)
+        }else{
+        // OPEN
+            $collapse.style.height = "auto"
+            $navbar.className += " in";
+        }
+    }
+</script>
+
+
+    <!-- Main Content -->
+    <!-- Post Header -->
+<style type="text/css">
+    hr {
+        border-top: 1px solid #ccc;
+    }
+    .post-meta span{
+        margin-right: 10px;
+    }
+    
+    .intro-header {
+        background-color: rgba(0,0,0,0);
+    }
+    .post-heading {
+        color: #404040 !important;
+        padding: 100px 0 50px !important;
+    }
+    .navbar-custom .navbar-brand,
+    .navbar-custom .nav li a {
+        color: #404040;
+    }
+    #huxblog_navbar a:hover,
+    .navbar>.container-fluid .navbar-brand:hover {
+        color: black;
+    }
+    .post-heading .tags a {
+        border: 1px solid #bfbfbf;
+        color: #bfbfbf;
+    }
+    .post-heading .tags a:hover {
+        border: 1px solid #337ab7;
+        color: #337ab7;
+    }
+    
+</style>
+<header class="intro-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <div class="post-heading">
+                    <div class="tags">
+                        
+                            <a class="tag" href="/tags/#ubuntu"
+                               title="ubuntu">ubuntu</a>
+                        
+                    </div>
+                    <h1>安装Ubuntu困扰我两天的问题</h1>
+                    <h2 class="subheading"></h2>
+                    <div class="post-meta">
+                        <span class="fa fa-calendar-times-o">
+                        2022-05-26
+                        </span>
+                        <span class="fa fa-folder">
+                            
+                                <a class="tag" href="/categories/#运维"
+                                   title="运维">运维</a>
+                            
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- Post Content -->
+<article>
+    <div class="container">
+        <div class="row">
+
+            <!-- Post Container -->
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                post-container">
+
+                <blockquote>
+<p>近日在给物理机服务器安装 Ubuntu 系统的时候，一直卡死在这个报错中。</p>
+</blockquote>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img.png" alt="桌面版报错1"><br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_1.png" alt="桌面版报错2"><br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_2.png" alt="服务器版报错"></p>
+<p>由于不是专业运维，无法直接定位错误，只知道是磁盘的读写出现了问题。百度谷歌了一下，大多是都说是磁盘坏掉了，或者是插槽松了。</p>
+<p>经过一番折腾，还是一直出现这个错误……  因为是公司全新的机器，硬盘应该是不能坏的，继续查阅资料……</p>
+<p>就在绝望之际，看到了一篇说是可能 RAID 故障了，需要重做一下。</p>
+<p>RAID 是啥？之前安装系统也没搞过这个呀！</p>
+<blockquote>
+<p>RAID （ Redundant Array of Independent Disks ）即独立磁盘冗余阵列，简称为「磁盘阵列」，其实就是用多个独立的磁盘组成在一起形成一个大的磁盘系统，从而实现比单块磁盘更好的存储性能和更高的可靠性。</p>
+</blockquote>
+<p>然后查了一下 “重做 RAID”，检索到的结果大部分都是 “ DELL …… 重做 RAID……”，我就是 DELL的 😅，难道是 DELL 的都需要？</p>
+<p>开整</p>
+<p><code>启动/重启服务器</code> ——》 <code>F2 进入 BIOS</code> </p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_3.png" alt="img_3.png"></p>
+<p>——》 <code>选择 Device settings</code></p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_4.png" alt="img_4.png"></p>
+<p>——》 <code>找到带有 RAID 的选项</code> ——》 <code>Configuration Management</code></p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_5.png" alt="img_5.png"></p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_6.png" alt="img_6.png"></p>
+<p>——》 <code>找到 Clear 清理一下</code> </p>
+<p>[无图]</p>
+<p>——》 <code>Create Virtual Disk</code><br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_7.png" alt="img_7.png"></p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_8.png" alt="img_8.png"></p>
+<blockquote>
+<p>注意这个 RAID Level,其中有 Raid0、 Raid1、 Raid5、 Raid10。<br>Raid 0：至少需要两块硬盘，磁盘越多，读写速度越快，没有冗余。<br>Raid 1：只能用两块硬盘，两块硬盘的数据互为镜像(写慢，读快)，一块磁盘冗余。<br>Raid 5：至少需要3块硬盘，一块磁盘冗余。它是最通行的配置方式。具有奇偶校验的数据恢复功能的数据存贮方式。奇偶校验数据块分布于阵列里的各个硬盘中。<br>Raid 6：至少需要4块硬盘，2块磁盘冗余,硬盘的总数大于等于4即可。<br>Raid 10：至少需要4块硬盘，冗余一半的硬盘数量，但是硬盘的总数必须是大于或等于4的偶数（相当于每两块硬盘做一个Raid0，然后把各个Raid0做成一个Raid1）。</p>
+</blockquote>
+<p>我选择的是 RAID0。</p>
+<p>——》 <code>Select Physical Disks</code> 选择硬盘</p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_9.png" alt="img_9.png"></p>
+<p>——》根据硬盘类型选择，我的是 HDD。然后选择硬盘。</p>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_10.png" alt="img_10.png"></p>
+<blockquote>
+<p>我机器上的硬盘其实是4块 500G 的硬盘，但是这里只显示了一块<br>这里需要返回之前的创建页面清理一下配置 <code>Clear Configuration</code></p>
+</blockquote>
+<p><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_11.png" alt="img_11.png"></p>
+<p>清理完成后：<br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_12.png" alt="img_12.png"></p>
+<p>——》 <code>Apply Change</code> ——》 <code>Create Virtual Disk</code><br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_14.png" alt="img_14.png"><br><img src="/images/%E8%BF%90%E7%BB%B4/ubuntu_error_img_13.png" alt="img_13.png"></p>
+<p>完成后，返回重新进入,会看到 <code>View Disk Group Properties</code>,说明成功！</p>
+<p>重启，安装系统!</p>
+
+                <br>
+                <ul class="pager">
+                    
+                    
+                        <li class="next">
+                            <a href="/2022/02/245589d0be12/" data-toggle="tooltip" data-placement="top"
+                               title="发布的 composer 包安装报错 Could not find package xxxx/xxxx">下一页 &rarr;</a>
+                        </li>
+                    
+                </ul>
+                <!--评论框-->
+                <!--gitalk 插件评论功能  https://github.com/gitalk/gitalk -->
+
+<div id="gitalk-container"></div>
+<link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css">
+<script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+<script>
+    var gitalk = new Gitalk({
+        clientID: `f1946918188d5d6f545d`,
+        clientSecret: `5e6cbedbfde0eb399cf5627e65f7f3d5111cf8a4`,
+        repo: `suzhif.github.io`,
+        owner: `suzhiF`,
+        admin: `suzhiF`,
+        id: location.pathname,
+        distractionFreeMode: false,
+        perPage: 10
+    })
+    gitalk.render('gitalk-container')
+</script>
+
+
+<!---->
+            </div>
+            <!--目录-->
+            
+
+    <!-- async load function -->
+    <script>
+        function async(u, c) {
+            var d = document, t = 'script',
+                o = d.createElement(t),
+                s = d.getElementsByTagName(t)[0];
+            o.src = u;
+            if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+            s.parentNode.insertBefore(o, s);
+        }
+    // <!-- anchor-js, Doc:http://bryanbraun.github.io/anchorjs/ -->
+        async("https://cdn.bootcss.com/anchor-js/1.1.1/anchor.min.js",function(){
+            anchors.options = {
+                visible: 'always',
+                placement: 'right',
+                icon: '#'
+            };
+            anchors.add().remove('.intro-header h1').remove('.subheading').remove('.sidebar-container h5');
+        })
+    </script>
+    <style>
+        /* place left on bigger screen */
+        @media all and (min-width: 800px) {
+            .anchorjs-link{
+                position: absolute;
+                left: -0.75em;
+                font-size: 1.1em;
+                margin-top : -0.1em;
+            }
+        }
+    </style>
+
+<style>
+    .side-catalog > h5 {
+        margin-bottom: 0;
+    }
+    .catalog-body {
+        list-style: none
+    }
+    .catalog-body {
+        list-style: none;
+        padding: 0;
+        line-height: inherit;
+    }
+    .catalog-body li {
+        padding: 5px;
+        line-height: 20px;
+    }
+    #catalog {
+        position: absolute;
+        right: 65px;
+    }
+    .side-catalog > hr {
+        border-top: 1px solid #bfbfbf;
+    }
+    #catalog .active a{
+        /*border: 1px #9d9d9d;*/
+        /*background-color: #9d9d9d;*/
+        /*border: 1px solid #0085a1;*/
+        /*border-radius: 5px;*/
+        font-size: 24px;
+    }
+</style>
+
+            <!-- Sidebar Container -->
+
+            <div class="
+                col-lg-8 col-lg-offset-2
+                col-md-10 col-md-offset-1
+                col-md-10 col-md-offset-1
+                sidebar-container">
+
+                <!-- Featured Tags -->
+                
+                    <section>
+                        <!-- no hr -->
+                        <hr>
+                        <h5><a href="/tags/">标签</a></h5>
+                        <div class="tags">
+                            
+                                <a class="tag" href="/tags/#Composer"
+                                   title="Composer">Composer</a>
+                            
+                                <a class="tag" href="/tags/#nginx"
+                                   title="nginx">nginx</a>
+                            
+                                <a class="tag" href="/tags/#反向代理"
+                                   title="反向代理">反向代理</a>
+                            
+                                <a class="tag" href="/tags/#笔记"
+                                   title="笔记">笔记</a>
+                            
+                                <a class="tag" href="/tags/#docker"
+                                   title="docker">docker</a>
+                            
+                                <a class="tag" href="/tags/#Laravel"
+                                   title="Laravel">Laravel</a>
+                            
+                                <a class="tag" href="/tags/#Laravel-Mix"
+                                   title="Laravel-Mix">Laravel-Mix</a>
+                            
+                                <a class="tag" href="/tags/#webpack"
+                                   title="webpack">webpack</a>
+                            
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
+                                <a class="tag" href="/tags/#linux"
+                                   title="linux">linux</a>
+                            
+                                <a class="tag" href="/tags/#top"
+                                   title="top">top</a>
+                            
+                                <a class="tag" href="/tags/#linux进程"
+                                   title="linux进程">linux进程</a>
+                            
+                                <a class="tag" href="/tags/#mysql索引"
+                                   title="mysql索引">mysql索引</a>
+                            
+                                <a class="tag" href="/tags/#proxy"
+                                   title="proxy">proxy</a>
+                            
+                                <a class="tag" href="/tags/#http_proxy_module"
+                                   title="http_proxy_module">http_proxy_module</a>
+                            
+                                <a class="tag" href="/tags/#php"
+                                   title="php">php</a>
+                            
+                                <a class="tag" href="/tags/#redis"
+                                   title="redis">redis</a>
+                            
+                                <a class="tag" href="/tags/#WSL"
+                                   title="WSL">WSL</a>
+                            
+                                <a class="tag" href="/tags/#composer"
+                                   title="composer">composer</a>
+                            
+                                <a class="tag" href="/tags/#RabbitMQ"
+                                   title="RabbitMQ">RabbitMQ</a>
+                            
+                                <a class="tag" href="/tags/#消息队列"
+                                   title="消息队列">消息队列</a>
+                            
+                                <a class="tag" href="/tags/#MQ"
+                                   title="MQ">MQ</a>
+                            
+                                <a class="tag" href="/tags/#DLX"
+                                   title="DLX">DLX</a>
+                            
+                                <a class="tag" href="/tags/#CORS"
+                                   title="CORS">CORS</a>
+                            
+                                <a class="tag" href="/tags/#mysql"
+                                   title="mysql">mysql</a>
+                            
+                                <a class="tag" href="/tags/#slowlog"
+                                   title="slowlog">slowlog</a>
+                            
+                                <a class="tag" href="/tags/#ubuntu"
+                                   title="ubuntu">ubuntu</a>
+                            
+                        </div>
+                    </section>
+                
+            </div>
+
+        </div>
+    </div>
+</article>
+
+<!--<script src="//code.bdstatic.com/npm/leancloud-storage@4.12.0/dist/av-min.js"></script>
+<script>
+    AV.init({
+        appId: "JvTEeajFVQ9Gpr4gFBzFObBm-gzGzoHsz",
+        appKey: "HIIO5EH8gMpYGSVk62KCnnvA",
+        serverURL: "https://suzhif.github.io",
+    })
+//    开启调试日志
+    localStorage.setItem('debug', 'leancloud*');
+
+    const TestObject = AV.Object.extend('TestObject');
+    const testObject = new TestObject();
+    testObject.set('words', 'Hello world!');
+    testObject.save().then((testObject) => {
+        console.log('保存成功。')
+    })
+</script>-->
+
+    <!-- Footer -->
+    <!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                <ul class="list-inline text-center">
+                
+                
+                
+
+                
+
+                
+
+                
+
+                
+
+                </ul>
+                <p class="copyright text-muted">
+                    Copyright &copy; Think aloud 2022 
+                    <br>
+                    Theme by <a target="_blank" rel="noopener" href="http://huangxuan.me">Hux</a>
+                    <span style="display: inline-block; margin: 0 5px;">
+                        <i class="fa fa-heart"></i>
+                    </span>
+                    Ported by <a target="_blank" rel="noopener" href="http://blog.kaijun.rocks">Kaijun</a>
+                    <br>
+                    <span id="busuanzi_tongji" style="display: none">
+    <span id="busuanzi_container_site_pv">
+        本站总访问量<span id="busuanzi_value_site_pv"> <i class="fa fa-spinner fa-spin"></i> </span>次
+    </span>
+    <span id="busuanzi_container_site_uv">
+            本站访客数<span id="busuanzi_value_site_uv"> <i class="fa fa-spinner fa-spin"></i> </span>人次
+        </span>
+    <span id="busuanzi_container_page_pv">
+            本文总阅读量<span id="busuanzi_value_page_pv"> <i class="fa fa-spinner fa-spin"></i> </span>次
+    </span>
+</span>
+<script>
+    if (false) {
+        document.getElementById('busuanzi_tongji').style.display = 'inline';
+    }
+</script>
+                </p>
+                <p>
+
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!-- jQuery -->
+
+<script src="/js/jquery.min.js"></script>
+
+
+<!-- Bootstrap Core JavaScript -->
+
+<script src="/js/bootstrap.min.js"></script>
+
+
+<!-- Custom Theme JavaScript -->
+
+<script src="/js/hux-blog.min.js"></script>
+
+
+
+<script src="/js/other.min.js"></script>
+
+<!--不蒜子计数-->
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+
+<!-- async load function -->
+<script>
+    function async(u, c) {
+      var d = document, t = 'script',
+          o = d.createElement(t),
+          s = d.getElementsByTagName(t)[0];
+      o.src = u;
+      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
+      s.parentNode.insertBefore(o, s);
+    }
+</script>
+
+<!-- jquery.tagcloud.js -->
+<script>
+    // only load tagcloud.js in tag.html
+    if($('#tag_cloud').length !== 0){
+        async("https://suzhif.github.io/js/jquery.tagcloud.js",function(){
+            $.fn.tagcloud.defaults = {
+                //size: {start: 1, end: 1, unit: 'em'},
+                color: {start: '#bbbbee', end: '#0085a1'},
+            };
+            $('#tag_cloud a').tagcloud();
+        })
+    }
+</script>
+
+<!--fastClick.js -->
+<script>
+    async("https://cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
+        var $nav = document.querySelector("nav");
+        if($nav) FastClick.attach($nav);
+    })
+</script>
+
+<!-- Side Catalog -->
+
+<!--搜索框-->
+<script>
+    $('.search-container').css({ "height": window.innerHeight, "overflow": 'hidden' })
+    $('.search-container-content').css({ "height": window.innerHeight - 70, "overflow": 'scroll' })
+    var allArticles = [];
+    var xReq = new XMLHttpRequest();
+    xReq.open('GET', '/search.json');
+    xReq.send();
+    xReq.onreadystatechange = function(){
+        if(xReq.readyState === 4 && xReq.status === 200){
+            allArticles = JSON.parse(xReq.responseText);
+        }
+    }
+
+    $('#search').on('click', function() {
+        document.body.style['overflow-y'] = 'hidden'
+        $('.search-modal').addClass('modal-show');
+    });
+
+    $('.search-modal,.search-container-top img').on('click', function() {
+        document.body.style['overflow-y'] = 'scroll';
+        $('.search-modal').removeClass('modal-show');
+    });
+
+    $('.search-container').on('click', function(e) {
+        e.stopPropagation();
+    });
+
+    $('.search-container-input').bind('input propertychange', function(e) {
+        var searchValue = e.currentTarget.value;
+        var correctArticles = allArticles.filter(article => article.content.toLowerCase().indexOf(searchValue.toLowerCase()) > -1 || article.title.toLowerCase().indexOf(searchValue.toLowerCase()) > -1)
+        var articleListHtml = '';
+        for (let index = 0; index < correctArticles.length; index++) {
+            var article = correctArticles[index];
+            article.description = article.content.replace(/<[^>]+>/g,"");
+            var title = article.title, description = '';
+            var searchReg = RegExp(searchValue, 'i');
+            var searchRegGlobal = RegExp(searchValue, 'ig');
+            if (article.title.match(searchReg)) {
+                title = article.title.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            }
+            var contentMatch = article.description.match(searchReg);
+            if (contentMatch) {
+                description = `...${article.description.substr(contentMatch['index'], 210)}...`.replaceAll(searchRegGlobal, `<span class="search-value-active">${searchValue}</span>`);
+            } else {
+                description = article.description.substr(0, 200);
+            }
+
+            articleListHtml += `<div class="search-container-content_item">
+        <a href="${article.url}" class="search-container-content_item-title">${title}</a>
+        <div class="search-container-content_item-description">${description}</div>
+      </div>`
+        }
+
+        $('.search-container-content').html(articleListHtml);
+    });
+</script>
+
+
+    <!--置顶-->
+    <div id="back_top"></div>
+
+<!-- Image to hack wechat -->
+<!-- Migrate from head to bottom, no longer block render and still work -->
+
+</body>
+
+</html>
