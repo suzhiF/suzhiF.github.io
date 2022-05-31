@@ -227,6 +227,27 @@
 
 <div class="post-preview">
 
+    <a href="/2021/07/ac3227b76e78/">
+        <h2 class="post-title">
+            PHP 中 Redis 常用操作（set 类型）
+        </h2>
+        <h3 class="post-subtitle">
+            
+        </h3>
+        <div class="post-content-preview">
+            Redis set对外提供的功能与list类似是一个列表的功能，特殊之处在于set是可以自动排重的，当你需要存储一个列表数据，又不希望出现重复数据，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的接口，这是也是list所不能提供了。
+Redis的Set是string类型的无需集合。它底层其实是一个value为null的hash表，所以添加、删除、查找的复杂度都是O......
+        </div>
+    </a>
+    <p class="post-meta">
+        Date: 2021-07-06
+    </p>
+
+</div>
+<hr>
+
+<div class="post-preview">
+
     <a href="/2021/07/634c5e00d421/">
         <h2 class="post-title">
             PHP 中 Redis 常用操作（string 类型）
@@ -276,17 +297,16 @@ string 是 Redis 最基本的类型，和 Memcached 一模一样的类型，一�
 
 <div class="post-preview">
 
-    <a href="/2021/07/124fc284dddc/">
+    <a href="/2021/07/6042abf4cf50/">
         <h2 class="post-title">
-            PHP 中 Redis 常用操作（hash 类型）
+            PHP 中 Redis 常用操作（基础操作）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。
-Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
-当前服务器一般都是将用户登录信息保存到Redis中，这里存储用户登录信息就比较适合用hash表。hash表比string更合适，如果我们选择使用string类型来存储用户的信息的......
+            连接 redis 服务器，实例化 redis 对象
+123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
         </div>
     </a>
     <p class="post-meta">
@@ -298,16 +318,17 @@ Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
 
 <div class="post-preview">
 
-    <a href="/2021/07/6042abf4cf50/">
+    <a href="/2021/07/124fc284dddc/">
         <h2 class="post-title">
-            PHP 中 Redis 常用操作（基础操作）
+            PHP 中 Redis 常用操作（hash 类型）
         </h2>
         <h3 class="post-subtitle">
             
         </h3>
         <div class="post-content-preview">
-            连接 redis 服务器，实例化 redis 对象
-123456$redis = new Redis();if (!$redis-&gt;connect(&#x27;127.0.0.1&#x27;, 6379)) &#123;    trigger_error(&#x27;Redis连接出错！！！&#x27;, E_USER_ERROR);&#125; else &#123;    echo......
+            Redis hash 是一个 string 类型的 field（字段） 和 value（值） 的映射表，hash 特别适合用于存储对象。
+Redis 中每个 hash 可以存储 232 - 1 键值对（40多亿）。
+当前服务器一般都是将用户登录信息保存到Redis中，这里存储用户登录信息就比较适合用hash表。hash表比string更合适，如果我们选择使用string类型来存储用户的信息的......
         </div>
     </a>
     <p class="post-meta">
@@ -431,33 +452,14 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
 </div>
 <hr>
 
-<div class="post-preview">
-
-    <a href="/2020/12/f659e8d93e88/">
-        <h2 class="post-title">
-            什么是 CSRF
-        </h2>
-        <h3 class="post-subtitle">
-            
-        </h3>
-        <div class="post-content-preview">
-            一.CSRF是什么？是什么？是什么？是什么？是什么？是什么？CSRF（Cross-site request forgery），中文名称：跨站请求伪造，也被称为：one click attack/session riding，缩写为：CSRF/XSRF。
-二.CSRF可以做什么？你这可以这么理解CSRF攻击：攻击者盗用了你的身份，以你的名义发送恶意请求。CSRF能够做的事情包括：以你名义发送邮......
-        </div>
-    </a>
-    <p class="post-meta">
-        Date: 2020-12-27
-    </p>
-
-</div>
-<hr>
-
 
 <!-- Pager -->
 <ul class="pager">
     
         <li class="previous"><a href="/page/2/">&larr;  上一页</a></li>
     
+    
+        <li class="next"><a href="/page/4/">下一页  &rarr;</a></li>
     
 </ul>
 
@@ -485,18 +487,6 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                         
                             
                             <a href="/tags/#Composer" title="Composer" rel="1">Composer</a>
-                            
-                        
-                            
-                            <a href="/tags/#nginx" title="nginx" rel="1">nginx</a>
-                            
-                        
-                            
-                            <a href="/tags/#反向代理" title="反向代理" rel="1">反向代理</a>
-                            
-                        
-                            
-                            <a href="/tags/#笔记" title="笔记" rel="3">笔记</a>
                             
                         
                             
@@ -536,6 +526,14 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                             
                         
                             
+                            <a href="/tags/#nginx" title="nginx" rel="1">nginx</a>
+                            
+                        
+                            
+                            <a href="/tags/#反向代理" title="反向代理" rel="1">反向代理</a>
+                            
+                        
+                            
                             <a href="/tags/#proxy" title="proxy" rel="1">proxy</a>
                             
                         
@@ -549,14 +547,6 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                         
                             
                             <a href="/tags/#redis" title="redis" rel="6">redis</a>
-                            
-                        
-                            
-                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
-                            
-                        
-                            
-                            <a href="/tags/#composer" title="composer" rel="1">composer</a>
                             
                         
                             
@@ -576,7 +566,11 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                             
                         
                             
-                            <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
+                            <a href="/tags/#WSL" title="WSL" rel="1">WSL</a>
+                            
+                        
+                            
+                            <a href="/tags/#笔记" title="笔记" rel="3">笔记</a>
                             
                         
                             
@@ -589,6 +583,22 @@ PHP Fatal error:  Allowed memory size of 1610612736 bytes exhausted (tried to al
                         
                             
                             <a href="/tags/#ubuntu" title="ubuntu" rel="1">ubuntu</a>
+                            
+                        
+                            
+                            <a href="/tags/#宝塔" title="宝塔" rel="1">宝塔</a>
+                            
+                        
+                            
+                            <a href="/tags/#BT" title="BT" rel="1">BT</a>
+                            
+                        
+                            
+                            <a href="/tags/#composer" title="composer" rel="1">composer</a>
+                            
+                        
+                            
+                            <a href="/tags/#CORS" title="CORS" rel="1">CORS</a>
                             
                         
                     </div>
