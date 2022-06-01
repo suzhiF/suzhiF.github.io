@@ -271,7 +271,8 @@
                 <h2 id="宝塔面板报错：cmake-usr-local-lib-libcurl-so-4-no-version-information-available-required-by-cmake"><a href="#宝塔面板报错：cmake-usr-local-lib-libcurl-so-4-no-version-information-available-required-by-cmake" class="headerlink" title="宝塔面板报错：cmake: /usr/local/lib/libcurl.so.4: no version information available (required by cmake)"></a>宝塔面板报错：cmake: /usr/local/lib/libcurl.so.4: no version information available (required by cmake)</h2><ol>
 <li>查找 <code>libcurl.so.4</code> 路径<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; whereis libcurl.so.<span class="number">4</span></span><br><span class="line">libcurl.so: <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libcurl.so <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libcurl.so.<span class="number">4</span> <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span></span><br></pre></td></tr></table></figure></li>
 <li>查看 <code>libcurl.so.4</code> 的指向<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt; ll <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span></span><br><span class="line">lrwxrwxrwx <span class="number">1</span> root root <span class="number">16</span> May <span class="number">30</span> <span class="number">16</span>:<span class="number">20</span> <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span> -&gt; libcurl.so.<span class="number">4.6</span>.<span class="number">0</span>*</span><br></pre></td></tr></table></figure></li>
-<li>删除错误的软链，设置软链 <code>/usr/lib/x86_64-linux-gnu/libcurl.so.4</code><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">  &gt; sudo rm -rf <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span></span><br><span class="line">  &gt;  sudo ln -s <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>libcurl.so.<span class="number">4</span> <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span></span><br><span class="line">smkj_admin@smkjserver01:~$ ll <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>libcurl.so.<span class="number">4</span></span><br></pre></td></tr></table></figure></li>
+<li>删除错误的软链，设置软链 <code>/usr/lib/x86_64-linux-gnu/libcurl.so.4</code><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo rm -rf /usr/local/lib/libcurl.so.4</span><br><span class="line">sudo ln -s /usr/lib/x86_64-linux-gnu/libcurl.so.4 /usr/local/lib/libcurl.so.4</span><br></pre></td></tr></table></figure>
+完成！</li>
 </ol>
 
                 <br>
@@ -405,9 +406,6 @@
                                 <a class="tag" href="/tags/#webpack"
                                    title="webpack">webpack</a>
                             
-                                <a class="tag" href="/tags/#MongoDB"
-                                   title="MongoDB">MongoDB</a>
-                            
                                 <a class="tag" href="/tags/#linux"
                                    title="linux">linux</a>
                             
@@ -417,20 +415,11 @@
                                 <a class="tag" href="/tags/#linux进程"
                                    title="linux进程">linux进程</a>
                             
+                                <a class="tag" href="/tags/#MongoDB"
+                                   title="MongoDB">MongoDB</a>
+                            
                                 <a class="tag" href="/tags/#mysql索引"
                                    title="mysql索引">mysql索引</a>
-                            
-                                <a class="tag" href="/tags/#nginx"
-                                   title="nginx">nginx</a>
-                            
-                                <a class="tag" href="/tags/#反向代理"
-                                   title="反向代理">反向代理</a>
-                            
-                                <a class="tag" href="/tags/#proxy"
-                                   title="proxy">proxy</a>
-                            
-                                <a class="tag" href="/tags/#http_proxy_module"
-                                   title="http_proxy_module">http_proxy_module</a>
                             
                                 <a class="tag" href="/tags/#php"
                                    title="php">php</a>
@@ -438,23 +427,32 @@
                                 <a class="tag" href="/tags/#redis"
                                    title="redis">redis</a>
                             
+                                <a class="tag" href="/tags/#composer"
+                                   title="composer">composer</a>
+                            
+                                <a class="tag" href="/tags/#笔记"
+                                   title="笔记">笔记</a>
+                            
+                                <a class="tag" href="/tags/#nginx"
+                                   title="nginx">nginx</a>
+                            
+                                <a class="tag" href="/tags/#反向代理"
+                                   title="反向代理">反向代理</a>
+                            
+                                <a class="tag" href="/tags/#WSL"
+                                   title="WSL">WSL</a>
+                            
                                 <a class="tag" href="/tags/#RabbitMQ"
                                    title="RabbitMQ">RabbitMQ</a>
                             
                                 <a class="tag" href="/tags/#消息队列"
                                    title="消息队列">消息队列</a>
                             
-                                <a class="tag" href="/tags/#MQ"
-                                   title="MQ">MQ</a>
+                                <a class="tag" href="/tags/#proxy"
+                                   title="proxy">proxy</a>
                             
-                                <a class="tag" href="/tags/#DLX"
-                                   title="DLX">DLX</a>
-                            
-                                <a class="tag" href="/tags/#WSL"
-                                   title="WSL">WSL</a>
-                            
-                                <a class="tag" href="/tags/#笔记"
-                                   title="笔记">笔记</a>
+                                <a class="tag" href="/tags/#http_proxy_module"
+                                   title="http_proxy_module">http_proxy_module</a>
                             
                                 <a class="tag" href="/tags/#mysql"
                                    title="mysql">mysql</a>
@@ -462,17 +460,20 @@
                                 <a class="tag" href="/tags/#slowlog"
                                    title="slowlog">slowlog</a>
                             
-                                <a class="tag" href="/tags/#ubuntu"
-                                   title="ubuntu">ubuntu</a>
-                            
                                 <a class="tag" href="/tags/#宝塔"
                                    title="宝塔">宝塔</a>
                             
                                 <a class="tag" href="/tags/#BT"
                                    title="BT">BT</a>
                             
-                                <a class="tag" href="/tags/#composer"
-                                   title="composer">composer</a>
+                                <a class="tag" href="/tags/#ubuntu"
+                                   title="ubuntu">ubuntu</a>
+                            
+                                <a class="tag" href="/tags/#MQ"
+                                   title="MQ">MQ</a>
+                            
+                                <a class="tag" href="/tags/#DLX"
+                                   title="DLX">DLX</a>
                             
                                 <a class="tag" href="/tags/#CORS"
                                    title="CORS">CORS</a>
