@@ -14,11 +14,11 @@
 
     <title>
         
-          RabbitMQ 简介 - Suf 的博客
+          PHPStorm 启动时报错：No JVM installation found - Suf 的博客
         
     </title>
 
-    <link rel="canonical" href="https://suzhif.github.io/2022/01/35557bc0ca9a/">
+    <link rel="canonical" href="https://suzhif.github.io/2022/10/99b5e82eecaf/">
 
     <!-- Bootstrap Core CSS -->
     
@@ -231,23 +231,20 @@
                 <div class="post-heading">
                     <div class="tags">
                         
-                            <a class="tag" href="/tags/#RabbitMQ"
-                               title="RabbitMQ">RabbitMQ</a>
-                        
-                            <a class="tag" href="/tags/#消息队列"
-                               title="消息队列">消息队列</a>
+                            <a class="tag" href="/tags/#phpstrom"
+                               title="phpstrom">phpstrom</a>
                         
                     </div>
-                    <h1>RabbitMQ 简介</h1>
+                    <h1>PHPStorm 启动时报错：No JVM installation found</h1>
                     <h2 class="subheading"></h2>
                     <div class="post-meta">
                         <span class="fa fa-calendar-times-o">
-                        2022-01-12
+                        2022-10-18
                         </span>
                         <span class="fa fa-folder">
                             
-                                <a class="tag" href="/categories/#消息队列"
-                                   title="消息队列">消息队列</a>
+                                <a class="tag" href="/categories/#运维"
+                                   title="运维">运维</a>
                             
                         </span>
                     </div>
@@ -268,96 +265,18 @@
                 col-md-10 col-md-offset-1
                 post-container">
 
-                <blockquote>
-<p>官网地址：<a target="_blank" rel="noopener" href="https://www.rabbitmq.com/tutorials/amqp-concepts.html">https://www.rabbitmq.com/tutorials/amqp-concepts.html</a></p>
-</blockquote>
-<h3 id="RabbitMQ-简介"><a href="#RabbitMQ-简介" class="headerlink" title="RabbitMQ 简介"></a>RabbitMQ 简介</h3><p><strong>RabbitMQ</strong> 是一个开源的遵循 AMQP 协议实现的基于 Erlang 语言编写，支持多种客户端（语言）。用于在分布式系统中存储消息，转发消息，具有高可用，高可扩性，易用性等特征。</p>
-<h3 id="AMQP"><a href="#AMQP" class="headerlink" title="AMQP"></a>AMQP</h3><p><strong>AMQP</strong>（Advanced Message Queuing Protocol 高级消息队列协议）是一个网络协议。它支持符合要求的客户端应用（application）和消息中间件代理（messaging middleware broker）之间进行通信。</p>
-<h3 id="AMQP-0-9-1"><a href="#AMQP-0-9-1" class="headerlink" title="AMQP 0-9-1"></a>AMQP 0-9-1</h3><p><strong>工作过程：</strong><br>消息（message）被发布者（publisher）发送给交换机（exchange），交换机常常被比喻成邮局或者邮箱。然后交换机将收到的消息根据路由规则分发给绑定的队列（queue）。最后AMQP代理会将消息投递给订阅了此队列的消费者，或者消费者按照需求自行获取。<br><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq1-img_1.png" alt="img.png"></p>
-<p><strong>发布者：</strong><br><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq1-img_4.png"><br><strong>消费者：</strong><br><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq1-img_5.png"><br>发布者（publisher）发布消息时可以给消息指定各种消息属性（message meta-data）。有些属性有可能会被消息代理（brokers）使用，然而其他的属性则是完全不透明的，它们只能被接收消息的应用所使用。</p>
-<p>从安全角度考虑，网络是不可靠的，接收消息的应用也有可能在处理消息的时候失败。基于此原因，<strong>AMQP</strong> 模块包含了一个消息确认（message acknowledgements）的概念：当一个消息从队列中投递给消费者后（consumer），消费者会通知一下消息代理（broker），这个可以是自动的也可以由处理消息的应用的开发者执行。当“消息确认”被启用的时候，消息代理不会完全将消息从队列中删除，直到它收到来自消费者的确认回执（acknowledgement）。</p>
-<p>在某些情况下，例如当一个消息无法被成功路由时，消息或许会被返回给发布者并被丢弃。或者，如果消息代理执行了延期操作，消息会被放入一个所谓的死信队列中。此时，消息发布者可以选择某些参数来处理这些特殊情况。</p>
-<p>队列，交换机和绑定统称为 <strong>AMQP</strong> 实体（AMQP entities）。</p>
-<p><strong>一个可编译的协议：</strong><br>AMQP 0-9-1是一个可编程协议，某种意义上说AMQP的实体和路由规则是由应用本身定义的，而不是由消息代理定义。包括像声明队列和交换机，定义他们之间的绑定，订阅队列等等关于协议本身的操作。</p>
-<p>这虽然能让开发人员自由发挥，但也需要他们注意潜在的定义冲突。当然这在实践中很少会发生，如果发生，会以配置错误（misconfiguration）的形式表现出来。</p>
-<p>应用程序（Applications）声明 AMQP 实体，定义需要的路由方案，或者删除不再需要的 AMQP 实体。</p>
-<h4 id="交换机和交换机类型"><a href="#交换机和交换机类型" class="headerlink" title="交换机和交换机类型"></a>交换机和交换机类型</h4><p>交换机是消息发送到的 <strong>AMQP 0-9-1</strong> 实体。交换机接收消息并将其路由到零个或多个队列中。使用的路由算法取决于绑定的交换机类型和规则。<strong>AMQP 0-9-1</strong> 提供四种交换机类型：</p>
-<table>
-<thead>
-<tr>
-<th>交换机类型</th>
-<th>默认预先声明的名称</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>Direct</td>
-<td>(Empty string) and amq.direct</td>
-</tr>
-<tr>
-<td>Fanout</td>
-<td>amq.fanout</td>
-</tr>
-<tr>
-<td>Topic</td>
-<td>amq.topic</td>
-</tr>
-<tr>
-<td>Headers</td>
-<td>amq.match (and amq.headers in RabbitMQ)</td>
-</tr>
-</tbody></table>
-<p>除了交换类型之外，交换还声明了许多属性 ：</p>
-<ul>
-<li>Name</li>
-<li>Durability （交易所在代理重新启动后仍然有效）</li>
-<li>Auto-delete （当最后一个队列从中解绑时，将删除交换）</li>
-<li>Arguments </li>
-</ul>
-<p>交换机可以有两个状态：持久（durable）、暂存（transient）。持久化的交换机会在消息代理（broker）重启后依旧存在，而暂存的交换机则不会（它们需要在代理再次上线后重新被声明）。然而并不是所有的应用场景都需要持久化的交换机。</p>
-<h4 id="默认交换机"><a href="#默认交换机" class="headerlink" title="默认交换机"></a>默认交换机</h4><p>默认交换机（default exchange）实际上是一个由消息代理预先声明好的没有名字（名字为空字符串）的直连交换机（direct exchange）。它有一个特殊的属性使得它对于简单应用特别有用处：那就是每个新建队列（queue）都会自动绑定到默认交换机上，绑定的路由键（routing key）名称与队列名称相同。</p>
-<p>举个栗子：当你声明了一个名为”search-indexing-online”的队列，AMQP代理会自动将其绑定到默认交换机上，绑定（binding）的路由键名称也是为”search-indexing-online”。因此，当携带着名为”search-indexing-online”的路由键的消息被发送到默认交换机的时候，此消息会被默认交换机路由至名为”search-indexing-online”的队列中。换句话说，默认交换机看起来貌似能够直接将消息投递给队列，尽管技术上并没有做相关的操作。</p>
-<h4 id="Direct-直连交换机）"><a href="#Direct-直连交换机）" class="headerlink" title="Direct(直连交换机）"></a>Direct(直连交换机）</h4><p>直连型交换机（direct exchange）是根据消息携带的路由键（routing key）将消息投递给对应队列的。直连交换机用来处理消息的单播路由（unicast routing）（尽管它也可以处理多播路由）。下边介绍它是如何工作的：</p>
-<ul>
-<li>将一个队列绑定到某个交换机上，同时赋予该绑定一个路由键（routing key）</li>
-<li>当一个携带着路由键为R的消息被发送给直连交换机时，交换机会把它路由给绑定值同样为R的队列。</li>
-</ul>
-<p>直连交换机经常用来循环分发任务给多个工作者（workers）。当这样做的时候，我们需要明白一点，在 <strong>AMQP 0-9-1</strong> 中，消息的负载均衡是发生在消费者（consumer）之间的，而不是队列（queue）之间。<br><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq1-img_2.png" alt="img_2.png"></p>
-<h4 id="Fanout-扇出交换"><a href="#Fanout-扇出交换" class="headerlink" title="Fanout(扇出交换)"></a>Fanout(扇出交换)</h4><p>扇出交换机 （fanout exchanges） 将消息路由到绑定到它的所有队列，并且忽略路由键。如果 N 个队列绑定到一个扇出交换器，则当一条新消息发布到该交换器时，该消息的副本将传递到所有 N 个队列。扇出交换是消息广播路由的理想选择。</p>
-<p>因为扇出交换向绑定到它的每个队列传递消息的副本，所以它的用例非常相似：</p>
-<ul>
-<li>大型多人在线 (MMO) 游戏可以将其用于排行榜更新或其他全球活动</li>
-<li>体育新闻网站可以使用扇出交换近乎实时地向移动客户端分发分数更新</li>
-<li>分布式系统可以广播各种状态和配置更新</li>
-<li>群聊可以使用扇出交换在参与者之间分发消息（虽然 AMQP 没有内置的出席概念，所以 XMPP 可能是更好的选择）</li>
-</ul>
-<p><img src="/images/%E6%B6%88%E6%81%AF%E9%98%9F%E5%88%97/rabbitmq1-img_3.png" alt="img_3.png"></p>
-<h4 id="Topic-主题交换机"><a href="#Topic-主题交换机" class="headerlink" title="Topic(主题交换机)"></a>Topic(主题交换机)</h4><p>主题交换机（topic exchanges）通过对消息的路由键和队列到交换机的绑定模式之间的匹配，将消息路由给一个或多个队列。主题交换机经常用来实现各种分发/订阅模式及其变种。主题交换机通常用来实现消息的多播路由（multicast routing）。</p>
-<p>主题交换机拥有非常广泛的用户案例。无论何时，当一个问题涉及到那些想要有针对性的选择需要接收消息的 多消费者/多应用（multiple consumers/applications） 的时候，主题交换机都可以被列入考虑范围。</p>
-<p>使用案例:</p>
-<ul>
-<li>分发有关于特定地理位置的数据，例如销售点</li>
-<li>由多个工作者（workers）完成的后台任务，每个工作者负责处理某些特定的任务</li>
-<li>股票价格更新（以及其他类型的金融数据更新）</li>
-<li>涉及到分类或者标签的新闻更新（例如，针对特定的运动项目或者队伍）</li>
-<li>云端的不同种类服务的协调</li>
-<li>分布式架构/基于系统的软件封装，其中每个构建者仅能处理一个特定的架构或者系统。</li>
-</ul>
-<h4 id="Header-头交换机"><a href="#Header-头交换机" class="headerlink" title="Header(头交换机)"></a>Header(头交换机)</h4><p>有时消息的路由操作会涉及到多个属性，此时使用消息头就比用路由键更容易表达，头交换机（headers exchange）就是为此而生的。头交换机使用多个消息属性来代替路由键建立路由规则。通过判断消息头的值能否与指定的绑定相匹配来确立路由规则。</p>
-<p>我们可以绑定一个队列到头交换机上，并给他们之间的绑定使用多个用于匹配的头（header）。这个案例中，消息代理得从应用开发者那儿取到更多一段信息，换句话说，它需要考虑某条消息（message）是需要部分匹配还是全部匹配。上边说的“更多一段消息”就是”x-match”参数。当”x-match”设置为“any”时，消息头的任意一个值被匹配就可以满足条件，而当”x-match”设置为“all”的时候，就需要消息头的所有值都匹配成功。</p>
-<p>头交换机可以视为直连交换机的另一种表现形式。头交换机能够像直连交换机一样工作，不同之处在于头交换机的路由规则是建立在头属性值之上，而不是路由键。路由键必须是一个字符串，而头属性值则没有这个约束，它们甚至可以是整数或者哈希值（字典）等。</p>
+                <p>今天，打开PHPStorm时突然报错，如下：<br><img src="/images/phpstrom/img.png" alt="img.png"></p>
+<p>查看JDK版本确实为64位：<br><img src="/images/phpstrom/img_1.png" alt="img_1.png"></p>
+<p>又查看PHPStorm 版本，果然发现问题，根据桌面快捷方式打开文件位置<br><img src="/images/phpstrom/img_2.png" alt="img_2.png"></p>
+<p>双击phpstorm64.exe，正常打开软件。</p>
 
                 <br>
                 <ul class="pager">
                     
-                        <li class="previous">
-                            <a href="/2022/01/633103713ffc/" data-toggle="tooltip" data-placement="top"
-                               title="消息队列常用协议">&larr; 上一页</a>
-                        </li>
-                    
                     
                         <li class="next">
-                            <a href="/2022/01/93c4cd7683c4/" data-toggle="tooltip" data-placement="top"
-                               title="Ubuntu 安装 RabbitMQ">下一页 &rarr;</a>
+                            <a href="/2022/05/70d45bff41a4/" data-toggle="tooltip" data-placement="top"
+                               title="宝塔面板：解析软件列表发生错误，已尝试自动修复，请刷新页面重试!">下一页 &rarr;</a>
                         </li>
                     
                 </ul>
@@ -386,36 +305,6 @@
             </div>
             <!--目录-->
             
-    <div class="
-                col-lg-2 col-lg-offset-0
-                visible-lg-block
-                sidebar-container
-                catalog-container" id="catalog">
-        <div class="side-catalog">
-            <hr class="hidden-sm hidden-xs">
-            <h5>
-                <a class="catalog-toggle" href="#">目录</a>
-            </h5>
-            <ul class="catalog-body"></ul>
-        </div>
-    </div>
-
-    <script>
-        <!--目录固定-->
-        var hegiht = 270
-        
-        window.onscroll = function () {
-            var scrollt = document.documentElement.scrollTop + document.body.scrollTop; //获取滚动后的高度
-            if (scrollt > hegiht) {
-                document.getElementById('catalog').style.position = "fixed";
-                document.getElementById('catalog').style.top = "20px";
-            } else {
-                document.getElementById('catalog').style.position = "absolute";
-                document.getElementById('catalog').style.top = "";
-            }
-        };
-    </script>
-
 
     <!-- async load function -->
     <script>
@@ -725,50 +614,6 @@
 </script>
 
 <!-- Side Catalog -->
-
-<script type="text/javascript">
-    function generateCatalog (selector) {
-        var P = $('div.post-container'),a,n,t,l,i,c;
-        a = P.find('h1,h2,h3,h4,h5,h6');
-        a.each(function () {
-            n = $(this).prop('tagName').toLowerCase();
-            i = "#"+$(this).prop('id');
-            t = $(this).text();
-            c = $('<a href="'+i+'" rel="nofollow">'+t+'</a>');
-            l = $('<li class="'+n+'_nav"></li>').append(c);
-            $(selector).append(l);
-        });
-        return true;
-    }
-
-    generateCatalog(".catalog-body");
-
-    // toggle side catalog
-    $(".catalog-toggle").click((function(e){
-        e.preventDefault();
-        $('.side-catalog').toggleClass("fold")
-    }))
-
-    /*
-     * Doc: https://github.com/davist11/jQuery-One-Page-Nav
-     * Fork by Hux to support padding
-     */
-    async("/js/jquery.nav.js", function () {
-        $('.catalog-body').onePageNav({
-            currentClass: "active",
-            changeHash: !1,
-            easing: "swing",
-            filter: "",
-            scrollSpeed: 700,
-            scrollOffset: 0,
-            scrollThreshold: .2,
-            begin: null,
-            end: null,
-            scrollChange: null,
-            padding: 80
-        });
-    });
-</script>
 
 <!--搜索框-->
 <script>
