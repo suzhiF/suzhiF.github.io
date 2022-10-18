@@ -463,6 +463,20 @@
     </url>
     
     <url>
+        <loc>https://suzhif.github.io/tags/mysql/</loc>
+        <lastmod>2022-10-18</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
+        <loc>https://suzhif.github.io/tags/slowlog/</loc>
+        <lastmod>2022-10-18</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+    
+    <url>
         <loc>https://suzhif.github.io/tags/WSL/</loc>
         <lastmod>2022-10-18</lastmod>
         <changefreq>weekly</changefreq>
@@ -512,14 +526,7 @@
     </url>
     
     <url>
-        <loc>https://suzhif.github.io/tags/mysql/</loc>
-        <lastmod>2022-10-18</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/slowlog/</loc>
+        <loc>https://suzhif.github.io/tags/phpstrom/</loc>
         <lastmod>2022-10-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
@@ -541,13 +548,6 @@
     
     <url>
         <loc>https://suzhif.github.io/tags/BT/</loc>
-        <lastmod>2022-10-18</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-    
-    <url>
-        <loc>https://suzhif.github.io/tags/phpstrom/</loc>
         <lastmod>2022-10-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
